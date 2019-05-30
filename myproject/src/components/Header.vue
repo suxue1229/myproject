@@ -1,11 +1,11 @@
 <template>
-  <header class="header">
+  <header id="header">
     <div class="header-left">
-      <img class="header-logo" src= "/static/header-logo.png"/>
-      <span class="header-title">洱源县城镇及村落污水处理智慧管理平台</span>
+      <img class="header-logo" src= "/static/img/header-logo.png"/>
+      <h1 class="header-title">洱源县城镇及村落污水处理智慧管理平台</h1>
     </div>
     <div class="header-right">
-      <span >{{formatDateTime(new Date())}}</span>
+      <h2>{{formatDateTime(new Date())}}</h2>
     </div>
   </header>
 </template>
@@ -39,39 +39,35 @@ export default {
 </script>
 
 <style scoped>
-  .header {
+  #header {
     width: 100%;
-    height: 50px;
-    position: relative;
-    background-color: rgba(7,32,65,.4);
+    height: 60px;
+    position: absolute;
     display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .header-left{
-    margin-left: 2%;
-    flex-grow: 4;
-  }
-  .header-logo{
-    width: 10%;
-    height: 100%;
-    vertical-align: middle;
-    text-align: center;
-  }
-  span{
-    height: 50px;
-    font-size: 20px;
     color: #28d7fe;
-    font-weight: bold;
     text-align: center;
-    line-height: 50px;
+    line-height: 60px;
+    border-bottom: 3px solid hsla(0,0%,100%,.1);
   }
-  .header-title{
+  #header .header-left{
     margin-left: 2%;
+    height: 100%;
+    flex-grow: 1;
+    display: flex;
+  }
+  #header .header-left .header-logo{
+    width: 9%;
     height: 50px;
   }
-  .header-right {
-    margin-right: 2%;
+  #header .header-left .header-title{
+    text-align: left;
+    margin-left: 2%;
+    min-width: 90%;
     flex-grow: 1;
+  }
+  #header .header-right {
+    width: 300px;
+    height: 100%;
+    margin-right: 2%;
   }
 </style>

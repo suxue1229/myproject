@@ -26,7 +26,6 @@ export default {
     position: fixed;
     left: 0px;
     bottom: 0px;
-    border-top: 1px #ebe8e3 solid;
     display: flex;
   }
   a{

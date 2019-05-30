@@ -21,13 +21,13 @@ export default{
 }
 </script>
 <style>
-html,body{
+html,body,h1,h2,h3,table,ul,li{
   margin: 0px;
   padding: 0px;
-  overflow: hidden;
 }
 body{
-  background: rgba(27, 62, 118, 1);
+  overflow: hidden;
+  background: #060C19;
 }
 .active{
   background:cadetblue;
