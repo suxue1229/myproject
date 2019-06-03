@@ -120,6 +120,10 @@ export default {
     }
   },
   created () {
+    var list = window.localStorage.getItem('formatedata')
+    if (list) {
+      this.list = JSON.parse(list)
+    } else {
     this.$store.dispatch('getdevicedata')
     var datalist = JSON.parse(this.$store.state.data)
     for (var i = 0; i < datalist.length; i++) {
@@ -127,9 +131,15 @@ export default {
         .then(res2 => {
           if (res2.data.status === 0) {
             this.formatedata(res2.data.data)
+            if (!window.localStorage) {
+              alert("浏览器支持localstorage")
+            } else {
+            window.localStorage.setItem('formatedata',JSON.stringify(this.list))
+            }
           }
         })
         .catch(error2 => { console.log(error2) })
+    }
     }
   },
   methods: {
@@ -249,6 +259,9 @@ export default {
    line-height: 3rem;
    color: #9ee1fb;
   }
+  /* #content .content-left .content-left-down .content-left-table td{
+   min-width: 5%;
+  } */
   #content .content-right{
     margin-left: 1rem;
     width: 15%;
