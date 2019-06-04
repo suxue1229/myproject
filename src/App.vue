@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <Header/>
-    <router-view/>
+    <keep-alive>
+      <router-view/>
+    </keep-alive>
     <Footer/>
   </div>
 </template>
@@ -28,6 +30,7 @@ html,body,p,h1,h2,h3,table,ul,li{
 body{
   overflow: hidden;
   background: #060C19;
+  font-family:"微软雅黑"
 }
 .active{
   background:cadetblue;

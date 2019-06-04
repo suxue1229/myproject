@@ -50,7 +50,7 @@ export default {
     map.enableAutoResize()
     var pt = ''
     for (var i = 0; i < this.datalist.length; i++) {
-      var pt = new BMap.Point(this.datalist[i].Longitude, this.datalist[i].Latitude)
+      pt = new BMap.Point(this.datalist[i].Longitude, this.datalist[i].Latitude)
       var convertor = new BMap.Convertor()
       var pointArr = []
       pointArr.push(pt)
@@ -60,11 +60,11 @@ export default {
           return pt
         }
       })
-    var marker = new BMap.Marker(pt)
-    map.addOverlay(marker)
-    var label = new BMap.Label(this.datalist[i].Name, {offset: new BMap.Size(20, -10)})
-    marker.setLabel(label)// 添加百度label
-    map.setCenter(pt)
+      var marker = new BMap.Marker(pt)
+      map.addOverlay(marker)
+      var label = new BMap.Label(this.datalist[i].Name, {offset: new BMap.Size(20, -10)})
+      marker.setLabel(label)// 添加百度label
+      map.setCenter(pt)
     }
   }
 }

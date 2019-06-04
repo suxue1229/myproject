@@ -74,7 +74,7 @@
                 label="累计水量(m3)"
                 min-width="10%">
               </el-table-column>
-            </el-table> --> 
+            </el-table> -->
           <table class="table-list">
             <tr>
               <th>厂站名称</th>
@@ -124,22 +124,22 @@ export default {
     if (list) {
       this.list = JSON.parse(list)
     } else {
-    this.$store.dispatch('getdevicedata')
-    var datalist = JSON.parse(this.$store.state.data)
-    for (var i = 0; i < datalist.length; i++) {
-      this.$axios.get(this.HOST + '/data/' + datalist[i].Id, { headers: {Authorization: this.$store.state.authorization} })
-        .then(res2 => {
-          if (res2.data.status === 0) {
-            this.formatedata(res2.data.data)
-            if (!window.localStorage) {
-              alert("浏览器支持localstorage")
-            } else {
-            window.localStorage.setItem('formatedata',JSON.stringify(this.list))
+      this.$store.dispatch('getdevicedata')
+      var datalist = JSON.parse(this.$store.state.data)
+      for (var i = 0; i < datalist.length; i++) {
+        this.$axios.get(this.HOST + '/data/' + datalist[i].Id, { headers: {Authorization: this.$store.state.authorization} })
+          .then(res2 => {
+            if (res2.data.status === 0) {
+              this.formatedata(res2.data.data)
+              if (!window.localStorage) {
+                alert('浏览器支持localstorage')
+              } else {
+                window.localStorage.setItem('formatedata', JSON.stringify(this.list))
+              }
             }
-          }
-        })
-        .catch(error2 => { console.log(error2) })
-    }
+          })
+          .catch(error2 => { console.log(error2) })
+      }
     }
   },
   methods: {
@@ -193,11 +193,11 @@ export default {
       return str
     },
     // 修改table tr行的背景色
-    tableRowStyle({ row, rowIndex }) {
+    tableRowStyle ({ row, rowIndex }) {
       return 'background: rgba(27, 62, 118, 1); color: #3dff4f; height:10px;'
     },
     // 修改table header的背景色
-    tableHeaderColor({ row, column, rowIndex, columnIndex }) {
+    tableHeaderColor ({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 0) {
         return 'background-color: rgba(27, 62, 118, 1); color: #9ee1fb; height: 10px;'
       }

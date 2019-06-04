@@ -170,11 +170,11 @@ export default {
       return str
     },
     // 修改table tr行的背景色
-    tableRowStyle({ row, rowIndex }) {
+    tableRowStyle ({ row, rowIndex }) {
       return 'background: rgba(27, 62, 118, 1); color: #9ee1fb; height:10px;'
     },
     // 修改table header的背景色
-    tableHeaderColor({ row, column, rowIndex, columnIndex }) {
+    tableHeaderColor ({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 0) {
         return 'background-color: rgba(27, 62, 118, 1); color: #9ee1fb; height: 10px;'
       }
