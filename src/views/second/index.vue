@@ -11,11 +11,12 @@
           <p>镇级厂</p>
         </div>
         <div class='content-left-table'>
-            <!-- <el-table
+            <el-table
               :data="list"
               :row-style="tableRowStyle"
               :header-cell-style="tableHeaderColor"
-              style="width: 100%; min-height:100%;"
+              @cell-mouse-enter="enterevent"
+              style="width: 100%; min-height:100%; background-color: transparent;"
               >
               <el-table-column
                 fixed
@@ -42,22 +43,22 @@
               <el-table-column
                 prop="Device[3]"
                 label="除磷泵"
-                min-width="9%">
+                min-width="8%">
               </el-table-column>
-              <el-table-column
+             <!-- <el-table-column
                 prop="Device[4]"
                 label="膜池液位"
                 min-width="10%">
-                </el-table-column> -->
-              <!-- <el-table-column
+                </el-table-column> 
+               <el-table-column
                 prop="Device[5]"
                 label="除磷剂液位"
                 width="15%">
               </el-table-column> -->
-              <!-- <el-table-column
+              <el-table-column
                 prop="Device[6]"
                 label="产水流量(m3/h)"
-                min-width="10%">
+                min-width="11%">
               </el-table-column>
               <el-table-column
                 prop="Device[7]"
@@ -74,9 +75,9 @@
                 label="累计水量(m3)"
                 min-width="10%">
               </el-table-column>
-            </el-table> -->
-          <table class="table-list">
-            <tr>
+            </el-table> 
+          <!-- <table class="table-list">
+            <tr class="table-list-title">
               <th>厂站名称</th>
               <th>产水泵</th>
               <th>风机</th>
@@ -84,17 +85,36 @@
               <th>除磷泵</th>
               <th>膜池液位</th>
               <th>除磷剂液位</th>
-              <th>产水流量(m3/h)</th>
-              <th>MBR压力(kpa)</th>
-              <th>累计电量(kwh)</th>
-              <th>累计水量(m3)</th>
+              <th>产水流量<br/>(m3/h)</th>
+              <th>MBR压力<br/>(kpa)</th>
+              <th>累计电量<br/>(kwh)</th>
+              <th>累计水量<br/>(m3)</th>
             </tr>
             <tr v-for="(item, index) in list" :key="index" >
               <td>{{item.Name}}</td>
               <td v-for="(i,index) in item.Device" :key="index">{{i}}</td>
             </tr>
-          </table>
-        </div>
+          </table> -->
+          <!-- <ul class='table-list-title' >
+            <li class='list-title companyname'>厂站名称</li>
+            <li class='list-title'>产水泵</li>
+            <li class='list-title'>风机</li>
+            <li class='list-title'>回流泵</li>
+            <li class='list-title'>除磷泵</li>
+            <li class='list-title'>膜池液位</li>
+            <li class='list-title'>除磷剂液位</li>
+            <li class='list-title'>产水流量<br/>(m3/h)</li>
+            <li class='list-title'>MBR压力<br/>(kpa)</li>
+            <li class='list-title'>累计电量<br/>(kwh)</li>
+            <li class='list-title'>累计水量<br/>(m3)</li>
+          </ul>
+        <div class='table-list-data'>
+            <ul class="list-detail" v-for="(item, index) in list" :key="index">
+              <li class="list-row companyname">{{item.Name}}</li>
+              <li class="list-row" v-for="(i,index) in item.Device" :key="index">{{i}}</li>
+            </ul>
+        </div> -->
+      </div>
       </div>
     </div>
     <div class='content-right'>
@@ -153,6 +173,7 @@ export default {
           Devicelist.push({name: datalist.Groups[i].Sensors[k].Name, value: datalist.Groups[i].Sensors[k].Value})
         }
         this.list.push({Name: datalist.Name, Device: this.getvalue(Devicelist)})
+        console.log(this.list)
       }
     },
     getvalue (arraylist) {
@@ -194,13 +215,20 @@ export default {
     },
     // 修改table tr行的背景色
     tableRowStyle ({ row, rowIndex }) {
-      return 'background: rgba(27, 62, 118, 1); color: #3dff4f; height:10px;'
+      if(rowIndex%2 ===0){
+      return 'background-color: rgba(16,46,86,.5); color: #3dff4f; height:5px;'
+      } else {
+        return 'background-color: transparent; color: #3dff4f; height:5px;'
+      }
     },
     // 修改table header的背景色
     tableHeaderColor ({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 0) {
-        return 'background-color: rgba(27, 62, 118, 1); color: #9ee1fb; height: 10px;'
+        return 'background-color: #060C19; color: #9ee1fb; height: 5px;'
       }
+    },
+    enterevent({row, column, cell, event}){
+      return 'background-color: transparent'
     }
   }
 }
@@ -241,27 +269,54 @@ export default {
     margin-left: 1rem;
   }
   #content .content-left .content-left-down .content-left-table{
-    width: 85%;
-    flex-grow: 1;
+    -ms-flex: 8;
+    flex: 8;
+    flex-grow: 8;
+    flex-shrink: 1;
+    flex-basis: 0%;
+    height: 100%;
+    display:flex;
+    flex-flow: column;
+    font-size: 12px;
+  }
+  #content .content-left .content-left-down .content-left-table .table-list-title{
+    display: -ms-flexbox;
     display: flex;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -ms-flex-align: center;
+    align-items: center;
+    list-style-type: none;
+  }
+  #content .content-left .content-left-down .content-left-table .table-list-title .list-title{
+    flex-grow: 1;
+  }
+   #content .content-left .content-left-down .content-left-table .table-list-data{
+    -ms-flex: 8;
+    flex: 8;
+    flex-grow: 8;
+    flex-shrink: 1;
+    flex-basis: 0%;
+    height: 100%;
+    display:flex;
     flex-flow: column;
   }
-  #content .content-left .content-left-down .content-left-table tr{
-   line-height: 2rem;
-   color: #3dff4f;
-   text-align: left;
-   align-items: center;
+   #content .content-left .content-left-down .content-left-table .table-list-data .list-detail{
+   display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -ms-flex-align: center;
+    align-items: center;
+    list-style-type: none;
   }
-  #content .content-left .content-left-down .content-left-table table{
-    border-collapse: collapse;
+  #content .content-left .content-left-down .content-left-table .table-list-data .list-detail .list-row{
+    flex-grow: 1;
   }
-  #content .content-left .content-left-down .content-left-table th{
-   line-height: 3rem;
-   color: #9ee1fb;
+  #content .content-left .content-left-down .content-left-table .companyname{
+    flex-grow: 2.5;
+    color: green;
   }
-  /* #content .content-left .content-left-down .content-left-table td{
-   min-width: 5%;
-  } */
   #content .content-right{
     margin-left: 1rem;
     width: 15%;

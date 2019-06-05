@@ -19,7 +19,7 @@
             :data="list"
             :row-style="tableRowStyle"
             :header-cell-style="tableHeaderColor"
-            style="width: 100%; min-height:100%;"
+            style="width: 100%; min-height:100%; background-color: transparent;"
             >
             <el-table-column
               fixed
@@ -171,12 +171,16 @@ export default {
     },
     // 修改table tr行的背景色
     tableRowStyle ({ row, rowIndex }) {
-      return 'background: rgba(27, 62, 118, 1); color: #9ee1fb; height:10px;'
+      if(rowIndex%2 ===0){
+      return 'background-color: rgba(16,46,86,.5); color: #3dff4f; height:5px;'
+      } else {
+        return 'background-color: transparent; color: #3dff4f; height:5px;'
+      }
     },
     // 修改table header的背景色
     tableHeaderColor ({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 0) {
-        return 'background-color: rgba(27, 62, 118, 1); color: #9ee1fb; height: 10px;'
+        return 'background-color: #060C19; color: #9ee1fb; height: 5px;'
       }
     }
   }
