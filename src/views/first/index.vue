@@ -42,13 +42,13 @@ export default {
     }
   },
   mounted () {
-    this.datalist = JSON.parse(this.$store.state.data)
     var map = new BMap.Map('content-center-map')
     var point = new BMap.Point(116.404, 39.915)
     map.centerAndZoom(point, 15)
     map.enableScrollWheelZoom(true)
     map.enableAutoResize()
     var pt = ''
+    this.datalist = JSON.parse(this.$store.state.data)
     for (var i = 0; i < this.datalist.length; i++) {
       pt = new BMap.Point(this.datalist[i].Longitude, this.datalist[i].Latitude)
       var convertor = new BMap.Convertor()

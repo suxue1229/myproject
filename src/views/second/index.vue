@@ -15,7 +15,6 @@
               :data="list"
               :row-style="tableRowStyle"
               :header-cell-style="tableHeaderColor"
-              @cell-mouse-enter="enterevent"
               style="width: 100%; min-height:100%; background-color: transparent;"
               >
               <el-table-column
@@ -76,44 +75,6 @@
                 min-width="10%">
               </el-table-column>
             </el-table> 
-          <!-- <table class="table-list">
-            <tr class="table-list-title">
-              <th>厂站名称</th>
-              <th>产水泵</th>
-              <th>风机</th>
-              <th>回流泵</th>
-              <th>除磷泵</th>
-              <th>膜池液位</th>
-              <th>除磷剂液位</th>
-              <th>产水流量<br/>(m3/h)</th>
-              <th>MBR压力<br/>(kpa)</th>
-              <th>累计电量<br/>(kwh)</th>
-              <th>累计水量<br/>(m3)</th>
-            </tr>
-            <tr v-for="(item, index) in list" :key="index" >
-              <td>{{item.Name}}</td>
-              <td v-for="(i,index) in item.Device" :key="index">{{i}}</td>
-            </tr>
-          </table> -->
-          <!-- <ul class='table-list-title' >
-            <li class='list-title companyname'>厂站名称</li>
-            <li class='list-title'>产水泵</li>
-            <li class='list-title'>风机</li>
-            <li class='list-title'>回流泵</li>
-            <li class='list-title'>除磷泵</li>
-            <li class='list-title'>膜池液位</li>
-            <li class='list-title'>除磷剂液位</li>
-            <li class='list-title'>产水流量<br/>(m3/h)</li>
-            <li class='list-title'>MBR压力<br/>(kpa)</li>
-            <li class='list-title'>累计电量<br/>(kwh)</li>
-            <li class='list-title'>累计水量<br/>(m3)</li>
-          </ul>
-        <div class='table-list-data'>
-            <ul class="list-detail" v-for="(item, index) in list" :key="index">
-              <li class="list-row companyname">{{item.Name}}</li>
-              <li class="list-row" v-for="(i,index) in item.Device" :key="index">{{i}}</li>
-            </ul>
-        </div> -->
       </div>
       </div>
     </div>
@@ -140,27 +101,26 @@ export default {
     }
   },
   created () {
-    var list = window.localStorage.getItem('formatedata')
+    var list = window.sessionStorage.getItem('formatedata')
     if (list) {
       this.list = JSON.parse(list)
     } else {
-      this.$store.dispatch('getdevicedata')
-      var datalist = JSON.parse(this.$store.state.data)
-      for (var i = 0; i < datalist.length; i++) {
-        this.$axios.get(this.HOST + '/data/' + datalist[i].Id, { headers: {Authorization: this.$store.state.authorization} })
-          .then(res2 => {
-            if (res2.data.status === 0) {
-              this.formatedata(res2.data.data)
-              if (!window.localStorage) {
-                alert('浏览器支持localstorage')
-              } else {
-                window.localStorage.setItem('formatedata', JSON.stringify(this.list))
-              }
+    var datalist = JSON.parse(this.$store.state.data)
+    for (var i = 0; i < datalist.length; i++) {
+      this.$axios.get(this.HOST + '/data/' + datalist[i].Id, { headers: {Authorization: this.$store.state.authorization} })
+        .then(res2 => {
+          if (res2.data.status === 0) {
+            this.formatedata(res2.data.data)
+            if (!window.sessionStorage) {
+              alert('浏览器支持sessionStorage')
+            } else {
+              window.sessionStorage.setItem('formatedata', JSON.stringify(this.list))
             }
-          })
-          .catch(error2 => { console.log(error2) })
+          }
+        })
+        .catch(error2 => { console.log(error2) })
       }
-    }
+    }    
   },
   methods: {
     formatedata (datalist) {
@@ -227,9 +187,6 @@ export default {
         return 'background-color: #060C19; color: #9ee1fb; height: 5px;'
       }
     },
-    enterevent({row, column, cell, event}){
-      return 'background-color: transparent'
-    }
   }
 }
 </script>
