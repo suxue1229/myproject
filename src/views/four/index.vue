@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id='content' ref="content">
+    <!-- <div id='content' ref="content">
       <ul>
         <li v-for="(list,index) in datalist" :key="index">
           <h3>{{list.title}}</h3>
@@ -8,7 +8,9 @@
           <img :src="list.img"/>
         </li>
       </ul>
-    </div>
+    </div> -->
+
+    <p>{{initData()}}</p>
   </div>
 </template>
 <script>
@@ -20,28 +22,35 @@ export default {
       datalist: []
     }
   },
-  created () {
-    var datalist = window.localStorage.getItem('datalist')
-    if (datalist) {
-      this.datalist = JSON.parse(datalist)
-    } else {
-      this.$axios.get('http://www.wwtliu.com/sxtstu/blueberrypai/getIndexbanner.php')
-        .then(res => {
-          this.datalist = res.data.banner
-          this.$nextTick(() => {
-            new BScroll(this.$refs.content, {})
-          })
-          if (!window.localStorage) {
-            alert('浏览器不支持本地存储')
-            return false
-          } else {
-            window.localStorage.setItem('datalist', JSON.stringify(res.data.banner))
-          }
-        }).catch(error => {
-          console.log(error)
-        })
+  methods: {
+    async initData () {
+      let token = await this.$store.dispatch('user_authorize', {grant_type: 'password', username: 'suxue7330537@163.com', password: 'suxue13070120926'})
     }
   }
+
+
+  // created () {
+  //   var datalist = window.localStorage.getItem('datalist')
+  //   if (datalist) {
+  //     this.datalist = JSON.parse(datalist)
+  //   } else {
+  //     this.$axios.get('http://www.wwtliu.com/sxtstu/blueberrypai/getIndexbanner.php')
+  //       .then(res => {
+  //         this.datalist = res.data.banner
+  //         this.$nextTick(() => {
+  //           new BScroll(this.$refs.content, {})
+  //         })
+  //         if (!window.localStorage) {
+  //           alert('浏览器不支持本地存储')
+  //           return false
+  //         } else {
+  //           window.localStorage.setItem('datalist', JSON.stringify(res.data.banner))
+  //         }
+  //       }).catch(error => {
+  //         console.log(error)
+  //       })
+  //   }
+  // }
 }
 </script>
 <style scoped>
