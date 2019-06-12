@@ -4,6 +4,7 @@ import firstrouter from './firstrouter'
 import secondrouter from './secondrouter'
 import thirdrouter from './thirdrouter'
 import fourrouter from './fourrouter'
+import Login from '@/views/login'
 
 Vue.use(Router)
 export default new Router(
@@ -18,8 +19,12 @@ export default new Router(
       thirdrouter,
       fourrouter,
       {
+        path: '/login',
+        component: Login
+      },
+      {
         path: '/*',
-        redirect: '/first'
+        redirect: '/login'
       }
     ]
   })

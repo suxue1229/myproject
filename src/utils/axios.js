@@ -1,7 +1,8 @@
 import axios from 'axios'
+
 class Http {
   constructor () {
-    this.Domain = 'https://www.oriwater.cn'
+    this.Domain = 'http://localhost:8080'
   }
   require (options) {
     if (!options.api) throw new Error('api 不能为空')
@@ -14,20 +15,12 @@ class Http {
         url: options.api,
         baseURL: this.Domain,
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded', 'charset': 'utf-8'
+          'Content-Type': 'application/x-www-form-urlencoded'
         },
         data: options.param
       }).then(response => {
-        if (response.data.Code === 0) { // 请求成功
-          return resolve(response.data)
-        } else {
-          if (response.data.Code === 2) { // 未登录
-            //   router.push('/Login')
-          }
-          return reject(response.data)
-        }
-      }, error => {
-        console.log(error)
+        return resolve(response.data)
+      }).catch(error => {
         return reject(error)
       })
     })

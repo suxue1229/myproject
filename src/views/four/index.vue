@@ -1,20 +1,21 @@
 <template>
   <div>
-    <!-- <div id='content' ref="content">
-      <ul>
+    <div id='content' ref="content">
+      <!--  <ul>
         <li v-for="(list,index) in datalist" :key="index">
           <h3>{{list.title}}</h3>
           <p>{{list.content}}</p>
           <img :src="list.img"/>
         </li>
-      </ul>
-    </div> -->
-
-    <p>{{initData()}}</p>
+      </ul>-->
+       <p>{{initData()}}</p>
+    </div> 
   </div>
 </template>
 <script>
-import BScroll from 'better-scroll'
+// import BScroll from 'better-scroll'
+import QS from 'qs'
+import {mapGetters} from 'vuex'
 export default {
   name: 'secondchild',
   data () {
@@ -22,12 +23,17 @@ export default {
       datalist: []
     }
   },
+  computed: {
+    ...mapGetters([
+      'access_token'
+    ])
+  },
   methods: {
     async initData () {
-      let token = await this.$store.dispatch('user_authorize', {grant_type: 'password', username: 'suxue7330537@163.com', password: 'suxue13070120926'})
+      let token = await this.$store.dispatch('user_authorize', QS.stringify({grant_type: 'password', username: 'suxue7330537@163.com', password: 'suxue13070120926'}).replace('%40', '@'))
+      console.log('222:' + this.access_token)
     }
   }
-
 
   // created () {
   //   var datalist = window.localStorage.getItem('datalist')

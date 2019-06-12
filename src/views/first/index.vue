@@ -41,7 +41,18 @@ export default {
       pointlist: []
     }
   },
+  // methods: {
+  //   async initData(){
+  //     if (!this.categoryData) {
+  //       let res = await this.$store.dispatch('GetCategoryList',{RootId: "0"});
+  //       this.SET_CATEGORY_DATA(res)
+  //     } else {
+  //       this.categoryBody.categoryRoot = this.categoryData.Data;
+  //       }
+  //   }
+  // },
   mounted () {
+
     var map = new BMap.Map('content-center-map')
     var point = new BMap.Point(116.404, 39.915)
     map.centerAndZoom(point, 15)
