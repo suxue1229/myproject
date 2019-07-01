@@ -3,29 +3,64 @@
     <form class='login-form'>
       <h3 class='title'>洱源污水处理智慧管理平台</h3>
       <div class='input-box username'>
-        <el-input placeholder="请输入内容" prefix-icon="el-icon-user" v-model="username"> </el-input>
+        <el-input type="text" autofocus required="required" placeholder="请输入用户名" prefix-icon="el-icon-user" v-model="loginForm.username"> </el-input>
       </div>
       <div class='input-box password'>
-        <el-input placeholder="请输入密码" prefix-icon="el-icon-lock" v-model="password" show-password></el-input> 
+        <el-input placeholder="请输入密码" required="required" prefix-icon="el-icon-lock" v-model="loginForm.password" show-password></el-input>
       </div>
       <div class='register'>
         <a href="#">注册账号</a>
       </div>
       <div class='login'>
-        <el-button type="primary" style="width:100%;">登陆</el-button>
+        <el-button type="primary" style="width:100%" @click="Login()">登陆</el-button>
+      </div>
+      <div>
+        {{this.$store.getters.Authorization}}
       </div>
     </form>
   </div>
 </template>
 <script>
+import QS from 'qs'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 export default {
   name: 'login',
   data () {
-      return {
+    return {
+      loginForm: {
         username: '',
-        password: ''   
+        password: ''
       }
+    }
+  },
+  // computed: {
+  //   ...mapGetters(['Authorization'])
+  //  },
+  methods: {
+    async initData () {
+      let token = await this.$store.dispatch('user_authorize', QS.stringify({grant_type: 'password', username: this.loginForm.username, password: this.loginForm.password}).replace('%40', '@'))
+    },
+    async Login () {
+      this.initData()
+      let _this = this;
+      if (this.loginForm.username === '' || this.loginForm.password === '') {
+        alert('账号或密码不能为空')
+      } else {
+          let Data = await this.$store.dispatch('user_account')
+          .then(res => {
+          if(res.status === 0){
+            alert('true')
+            _this.$router.push('/first')
+            alert('登陆成功')
+          }
+         }).catch(error => {
+          alert('账号或密码错误22')
+          sessionStorage.removeItem('Authorization')
+          console.log(error)
+        })
+    }
   }
+}
 }
 </script>
 <style scoped>

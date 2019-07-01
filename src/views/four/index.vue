@@ -1,5 +1,6 @@
 <template>
   <div>
+    <header />
     <div id='content' ref="content">
       <!--  <ul>
         <li v-for="(list,index) in datalist" :key="index">
@@ -9,13 +10,16 @@
         </li>
       </ul>-->
        <p>{{initData()}}</p>
-    </div> 
+    </div>
+    <Footer/>
   </div>
 </template>
 <script>
 // import BScroll from 'better-scroll'
 import QS from 'qs'
 import {mapGetters} from 'vuex'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 export default {
   name: 'secondchild',
   data () {
@@ -31,8 +35,10 @@ export default {
   methods: {
     async initData () {
       let token = await this.$store.dispatch('user_authorize', QS.stringify({grant_type: 'password', username: 'suxue7330537@163.com', password: 'suxue13070120926'}).replace('%40', '@'))
-      console.log('222:' + this.access_token)
     }
+  },
+  components: {
+    Header, Footer
   }
 
   // created () {

@@ -1,23 +1,26 @@
 <template>
   <div id="app">
-    <Header/>
-      <router-view/>
-    <Footer/>
+    <router-view/>
   </div>
 </template>
 
 <script>
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
+// import QS from 'qs'
 export default{
   name: 'app',
   data () {
     return {
     }
-  },
-  components: {
-    Header, Footer
   }
+//   mounted () {
+//     this.initData()
+//     console.log('res:'+this.$store.state.Authorization)
+//   },
+//   methods: {
+//     async initData () {
+//       let token = await this.$store.dispatch('user_authorize', QS.stringify({grant_type: 'password', username: 'suxue7330537@163.com', password: 'suxue13070120926'}).replace('%40', '@'))
+//  }
+  // }
 }
 </script>
 <style>

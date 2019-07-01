@@ -1,38 +1,42 @@
 <template>
   <div>
-    <div id='content' >
-      <div class='content-left'>
-          <h2>项目概述</h2>
-          <p>为了保护洱海流域敏感的水环境，大理州洱源县政府与北京碧水源科技股份有限公司签订了《洱源县乡镇及村落污水处理工程PPP合作协议》，对辖区内的分散污染源进行综合治理。本项目新建镇级污水处理厂6座，村落污水处理站53座，总设计处理规模2.392万吨/天；新建管网851.22km和提升泵站21座。总投资22.29亿元，分两期建设。</p>
+    <Header/>
+      <div id='content' >
+        <div class='content-left'>
+            <h2>项目概述</h2>
+            <p>为了保护洱海流域敏感的水环境，大理州洱源县政府与北京碧水源科技股份有限公司签订了《洱源县乡镇及村落污水处理工程PPP合作协议》，对辖区内的分散污染源进行综合治理。本项目新建镇级污水处理厂6座，村落污水处理站53座，总设计处理规模2.392万吨/天；新建管网851.22km和提升泵站21座。总投资22.29亿元，分两期建设。</p>
+        </div>
+        <div class='content-center'>
+            <div class="content-center-title">
+              <h3 class="content">
+                <b>镇级污水处理厂：6个</b>
+                <b>村居污水处理站：53个</b>
+                <b>总处理规模：2.392万吨/日</b>
+              </h3>
+              <div class="title">一期二期项目介绍</div>  
+            </div>
+            <div id='content-center-map'></div>
+        </div>
+        <div class='content-right'>
+          <h2>厂站列表</h2>
+          <ul class='content-right-list'>
+            <li>茈碧湖镇(2+4)</li>
+            <li>右所镇(1+17)</li>
+            <li>凤羽镇(1+11)</li>
+            <li>牛街乡(1+7)</li>
+            <li>三营镇(1+14)</li>
+            <li>邓川镇(0+4)</li>
+            <li>海东镇(0+1)</li>
+          </ul>
+        </div>
       </div>
-      <div class='content-center'>
-          <div class="content-center-title">
-            <h3 class="content">
-              <b>镇级污水处理厂：6个</b>
-              <b>村居污水处理站：53个</b>
-              <b>总处理规模：2.392万吨/日</b>
-            </h3>
-            <div class="title">一期二期项目介绍</div>  
-          </div>
-          <div id='content-center-map'></div>
-      </div>
-      <div class='content-right'>
-        <h2>厂站列表</h2>
-        <ul class='content-right-list'>
-          <li>茈碧湖镇(2+4)</li>
-          <li>右所镇(1+17)</li>
-          <li>凤羽镇(1+11)</li>
-          <li>牛街乡(1+7)</li>
-          <li>三营镇(1+14)</li>
-          <li>邓川镇(0+4)</li>
-          <li>海东镇(0+1)</li>
-        </ul>
-      </div>
-    </div>
+    <Footer/>
   </div>
 </template>
 <script>
 import BMap from 'BMap'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 export default {
   name: 'firstchild',
   data () {
@@ -40,6 +44,9 @@ export default {
       datalist: [],
       pointlist: []
     }
+  },
+  components: {
+    Header, Footer
   },
   // methods: {
   //   async initData(){

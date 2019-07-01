@@ -15,6 +15,17 @@ Vue.use(Input)
 Vue.use(Button)
 Vue.component('loading', loading)
 
+// 添加请求拦截器，在请求头中加token
+axios.interceptors.request.use(
+  config => {
+    if (sessionStorage.getItem('Authorization')) {
+      config.headers.Authorization = store.getters.Authorization
+    }
+    return config
+  },
+  error => {
+    return Promise.reject(error)
+  })
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

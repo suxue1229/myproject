@@ -1,98 +1,104 @@
 <template>
-  <div id='content'>
-    <div class='content-left'>
-      <div class="content-left-up">
-        <h2>title</H2>
-      </div>
-      <div class="content-left-down">
-        <div class='content-left-title'>
-          <p >CWT工艺</p>
-          <p>混凝土小水厂工艺</p>
-          <p>镇级厂</p>
+  <div>
+    <Header />
+      <div id='content'>
+        <div class='content-left'>
+          <div class="content-left-up">
+            <h2>title</H2>
+          </div>
+          <div class="content-left-down">
+            <div class='content-left-title'>
+              <p >CWT工艺</p>
+              <p>混凝土小水厂工艺</p>
+              <p>镇级厂</p>
+            </div>
+            <div class='content-left-table'>
+                <el-table
+                  :data="list"
+                  :row-style="tableRowStyle"
+                  :header-cell-style="tableHeaderColor"
+                  style="width: 100%; min-height:100%; background-color: transparent;"
+                  >
+                  <el-table-column
+                    fixed
+                    prop="Name"
+                    label="厂站名称"
+                    min-width="20%"
+                    >
+                  </el-table-column>
+                  <el-table-column
+                    prop="Device[0]"
+                    label="产水泵"
+                    min-width="8%">
+                  </el-table-column>
+                  <el-table-column
+                    prop="Device[1]"
+                    label="风机"
+                    min-width="5%">
+                  </el-table-column>
+                  <el-table-column
+                    prop="Device[2]"
+                    label="回流泵"
+                    min-width="8%">
+                  </el-table-column>
+                  <el-table-column
+                    prop="Device[3]"
+                    label="除磷泵"
+                    min-width="8%">
+                  </el-table-column>
+                <!-- <el-table-column
+                    prop="Device[4]"
+                    label="膜池液位"
+                    min-width="10%">
+                    </el-table-column> 
+                  <el-table-column
+                    prop="Device[5]"
+                    label="除磷剂液位"
+                    width="15%">
+                  </el-table-column> -->
+                  <el-table-column
+                    prop="Device[6]"
+                    label="产水流量(m3/h)"
+                    min-width="11%">
+                  </el-table-column>
+                  <el-table-column
+                    prop="Device[7]"
+                    label="MBR压力(kpa)"
+                    min-width="10%">
+                  </el-table-column>
+                  <el-table-column
+                    prop="Device[8]"
+                    label="累计电量(kwh)"
+                    min-width="10%">
+                  </el-table-column>
+                  <el-table-column
+                    prop="Device[9]"
+                    label="累计水量(m3)"
+                    min-width="10%">
+                  </el-table-column>
+                </el-table> 
+          </div>
+          </div>
         </div>
-        <div class='content-left-table'>
-            <el-table
-              :data="list"
-              :row-style="tableRowStyle"
-              :header-cell-style="tableHeaderColor"
-              style="width: 100%; min-height:100%; background-color: transparent;"
-              >
-              <el-table-column
-                fixed
-                prop="Name"
-                label="厂站名称"
-                min-width="20%"
-                >
-              </el-table-column>
-              <el-table-column
-                prop="Device[0]"
-                label="产水泵"
-                min-width="8%">
-              </el-table-column>
-              <el-table-column
-                prop="Device[1]"
-                label="风机"
-                min-width="5%">
-              </el-table-column>
-              <el-table-column
-                prop="Device[2]"
-                label="回流泵"
-                min-width="8%">
-              </el-table-column>
-              <el-table-column
-                prop="Device[3]"
-                label="除磷泵"
-                min-width="8%">
-              </el-table-column>
-             <!-- <el-table-column
-                prop="Device[4]"
-                label="膜池液位"
-                min-width="10%">
-                </el-table-column> 
-               <el-table-column
-                prop="Device[5]"
-                label="除磷剂液位"
-                width="15%">
-              </el-table-column> -->
-              <el-table-column
-                prop="Device[6]"
-                label="产水流量(m3/h)"
-                min-width="11%">
-              </el-table-column>
-              <el-table-column
-                prop="Device[7]"
-                label="MBR压力(kpa)"
-                min-width="10%">
-              </el-table-column>
-              <el-table-column
-                prop="Device[8]"
-                label="累计电量(kwh)"
-                min-width="10%">
-              </el-table-column>
-              <el-table-column
-                prop="Device[9]"
-                label="累计水量(m3)"
-                min-width="10%">
-              </el-table-column>
-            </el-table> 
+        <div class='content-right'>
+          <h2>厂站列表</h2>
+            <ul class='content-right-list'>
+              <li>茈碧湖镇(2+4)</li>
+              <li>右所镇(1+17)</li>
+              <li>凤羽镇(1+11)</li>
+              <li>牛街乡(1+7)</li>
+              <li>三营镇(1+14)</li>
+              <li>邓川镇(0+4)</li>
+              <li>海东镇(0+1)</li>
+            </ul>
+        </div>
       </div>
-      </div>
-    </div>
-    <div class='content-right'>
-      <h2>厂站列表</h2>
-        <ul class='content-right-list'>
-          <li>茈碧湖镇(2+4)</li>
-          <li>右所镇(1+17)</li>
-          <li>凤羽镇(1+11)</li>
-          <li>牛街乡(1+7)</li>
-          <li>三营镇(1+14)</li>
-          <li>邓川镇(0+4)</li>
-          <li>海东镇(0+1)</li>
-        </ul>
-    </div>
+    <Footer/>
   </div>
 </template>
 <script>
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 export default {
   name: 'thirdchild',
   data () {
@@ -187,6 +193,9 @@ export default {
         return 'background-color: #060C19; color: #9ee1fb; height: 5px;'
       }
     },
+  },
+  components: {
+    Header, Footer
   }
 }
 </script>

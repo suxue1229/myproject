@@ -7,8 +7,7 @@ class Http {
   require (options) {
     if (!options.api) throw new Error('api 不能为空')
     if (!options.param) { options.param = {} }
-    if (!options.methods) { options.methods = 'POST' } // 不传递方法默认为POST
-    // options.param.MemberToken = options.param.MemberToken ? options.param.MemberToken : getSessionStorage('MemberToken');
+    if (!options.methods) { options.methods = 'GET' } // 不传递方法默认为GET
     return new Promise((resolve, reject) => {
       return axios({
         method: options.methods,
