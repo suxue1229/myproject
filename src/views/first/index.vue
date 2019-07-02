@@ -15,7 +15,7 @@
               </h3>
               <div class="title">一期二期项目介绍</div>  
             </div>
-            <div id='content-center-map'></div>
+            <div id='content-center-map' @click="initData"></div>
         </div>
         <div class='content-right'>
           <h2>厂站列表</h2>
@@ -48,43 +48,40 @@ export default {
   components: {
     Header, Footer
   },
-  // methods: {
-  //   async initData(){
-  //     if (!this.categoryData) {
-  //       let res = await this.$store.dispatch('GetCategoryList',{RootId: "0"});
-  //       this.SET_CATEGORY_DATA(res)
-  //     } else {
-  //       this.categoryBody.categoryRoot = this.categoryData.Data;
-  //       }
-  //   }
-  // },
-  mounted () {
-
-    var map = new BMap.Map('content-center-map')
-    var point = new BMap.Point(116.404, 39.915)
-    map.centerAndZoom(point, 15)
-    map.enableScrollWheelZoom(true)
-    map.enableAutoResize()
-    var pt = ''
-    this.datalist = JSON.parse(this.$store.state.data)
-    for (var i = 0; i < this.datalist.length; i++) {
-      pt = new BMap.Point(this.datalist[i].Longitude, this.datalist[i].Latitude)
-      var convertor = new BMap.Convertor()
-      var pointArr = []
-      pointArr.push(pt)
-      convertor.translate(pointArr, 1, 5, (data) => {
-        if (data.status === 0) {
-          pt = data.points[0]
-          return pt
-        }
-      })
-      var marker = new BMap.Marker(pt)
-      map.addOverlay(marker)
-      var label = new BMap.Label(this.datalist[i].Name, {offset: new BMap.Size(20, -10)})
-      marker.setLabel(label)// 添加百度label
-      map.setCenter(pt)
+  methods: {
+    async initData(){
+       let Data = await this.$store.dispatch('get_institute')
+        console.log('this.$store.getters.data:' + this.$store.getters.instituteID)
     }
   }
+  // mounted () {
+  //   var map = new BMap.Map('content-center-map')
+  //   var point = new BMap.Point(116.404, 39.915)
+  //   map.centerAndZoom(point, 15)
+  //   map.enableScrollWheelZoom(true)
+  //   map.enableAutoResize()
+  //   var pt = ''
+  //   //  let Data = await this.$store.dispatch('get_institute')
+  //   // console.log('this.$store.getters.data:' + this.$store.getters.instituteID)
+  //   this.datalist = JSON.parse(this.$store.getters.data)
+  //   for (var i = 0; i < this.datalist.length; i++) {
+  //     pt = new BMap.Point(this.datalist[i].Longitude, this.datalist[i].Latitude)
+  //     var convertor = new BMap.Convertor()
+  //     var pointArr = []
+  //     pointArr.push(pt)
+  //     convertor.translate(pointArr, 1, 5, (data) => {
+  //       if (data.status === 0) {
+  //         pt = data.points[0]
+  //         return pt
+  //       }
+  //     })
+  //     var marker = new BMap.Marker(pt)
+  //     map.addOverlay(marker)
+  //     var label = new BMap.Label(this.datalist[i].Name, {offset: new BMap.Size(20, -10)})
+  //     marker.setLabel(label)// 添加百度label
+  //     map.setCenter(pt)
+  //   }
+  // }
 }
 </script>
 <style scoped>

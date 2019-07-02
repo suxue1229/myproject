@@ -23,8 +23,8 @@ export const router = new Router(
         component: Login
       },
       {
-        path: '/*',
-        redirect: '/first'
+        path: '/',
+        redirect: '/login'
       }
     ]
   })
@@ -36,7 +36,7 @@ router.beforeEach((to, from, next) => {
   if (to.path === '/login') {
     next()
   } else {
-    let token = localStorage.getItem('Authorization')
+    let token = sessionStorage.getItem('Authorization')
     if (token === 'null' || token === '') {
       next('/login')
     } else {

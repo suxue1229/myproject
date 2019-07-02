@@ -1,6 +1,6 @@
 <template>
   <div>
-    <header />
+    <Header />
       <div id='content'>
         <div class='content-left'>
           <div class='content-left-title'>
@@ -111,6 +111,9 @@ export default {
     return {
       list: []
     }
+  },
+  components: {
+    Header, Footer
   },
   created () {
     this.$store.dispatch('getdevicedata')

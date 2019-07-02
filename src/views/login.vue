@@ -6,23 +6,19 @@
         <el-input type="text" autofocus required="required" placeholder="请输入用户名" prefix-icon="el-icon-user" v-model="loginForm.username"> </el-input>
       </div>
       <div class='input-box password'>
-        <el-input placeholder="请输入密码" required="required" prefix-icon="el-icon-lock" v-model="loginForm.password" show-password></el-input>
+        <el-input placeholder="请输入密码" required="required" prefix-icon="el-icon-lock" @keyup.enter="Login" v-model="loginForm.password" show-password></el-input>
       </div>
       <div class='register'>
         <a href="#">注册账号</a>
       </div>
       <div class='login'>
-        <el-button type="primary" style="width:100%" @click="Login()">登陆</el-button>
-      </div>
-      <div>
-        {{this.$store.getters.Authorization}}
+        <el-button type="primary" style="width:100%" @click="Login">登陆</el-button>
       </div>
     </form>
   </div>
 </template>
 <script>
 import QS from 'qs'
-import { mapGetters, mapMutations, mapActions } from 'vuex'
 export default {
   name: 'login',
   data () {
@@ -33,28 +29,18 @@ export default {
       }
     }
   },
-  // computed: {
-  //   ...mapGetters(['Authorization'])
-  //  },
   methods: {
-    async initData () {
-      let token = await this.$store.dispatch('user_authorize', QS.stringify({grant_type: 'password', username: this.loginForm.username, password: this.loginForm.password}).replace('%40', '@'))
-    },
     async Login () {
-      this.initData()
       let _this = this;
       if (this.loginForm.username === '' || this.loginForm.password === '') {
         alert('账号或密码不能为空')
       } else {
-          let Data = await this.$store.dispatch('user_account')
+          let Data = await this.$store.dispatch('user_authorize', QS.stringify({grant_type: 'password', username: this.loginForm.username, password: this.loginForm.password}).replace('%40', '@'))
           .then(res => {
-          if(res.status === 0){
-            alert('true')
             _this.$router.push('/first')
             alert('登陆成功')
-          }
          }).catch(error => {
-          alert('账号或密码错误22')
+          alert('账号或密码错误')
           sessionStorage.removeItem('Authorization')
           console.log(error)
         })

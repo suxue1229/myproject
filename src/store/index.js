@@ -2,12 +2,14 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import getters from './getters'
-import authorize from './modules/authorize'
+import login from './modules/login'
+import institute from './modules/institute'
 
 Vue.use(Vuex)
 const store = new Vuex.Store({
   modules: {
-    authorize
+    login,
+    institute
   },
   getters
 })

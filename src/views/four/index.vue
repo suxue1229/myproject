@@ -1,6 +1,6 @@
 <template>
   <div>
-    <header />
+    <Header />
     <div id='content' ref="content">
       <!--  <ul>
         <li v-for="(list,index) in datalist" :key="index">

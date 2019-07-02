@@ -1,5 +1,5 @@
 import {userauthorize, useraccount} from '@/service/getData'
-const authorize = {
+const login = {
   state: {
     Authorization: sessionStorage.getItem('Authorization') ? sessionStorage.getItem('Authorization') : ''
   },
@@ -16,11 +16,9 @@ const authorize = {
     }, parameterData) {
       return new Promise((resolve, reject) => {
         userauthorize(parameterData).then(response => {
-          alert('200')
           commit('SET_AUTHORIZATION', response.token_type + ' ' + response.access_token)
           resolve(response)
-        }, err => {
-          alert('error22')
+        }).catch(err => {
           sessionStorage.removeItem('Authorization')
           reject(err)
         })
@@ -33,7 +31,7 @@ const authorize = {
       return new Promise((resolve, reject) => {
         useraccount(parameterData).then(response => {
           resolve(response)
-        }, err => {
+        }).catch(err => {
           sessionStorage.removeItem('Authorization')
           reject(err)
         })
@@ -42,4 +40,4 @@ const authorize = {
   }
 }
 
-export default authorize
+export default login
