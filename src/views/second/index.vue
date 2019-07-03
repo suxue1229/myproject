@@ -106,27 +106,29 @@ export default {
       list: []
     }
   },
-  created () {
-    var list = window.sessionStorage.getItem('formatedata')
-    if (list) {
-      this.list = JSON.parse(list)
-    } else {
-    var datalist = JSON.parse(this.$store.state.data)
+  computed: {
+    async initData(){
+      let Data = await this.$store.dispatch('get_institute')
+    }
+  },
+  mounted () {
+    this.initData
+    var datalist =this.$store.getters.institute_Data
+    console.log('datalist:' + datalist)
     for (var i = 0; i < datalist.length; i++) {
-      this.$axios.get(this.HOST + '/data/' + datalist[i].Id, { headers: {Authorization: this.$store.state.authorization} })
-        .then(res2 => {
-          if (res2.data.status === 0) {
-            this.formatedata(res2.data.data)
-            if (!window.sessionStorage) {
-              alert('浏览器支持sessionStorage')
-            } else {
-              window.sessionStorage.setItem('formatedata', JSON.stringify(this.list))
-            }
+      let mm = this.$store.dispatch('get_data')
+        .then(res => {
+          if (res.data.status === 0) {
+            this.formatedata(res.data.data)
+            // if (!window.sessionStorage) {
+            //   alert('浏览器支持sessionStorage')
+            // } else {
+            //   window.sessionStorage.setItem('formatedata', JSON.stringify(this.list))
+            // }
           }
         })
-        .catch(error2 => { console.log(error2) })
+        .catch(error=> { console.log(error2) })
       }
-    }    
   },
   methods: {
     formatedata (datalist) {

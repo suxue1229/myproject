@@ -1,5 +1,5 @@
 const getters = {
-  Authorization: state => state.authorize.Authorization,
-  instituteID: state => state.institute.institute_Id
+  institute_Data: state => state.institute.institute_Data,
+  get_Data: state => state.institute.get_Data
 }
 export default getters

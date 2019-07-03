@@ -19,13 +19,31 @@ Vue.component('loading', loading)
 axios.interceptors.request.use(
   config => {
     if (sessionStorage.getItem('Authorization')) {
-      config.headers.Authorization = store.getters.Authorization
+      config.headers.Authorization = sessionStorage.getItem('Authorization')
     }
     return config
   },
   error => {
     return Promise.reject(error)
   })
+axios.interceptors.response.use(
+  response => {
+    return response
+  },
+  error => {
+    if (error.response) {
+      switch (error.response.status) {
+        case 401:
+          // 返回 401 (未授权) 清除 token 并跳转到登录页面
+          sessionStorage.removeItem('Authorization')
+          router.replace({
+            path: 'login'
+          })
+      }
+    }
+    return Promise.reject(error) // 返回接口返回的错误信息
+  }
+)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

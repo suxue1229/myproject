@@ -19,7 +19,6 @@ const login = {
           commit('SET_AUTHORIZATION', response.token_type + ' ' + response.access_token)
           resolve(response)
         }).catch(err => {
-          sessionStorage.removeItem('Authorization')
           reject(err)
         })
       })
@@ -32,7 +31,6 @@ const login = {
         useraccount(parameterData).then(response => {
           resolve(response)
         }).catch(err => {
-          sessionStorage.removeItem('Authorization')
           reject(err)
         })
       })

@@ -12,7 +12,7 @@
         <a href="#">注册账号</a>
       </div>
       <div class='login'>
-        <el-button type="primary" style="width:100%" @click="Login">登陆</el-button>
+        <el-button type="primary" style="width:100%" @click="Login" v-if="islogining = true">登陆</el-button>
       </div>
     </form>
   </div>
@@ -26,27 +26,34 @@ export default {
       loginForm: {
         username: '',
         password: ''
-      }
+      },
+    islogining: true
     }
   },
   methods: {
     async Login () {
-      let _this = this;
+      let _this = this
       if (this.loginForm.username === '' || this.loginForm.password === '') {
         alert('账号或密码不能为空')
       } else {
-          let Data = await this.$store.dispatch('user_authorize', QS.stringify({grant_type: 'password', username: this.loginForm.username, password: this.loginForm.password}).replace('%40', '@'))
-          .then(res => {
+          if (sessionStorage.getItem('Authorization')) {
+            this.islogining = false
             _this.$router.push('/first')
-            alert('登陆成功')
-         }).catch(error => {
-          alert('账号或密码错误')
-          sessionStorage.removeItem('Authorization')
-          console.log(error)
-        })
-    }
+            alert('已登陆')
+          }
+          else {
+            let Data = await this.$store.dispatch('user_authorize', QS.stringify({grant_type: 'password', username: this.loginForm.username, password: this.loginForm.password}).replace('%40', '@'))
+            .then(res => {
+              _this.$router.push('/first')
+              alert('登陆成功')
+            }).catch(error => {
+              alert('账号或密码错误')
+              console.log(error)
+            })
+          }
+        }
+     }
   }
-}
 }
 </script>
 <style scoped>

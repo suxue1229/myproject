@@ -1,12 +1,17 @@
-import {getinstitute} from '@/service/getData'
+import {getinstitute, getdata} from '@/service/getData'
 const institute = {
   state: {
-    institute_Id: sessionStorage.getItem('institute_Id') ? sessionStorage.getItem('institute_Id') : ''
+    institute_Data: sessionStorage.getItem('institute_data') ? sessionStorage.getItem('institute_data') : '',
+    get_Data: sessionStorage.getItem('data') ? sessionStorage.getItem('data') : ''
   },
   mutations: {
-    INSTITUTE_ID (state, res) {
-      state.institute_Id = res
-      sessionStorage.setItem('institute_Id', res)
+    INSTITUTE_DATA (state, res) {
+      state.institute_Data = res
+      sessionStorage.setItem('institute_data', res)
+    },
+    GET_DATA (state, res) {
+      state.getData = res
+      sessionStorage.setItem('data', res)
     }
   },
   actions: {
@@ -16,11 +21,28 @@ const institute = {
     }, parameterData) {
       return new Promise((resolve, reject) => {
         getinstitute(parameterData).then(response => {
-          console.log('@@@' + JSON.stringify(response))
-          commit('INSTITUTE_ID', response.data.Id)
-          resolve(response)
+          if (response.status === 0) {
+            commit('INSTITUTE_DATA', response.data)
+            resolve(response)
+          }
         }).catch(err => {
-          sessionStorage.removeItem('institute_Id')
+          alert('err:' + err)
+          reject(err)
+        })
+      })
+    },
+    get_data ({
+      commit,
+      state
+    }, parameterData) {
+      return new Promise((resolve, reject) => {
+        getdata(parameterData).then(response => {
+          if (response.status === 0) {
+            commit('GET_DATA', response.data)
+            resolve(response)
+          }
+        }).catch(err => {
+          alert('err:' + err)
           reject(err)
         })
       })
