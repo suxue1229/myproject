@@ -100,7 +100,7 @@
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 export default {
-  name: 'thirdchild',
+  name: 'secondchild',
   data () {
     return {
       list: []
@@ -114,8 +114,8 @@ export default {
   mounted () {
     this.initData
     var datalist =this.$store.getters.institute_Data
-    console.log('datalist:' + datalist)
     for (var i = 0; i < datalist.length; i++) {
+      localStorage.setItem('Id', datalist[i].Id)
       let mm = this.$store.dispatch('get_data')
         .then(res => {
           if (res.data.status === 0) {
@@ -127,7 +127,7 @@ export default {
             // }
           }
         })
-        .catch(error=> { console.log(error2) })
+        .catch(error=> { console.log(error) })
       }
   },
   methods: {

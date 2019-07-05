@@ -1,12 +1,12 @@
 import {userauthorize, useraccount} from '@/service/getData'
 const login = {
   state: {
-    Authorization: sessionStorage.getItem('Authorization') ? sessionStorage.getItem('Authorization') : ''
+    Authorization: sessionStorage.getItem('token') ? sessionStorage.getItem('token') : ''
   },
   mutations: {
     SET_AUTHORIZATION (state, res) {
       state.Authorization = res
-      sessionStorage.setItem('Authorization', res)
+      sessionStorage.setItem('token', res)
     }
   },
   actions: {

@@ -1,6 +1,9 @@
 import {getinstitute, getdata} from '@/service/getData'
+import Axios from 'axios';
+
 const institute = {
   state: {
+    arrayId: [],
     institute_Data: sessionStorage.getItem('institute_data') ? sessionStorage.getItem('institute_data') : '',
     get_Data: sessionStorage.getItem('data') ? sessionStorage.getItem('data') : ''
   },
@@ -26,7 +29,6 @@ const institute = {
             resolve(response)
           }
         }).catch(err => {
-          alert('err:' + err)
           reject(err)
         })
       })
@@ -38,11 +40,10 @@ const institute = {
       return new Promise((resolve, reject) => {
         getdata(parameterData).then(response => {
           if (response.status === 0) {
-            commit('GET_DATA', response.data)
+            commit('GET_DATA', JSON.stringify(response.data))
             resolve(response)
           }
         }).catch(err => {
-          alert('err:' + err)
           reject(err)
         })
       })

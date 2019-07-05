@@ -36,7 +36,7 @@ export default {
       if (this.loginForm.username === '' || this.loginForm.password === '') {
         alert('账号或密码不能为空')
       } else {
-          if (sessionStorage.getItem('Authorization')) {
+          if (sessionStorage.getItem('token')) {
             this.islogining = false
             _this.$router.push('/first')
             alert('已登陆')
@@ -45,7 +45,6 @@ export default {
             let Data = await this.$store.dispatch('user_authorize', QS.stringify({grant_type: 'password', username: this.loginForm.username, password: this.loginForm.password}).replace('%40', '@'))
             .then(res => {
               _this.$router.push('/first')
-              alert('登陆成功')
             }).catch(error => {
               alert('账号或密码错误')
               console.log(error)
