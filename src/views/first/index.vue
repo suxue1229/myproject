@@ -37,6 +37,10 @@
 import BMap from 'BMap'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+ import {
+    mapGetters,
+    mapMutations
+  } from 'vuex';
 export default {
   name: 'firstchild',
   data () {
@@ -49,38 +53,43 @@ export default {
     Header, Footer
   },
   computed: {
-    async initData(){
+    institute () {
+    return this.$store.getters.institute_Data
+    }
+  },
+  methods: {
+    async initdata () {
       let Data = await this.$store.dispatch('get_institute')
+      this.datalist = this.institute
+      var map = new BMap.Map('content-center-map')
+      var point = new BMap.Point(116.404, 39.915)
+      map.centerAndZoom(point, 15)
+      map.enableScrollWheelZoom(true)
+      map.enableAutoResize()
+      var pt = ''
+      var IdArray=[]
+      for (var i = 0; i < this.datalist.length; i++) {
+        pt = new BMap.Point(this.datalist[i].Longitude, this.datalist[i].Latitude)
+        IdArray.push(this.datalist[i].Id)
+        var convertor = new BMap.Convertor()
+        var pointArr = []
+        pointArr.push(pt)
+        convertor.translate(pointArr, 1, 5, (data) => {
+          if (data.status === 0) {
+            pt = data.points[0]
+            return pt
+          }
+        })
+        var marker = new BMap.Marker(pt)
+        map.addOverlay(marker)
+        var label = new BMap.Label(this.datalist[i].Name, {offset: new BMap.Size(20, -10)})
+        marker.setLabel(label)// 添加百度label
+        map.setCenter(pt)
+      }
     }
   },
   created () {
-    this.initData
-  },
-  mounted () {
-    var map = new BMap.Map('content-center-map')
-    var point = new BMap.Point(116.404, 39.915)
-    map.centerAndZoom(point, 15)
-    map.enableScrollWheelZoom(true)
-    map.enableAutoResize()
-    var pt = ''
-    this.datalist = this.$store.getters.institute_Data
-    for (var i = 0; i < this.datalist.length; i++) {
-      pt = new BMap.Point(this.datalist[i].Longitude, this.datalist[i].Latitude)
-      var convertor = new BMap.Convertor()
-      var pointArr = []
-      pointArr.push(pt)
-      convertor.translate(pointArr, 1, 5, (data) => {
-        if (data.status === 0) {
-          pt = data.points[0]
-          return pt
-        }
-      })
-      var marker = new BMap.Marker(pt)
-      map.addOverlay(marker)
-      var label = new BMap.Label(this.datalist[i].Name, {offset: new BMap.Size(20, -10)})
-      marker.setLabel(label)// 添加百度label
-      map.setCenter(pt)
-    }
+    this.initdata()
   }
 }
 </script>

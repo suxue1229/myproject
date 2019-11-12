@@ -6,4 +6,4 @@ export const useraccount = (params) => new Http().require({api: '/api/user/accou
 // institute
 export const getinstitute = (params) => new Http().require({api: '/api/institute', param: params})
 // 数据交换
-export const getdata = (params, lastparams) => new Http().require({api: '/api/data/', param: params})
+export const getdata = (params) => new Http().require({api: '/api/data/', param: params})

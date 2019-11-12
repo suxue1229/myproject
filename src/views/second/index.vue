@@ -8,28 +8,30 @@
           </div>
           <div class="content-left-down">
             <div class='content-left-title'>
-              <p >CWT工艺</p>
-              <p>混凝土小水厂工艺</p>
-              <p>镇级厂</p>
+              <ul class='title'>
+                <li>CWT工艺</li>
+                <li>混凝土小水厂工艺</li>
+                <li>镇级厂</li>
+              </ul>
             </div>
-            <div class='content-left-table'>
-                <el-table
+            <div class='content-left-table' v-for= "(a,j) in showdata" :key="j">
+                <!-- <el-table
                   :data="list"
                   :row-style="tableRowStyle"
                   :header-cell-style="tableHeaderColor"
-                  style="width: 100%; min-height:100%; background-color: transparent;"
+                  style="width: 100%; min-height:100%; background-color: transparent; font-size: 12px;"
                   >
                   <el-table-column
                     fixed
                     prop="Name"
                     label="厂站名称"
-                    min-width="20%"
+                    min-width="10%"
                     >
                   </el-table-column>
                   <el-table-column
                     prop="Device[0]"
                     label="产水泵"
-                    min-width="8%">
+                    min-width="5%">
                   </el-table-column>
                   <el-table-column
                     prop="Device[1]"
@@ -39,44 +41,49 @@
                   <el-table-column
                     prop="Device[2]"
                     label="回流泵"
-                    min-width="8%">
+                    min-width="5%">
                   </el-table-column>
                   <el-table-column
                     prop="Device[3]"
                     label="除磷泵"
-                    min-width="8%">
+                    min-width="5%">
                   </el-table-column>
-                <!-- <el-table-column
+                  <el-table-column
                     prop="Device[4]"
                     label="膜池液位"
-                    min-width="10%">
+                    min-width="5%">
                     </el-table-column> 
-                  <el-table-column
+                   <el-table-column
                     prop="Device[5]"
                     label="除磷剂液位"
-                    width="15%">
-                  </el-table-column> -->
+                    width="25%">
+                  </el-table-column> 
                   <el-table-column
                     prop="Device[6]"
                     label="产水流量(m3/h)"
-                    min-width="11%">
+                    min-width="8%">
                   </el-table-column>
                   <el-table-column
                     prop="Device[7]"
                     label="MBR压力(kpa)"
-                    min-width="10%">
+                    min-width="8%">
                   </el-table-column>
                   <el-table-column
                     prop="Device[8]"
                     label="累计电量(kwh)"
-                    min-width="10%">
+                    min-width="8%">
                   </el-table-column>
                   <el-table-column
                     prop="Device[9]"
                     label="累计水量(m3)"
-                    min-width="10%">
+                    min-width="8%">
                   </el-table-column>
-                </el-table> 
+                </el-table>  -->
+
+                <ul >
+                  <li class="table-list-title" v-for= "(item, i) in showdata[j].title" :key="i">{{item}}</li>
+                </ul>
+                <li v-for= "(item, i) in showdata[j].content.content" :key="i">{{item}}</li>
           </div>
           </div>
         </div>
@@ -103,74 +110,91 @@ export default {
   name: 'secondchild',
   data () {
     return {
-      list: []
-    }
+      showdata: [],
+      data:[],
+      list: [],
+      cwt_title: ['厂站名称','产水泵','风机','回流泵','除磷加药泵','膜池液位','除磷剂液位','产水流量(m³/h)','MBR压力(kpa)','累计电量(kwh)','累计水量(m³)'],
+      con_title: ['厂站名称','调节池搅拌机','提升泵1','提升泵2','产水泵1','产水泵2','膜回流泵','缺氧池搅拌机','好氧回流泵','厌氧池搅拌机','吹扫风机1','吹扫风机2','曝气风机','次氯酸','消毒泵','膜池','压力(kpa)'],
+      
+      cwt_content:[]
+   }
   },
-  computed: {
-    async initData(){
-      let Data = await this.$store.dispatch('get_institute')
-    }
-  },
-  mounted () {
-    this.initData
-    var datalist =this.$store.getters.institute_Data
-    for (var i = 0; i < datalist.length; i++) {
-      localStorage.setItem('Id', datalist[i].Id)
-      let mm = this.$store.dispatch('get_data')
-        .then(res => {
-          if (res.data.status === 0) {
-            this.formatedata(res.data.data)
-            // if (!window.sessionStorage) {
-            //   alert('浏览器支持sessionStorage')
-            // } else {
-            //   window.sessionStorage.setItem('formatedata', JSON.stringify(this.list))
-            // }
-          }
-        })
-        .catch(error=> { console.log(error) })
-      }
+  created () {
+    this.initdata()
   },
   methods: {
+    async initdata () {
+      var institute_Data = this.$store.getters.institute_Data
+      for (var i = 0; i < institute_Data.length; i++) {
+        let Data = await this.$store.dispatch('get_data', institute_Data[i].Id)
+        var info_data = this.$store.state.institute.info_Data
+        this.list.push(this.formatedata(info_data))
+        }
+         this.showdata=[{'content':{'content': this.list}, 'title': this.cwt_title,'sum': this.list.length}]
+        console.log('this.showdata:'+this.showdata)
+    },
     formatedata (datalist) {
       var Devicelist = []
       for (var i = 0; i < datalist.Groups.length; i++) {
+        Devicelist.push(datalist.Name)
         for (var j = 0; j < datalist.Groups[i].Devices.length; j++) {
-          Devicelist.push({name: datalist.Groups[i].Devices[j].Name, value: datalist.Groups[i].Devices[j].Status})
+          if (datalist.Groups[i].Devices[j].Name === '自吸泵') {
+            this.$set(Devicelist, 1, this.deletesign(datalist.Groups[i].Devices[j].Status))
+          }else if (datalist.Groups[i].Devices[j].Name === '风机') {
+          this.$set(Devicelist, 2, this.deletesign(datalist.Groups[i].Devices[j].Status))
+        } else if (datalist.Groups[i].Devices[j].Name === '回流泵') {
+          this.$set(Devicelist, 3, this.deletesign(datalist.Groups[i].Devices[j].Status))
+        } else if (datalist.Groups[i].Devices[j].Name === '除磷泵') {
+          this.$set(Devicelist, 4, this.deletesign(datalist.Groups[i].Devices[j].Status))
+        }
         }
         for (var k = 0; k < datalist.Groups[i].Sensors.length; k++) {
-          Devicelist.push({name: datalist.Groups[i].Sensors[k].Name, value: datalist.Groups[i].Sensors[k].Value})
+          if (datalist.Groups[i].Sensors[k].Name === '膜池液位') {
+          this.$set(Devicelist, 5, this.deletesign(datalist.Groups[i].Sensors[k].Value))
+        } else if (datalist.Groups[i].Sensors[k].Name === '除磷罐液位') {
+          this.$set(Devicelist, 6, this.deletesign(datalist.Groups[i].Sensors[k].Value))
+        } else if (datalist.Groups[i].Sensors[k].Name === '瞬时流量') {
+          this.$set(Devicelist, 7, this.deletesign(datalist.Groups[i].Sensors[k].Value))
+        } else if (datalist.Groups[i].Sensors[k].Name === '压力') {
+          this.$set(Devicelist, 8, this.deletesign(datalist.Groups[i].Sensors[k].Value))
+        } else if (datalist.Groups[i].Sensors[k].Name === '累计电量' || datalist.Groups[i].Sensors[k].Name === '电能') {
+          this.$set(Devicelist, 9, this.deletesign(datalist.Groups[i].Sensors[k].Value))
+        } else if (datalist.Groups[i].Sensors[k].Name === '累计产水量') {
+          this.$set(Devicelist, 10, this.deletesign(datalist.Groups[i].Sensors[k].Value))
         }
-        this.list.push({Name: datalist.Name, Device: this.getvalue(Devicelist)})
-        console.log(this.list)
+        }
+        return Devicelist
+        // this.list[0].push(datalist.Name)
+        // this.list[1].push(this.getvalue(Devicelist))
       }
     },
-    getvalue (arraylist) {
-      var strlist = []
-      for (var i = 0; i < arraylist.length; i++) {
-        if (arraylist[i].name === '自吸泵') {
-          this.$set(strlist, 0, this.deletesign(arraylist[i].value))
-        } else if (arraylist[i].name === '风机') {
-          this.$set(strlist, 1, this.deletesign(arraylist[i].value))
-        } else if (arraylist[i].name === '回流泵') {
-          this.$set(strlist, 2, this.deletesign(arraylist[i].value))
-        } else if (arraylist[i].name === '除磷泵') {
-          this.$set(strlist, 3, this.deletesign(arraylist[i].value))
-        } else if (arraylist[i].name === '膜池液位') {
-          this.$set(strlist, 4, this.deletesign(arraylist[i].value))
-        } else if (arraylist[i].name === '除磷罐液位') {
-          this.$set(strlist, 5, this.deletesign(arraylist[i].value))
-        } else if (arraylist[i].name === '瞬时流量') {
-          this.$set(strlist, 6, this.deletesign(arraylist[i].value))
-        } else if (arraylist[i].name === '压力') {
-          this.$set(strlist, 7, this.deletesign(arraylist[i].value))
-        } else if (arraylist[i].name === '累计电量' || arraylist[i].name === '电能') {
-          this.$set(strlist, 8, this.deletesign(arraylist[i].value))
-        } else if (arraylist[i].name === '累计产水量') {
-          this.$set(strlist, 9, this.deletesign(arraylist[i].value))
-        }
-      }
-      return strlist
-    },
+    // getvalue (arraylist) {
+    //   var strlist = []
+    //   for (var i = 0; i < arraylist.length; i++) {
+    //     if (arraylist[i].name === '自吸泵') {
+    //       this.$set(strlist, 1, this.deletesign(arraylist[i].value))
+    //     } else if (arraylist[i].name === '风机') {
+    //       this.$set(strlist, 2, this.deletesign(arraylist[i].value))
+    //     } else if (arraylist[i].name === '回流泵') {
+    //       this.$set(strlist, 3, this.deletesign(arraylist[i].value))
+    //     } else if (arraylist[i].name === '除磷泵') {
+    //       this.$set(strlist, 4, this.deletesign(arraylist[i].value))
+    //     } else if (arraylist[i].name === '膜池液位') {
+    //       this.$set(strlist, 5, this.deletesign(arraylist[i].value))
+    //     } else if (arraylist[i].name === '除磷罐液位') {
+    //       this.$set(strlist, 6, this.deletesign(arraylist[i].value))
+    //     } else if (arraylist[i].name === '瞬时流量') {
+    //       this.$set(strlist, 7, this.deletesign(arraylist[i].value))
+    //     } else if (arraylist[i].name === '压力') {
+    //       this.$set(strlist, 8, this.deletesign(arraylist[i].value))
+    //     } else if (arraylist[i].name === '累计电量' || arraylist[i].name === '电能') {
+    //       this.$set(strlist, 9, this.deletesign(arraylist[i].value))
+    //     } else if (arraylist[i].name === '累计产水量') {
+    //       this.$set(strlist, 10, this.deletesign(arraylist[i].value))
+    //     }
+    //   }
+    //   return strlist
+    // },
     deletesign (str) {
       if (str) {
         if (str.includes('{red}')) {
@@ -184,15 +208,15 @@ export default {
     // 修改table tr行的背景色
     tableRowStyle ({ row, rowIndex }) {
       if(rowIndex%2 ===0){
-      return 'background-color: rgba(16,46,86,.5); color: #3dff4f; height:5px;'
+      return 'background-color: rgba(16,46,86,.5); color: #3dff4f; height:12px;'
       } else {
-        return 'background-color: transparent; color: #3dff4f; height:5px;'
+        return 'background-color: transparent; color: #3dff4f; height:2px;'
       }
     },
     // 修改table header的背景色
     tableHeaderColor ({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 0) {
-        return 'background-color: #060C19; color: #9ee1fb; height: 5px;'
+        return 'background-color: #060C19; color: #9ee1fb; height: 3px;'
       }
     },
   },
@@ -255,6 +279,8 @@ export default {
     -ms-flex-align: center;
     align-items: center;
     list-style-type: none;
+    float:left;
+    align-items: center;
   }
   #content .content-left .content-left-down .content-left-table .table-list-title .list-title{
     flex-grow: 1;

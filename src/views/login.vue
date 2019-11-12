@@ -12,13 +12,14 @@
         <a href="#">注册账号</a>
       </div>
       <div class='login'>
-        <el-button type="primary" style="width:100%" @click="Login" v-if="islogining = true">登陆</el-button>
+        <el-button type="primary" style="width:100%" @click="Login" >登陆</el-button>
       </div>
     </form>
   </div>
 </template>
 <script>
 import QS from 'qs'
+import axios from 'axios'
 export default {
   name: 'login',
   data () {
@@ -27,25 +28,32 @@ export default {
         username: '',
         password: ''
       },
-    islogining: true
+    islogining: false
     }
   },
   methods: {
     async Login () {
       let _this = this
       if (this.loginForm.username === '' || this.loginForm.password === '') {
+        this.$store.commit('SET_LOGINING', this.islogining)
         alert('账号或密码不能为空')
       } else {
-          if (sessionStorage.getItem('token')) {
-            this.islogining = false
-            _this.$router.push('/first')
+          if (this.$store.state.Authorization) {
+            this.islogining = true
+            this.$store.commit('SET_LOGINING', this.islogining)
             alert('已登陆')
+            _this.$router.push('/first')
           }
           else {
             let Data = await this.$store.dispatch('user_authorize', QS.stringify({grant_type: 'password', username: this.loginForm.username, password: this.loginForm.password}).replace('%40', '@'))
             .then(res => {
+              this.islogining = true
+              axios.defaults.headers.common['Authorization'] = this.$store.state.login.Authorization
+              this.$store.commit('SET_LOGINING', this.islogining)
+              alert('登陆成功')
               _this.$router.push('/first')
             }).catch(error => {
+              this.$store.commit('SET_LOGINING', this.islogining)
               alert('账号或密码错误')
               console.log(error)
             })

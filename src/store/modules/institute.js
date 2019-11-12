@@ -1,20 +1,15 @@
 import {getinstitute, getdata} from '@/service/getData'
-import Axios from 'axios';
-
 const institute = {
   state: {
-    arrayId: [],
-    institute_Data: sessionStorage.getItem('institute_data') ? sessionStorage.getItem('institute_data') : '',
-    get_Data: sessionStorage.getItem('data') ? sessionStorage.getItem('data') : ''
+    institute_Data: '',
+    info_Data: ''
   },
   mutations: {
     INSTITUTE_DATA (state, res) {
       state.institute_Data = res
-      sessionStorage.setItem('institute_data', res)
     },
-    GET_DATA (state, res) {
-      state.getData = res
-      sessionStorage.setItem('data', res)
+    INFO_DATA (state, res) {
+      state.info_Data = res
     }
   },
   actions: {
@@ -26,6 +21,7 @@ const institute = {
         getinstitute(parameterData).then(response => {
           if (response.status === 0) {
             commit('INSTITUTE_DATA', response.data)
+            // console.log('institute:' + JSON.stringify(response))
             resolve(response)
           }
         }).catch(err => {
@@ -40,7 +36,8 @@ const institute = {
       return new Promise((resolve, reject) => {
         getdata(parameterData).then(response => {
           if (response.status === 0) {
-            commit('GET_DATA', JSON.stringify(response.data))
+            commit('INFO_DATA', response.data)
+            console.log('data:' + JSON.stringify(response))
             resolve(response)
           }
         }).catch(err => {

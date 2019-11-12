@@ -18,11 +18,8 @@ Vue.component('loading', loading)
 // 添加请求拦截器，在请求头中加token
 axios.interceptors.request.use(
   config => {
-    if (sessionStorage.getItem('token')) {
-      config.headers.Authorization = sessionStorage.getItem('token')
-    }
-    if (config.url.split('/').pop() === '') {
-      config.url = config.url + localStorage.getItem('Id')
+    if (config.url.charAt(config.url.length - 1) === '/') {
+      config.url = config.url + config.data
     }
     return config
   },
@@ -38,7 +35,6 @@ axios.interceptors.response.use(
       switch (error.response.status) {
         case 401:
           // 返回 401 (未授权) 清除 token 并跳转到登录页面
-          sessionStorage.removeItem('token')
           router.replace({
             path: 'login'
           })

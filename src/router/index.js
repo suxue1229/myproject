@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from '../store'
 import firstrouter from './firstrouter'
 import secondrouter from './secondrouter'
 import thirdrouter from './thirdrouter'
@@ -36,11 +37,11 @@ router.beforeEach((to, from, next) => {
   if (to.path === '/login') {
     next()
   } else {
-    let token = sessionStorage.getItem('Authorization')
-    if (token === 'null' || token === '') {
-      next('/login')
-    } else {
+    let islogining = store.getters.islogining
+    if (islogining) {
       next()
+    } else {
+      next('/login')
     }
   }
 })
