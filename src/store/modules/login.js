@@ -2,7 +2,7 @@ import {userauthorize, useraccount} from '@/service/getData'
 const login = {
   state: {
     Authorization: '',
-    islogining: ''
+    islogining: sessionStorage.getItem('is_logining')
   },
   mutations: {
     SET_AUTHORIZATION (state, res) {
@@ -10,6 +10,7 @@ const login = {
     },
     SET_LOGINING (state, res) {
       state.islogining = res
+      sessionStorage.setItem('is_logining', res)
     }
   },
   actions: {

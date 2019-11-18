@@ -1,12 +1,16 @@
 <template>
-  <header id="header">
-    <div class="header-left">
-      <img class="header-logo" src= "/static/img/header-logo.png"/>
-      <h1 class="header-title">洱源县城镇及村落污水处理智慧管理平台</h1>
-    </div>
-    <div class="header-right">
-      <h2>{{formatDateTime(new Date())}}</h2>
-    </div>
+  <header>
+      <div class="navbar navbar-default">
+        <div class="navbar-header">
+          <a href="#" class="navbar-brand">
+            <img alt="Brand" class="logo" src="/static/img/header-logo.png">
+          </a>
+        </div>
+        <ul class="nav narbar-nav">
+          <li><h1 class="narbar-color">CWT污水处理智慧管理平台</h1></li>
+        </ul>
+      </div>
+      <div class="navbar navbar-default navbar-right"><h3 class="narbar-color">{{formatDateTime(new Date())}}</h3></div>
   </header>
 </template>
 
@@ -39,35 +43,10 @@ export default {
 </script>
 
 <style scoped>
-  #header {
-    width: 100%;
-    height: 60px;
-    position: absolute;
-    display: flex;
+  .logo{
+      height: 50px;
+  }
+  .narbar-color{
     color: #28d7fe;
-    text-align: center;
-    line-height: 60px;
-    border-bottom: 3px solid hsla(0,0%,100%,.1);
-  }
-  #header .header-left{
-    margin-left: 2%;
-    height: 100%;
-    flex-grow: 1;
-    display: flex;
-  }
-  #header .header-left .header-logo{
-    width: 9%;
-    height: 50px;
-  }
-  #header .header-left .header-title{
-    text-align: left;
-    margin-left: 2%;
-    min-width: 90%;
-    flex-grow: 1;
-  }
-  #header .header-right {
-    width: 300px;
-    height: 100%;
-    margin-right: 2%;
   }
 </style>

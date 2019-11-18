@@ -31,16 +31,27 @@ export default {
     islogining: false
     }
   },
+  created(){
+    //   //在页面加载时读取sessionStorage里的状态信息
+    if (sessionStorage.getItem("store") ) {
+        this.$store.replaceState(Object.assign({}, this.$store.state,JSON.parse(sessionStorage.getItem("store"))))
+    } 
+    //在页面刷新时将vuex里的信息保存到sessionStorage里
+    window.addEventListener("beforeunload",()=>{
+      alert('刷新')
+      sessionStorage.setItem("store",JSON.stringify(this.$store.state))
+    })
+  },
   methods: {
     async Login () {
       let _this = this
       if (this.loginForm.username === '' || this.loginForm.password === '') {
-        this.$store.commit('SET_LOGINING', this.islogining)
+        this.$store.commit('SET_LOGINING',this.islogining)
         alert('账号或密码不能为空')
       } else {
           if (this.$store.state.Authorization) {
             this.islogining = true
-            this.$store.commit('SET_LOGINING', this.islogining)
+            this.$store.commit('SET_LOGINING',this.islogining)
             alert('已登陆')
             _this.$router.push('/first')
           }
@@ -48,13 +59,13 @@ export default {
             let Data = await this.$store.dispatch('user_authorize', QS.stringify({grant_type: 'password', username: this.loginForm.username, password: this.loginForm.password}).replace('%40', '@'))
             .then(res => {
               this.islogining = true
+              this.$store.commit('SET_LOGINING',this.islogining)
               axios.defaults.headers.common['Authorization'] = this.$store.state.login.Authorization
-              this.$store.commit('SET_LOGINING', this.islogining)
               alert('登陆成功')
               _this.$router.push('/first')
             }).catch(error => {
-              this.$store.commit('SET_LOGINING', this.islogining)
               alert('账号或密码错误')
+              this.$store.commit('SET_LOGINING',this.islogining)
               console.log(error)
             })
           }

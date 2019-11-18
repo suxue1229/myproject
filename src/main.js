@@ -5,6 +5,11 @@ import axios from 'axios'
 import {Table, TableColumn, Input, Button} from 'element-ui'
 import store from './store'
 import loading from '@/components/loading'
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+Vue.use(BootstrapVue)
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
@@ -34,7 +39,6 @@ axios.interceptors.response.use(
     if (error.response) {
       switch (error.response.status) {
         case 401:
-          // 返回 401 (未授权) 清除 token 并跳转到登录页面
           router.replace({
             path: 'login'
           })

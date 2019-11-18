@@ -37,7 +37,6 @@ const institute = {
         getdata(parameterData).then(response => {
           if (response.status === 0) {
             commit('INFO_DATA', response.data)
-            console.log('data:' + JSON.stringify(response))
             resolve(response)
           }
         }).catch(err => {
