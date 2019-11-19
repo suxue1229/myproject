@@ -37,6 +37,9 @@ export default {
   components: {
     Header, Footer
   },
+  created(){
+    this.initdata()
+  },
   methods: {
     async initdata () {
       let Data = await this.$store.dispatch('get_institute')
@@ -67,11 +70,7 @@ export default {
         map.setCenter(pt)
       }
     }
-  },
-  created () {
-    this.initdata()
-  },
- 
+  }
 }
 </script>
 <style scoped>

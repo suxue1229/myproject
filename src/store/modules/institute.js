@@ -1,8 +1,8 @@
 import {getinstitute, getdata} from '@/service/getData'
 const institute = {
   state: {
-    institute_Data: '',
-    info_Data: ''
+    institute_Data: sessionStorage.getItem('store') ? JSON.parse(sessionStorage.getItem('store')).institute.institute_Data : '',
+    info_Data: sessionStorage.getItem('store') ? JSON.parse(sessionStorage.getItem('store')).institute.info_Data : ''
   },
   mutations: {
     INSTITUTE_DATA (state, res) {
@@ -21,7 +21,6 @@ const institute = {
         getinstitute(parameterData).then(response => {
           if (response.status === 0) {
             commit('INSTITUTE_DATA', response.data)
-            // console.log('institute:' + JSON.stringify(response))
             resolve(response)
           }
         }).catch(err => {

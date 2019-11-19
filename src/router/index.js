@@ -35,16 +35,12 @@ export default router
 // 使用 router.beforeEach 注册一个全局前置守卫，判断用户是否登陆
 router.beforeEach((to, from, next) => {
   if (to.path === '/login') {
-    alert('aaa')
     next()
   } else {
     var islogining = store.getters.islogining
-    alert('islogining:' + islogining)
     if (islogining) {
-      alert('bbb')
       next()
     } else {
-      alert('ccc')
       next('/login')
     }
   }

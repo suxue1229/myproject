@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate' /* 持久化存储插件 */
 
 import getters from './getters'
 import login from './modules/login'
@@ -11,7 +12,12 @@ const store = new Vuex.Store({
     login,
     institute
   },
-  getters
+  getters,
+  plugins: [
+    createPersistedState({
+      key: 'store',
+      storage: window.sessionStorage})
+  ]
 })
 
 export default store

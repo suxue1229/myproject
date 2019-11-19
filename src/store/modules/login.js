@@ -1,8 +1,8 @@
 import {userauthorize, useraccount} from '@/service/getData'
 const login = {
   state: {
-    Authorization: '',
-    islogining: sessionStorage.getItem('is_logining')
+    Authorization: sessionStorage.getItem('store') ? JSON.parse(sessionStorage.getItem('store')).login.Authorization : '',
+    islogining: sessionStorage.getItem('store') ? JSON.parse(sessionStorage.getItem('store')).login.islogining : ''
   },
   mutations: {
     SET_AUTHORIZATION (state, res) {
@@ -10,7 +10,6 @@ const login = {
     },
     SET_LOGINING (state, res) {
       state.islogining = res
-      sessionStorage.setItem('is_logining', res)
     }
   },
   actions: {

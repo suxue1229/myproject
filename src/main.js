@@ -23,6 +23,9 @@ Vue.component('loading', loading)
 // 添加请求拦截器，在请求头中加token
 axios.interceptors.request.use(
   config => {
+    if (sessionStorage.getItem('store')) {
+      config.headers.Authorization = JSON.parse(sessionStorage.getItem('store')).login.Authorization
+    }
     if (config.url.charAt(config.url.length - 1) === '/') {
       config.url = config.url + config.data
     }
@@ -39,6 +42,7 @@ axios.interceptors.response.use(
     if (error.response) {
       switch (error.response.status) {
         case 401:
+          alert('401')
           router.replace({
             path: 'login'
           })

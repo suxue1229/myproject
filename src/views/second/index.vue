@@ -51,7 +51,7 @@ export default {
       var institute_Data = this.$store.getters.institute_Data
       for (var i = 0; i < institute_Data.length; i++) {
         let Data = await this.$store.dispatch('get_data', institute_Data[i].Id)
-        var info_data = this.$store.state.institute.info_Data
+        var info_data = this.$store.getters.info_Data
         list.push(this.formatedata(info_data))
         }
          this.showdata=[{'content': list, 'title': this.cwt_title,'sum': list.length}]
