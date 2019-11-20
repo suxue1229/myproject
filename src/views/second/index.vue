@@ -12,7 +12,7 @@
             </thead>
             <tbody>
               <tr v-for= "(item, i) in showdata[j].content" :key="i">
-                <td v-for= "(item, m) in showdata[j].content[i]" :key="m">{{item}}</td>
+                <td v-for= "(item, m) in showdata[j].content[i]" :key="m">{{item | deletesign(item)}}</td>
               </tr>
             </tbody>
          </table>
@@ -45,16 +45,32 @@ export default {
    beforeDestroy(){
     clearInterval(this.intervalid)
   },
+  filters:{
+    deletesign (str) {
+      if (str) {
+        if(typeof(str) === 'string'){
+          if (str.includes('{red}')) {
+            return str.replace('{red}', '')
+          } else if (str.includes('{green}')) {
+            return str.replace('{green}', '')
+          }
+        }
+        return str
+      } else {
+        return '000'
+      }
+    }
+  },
   methods: {
-    async initdata () {
+   async initdata () {
       var list= []
       var institute_Data = this.$store.getters.institute_Data
       for (var i = 0; i < institute_Data.length; i++) {
-        let Data = await this.$store.dispatch('get_data', institute_Data[i].Id)
+         let get_data =await this.$store.dispatch('get_data', institute_Data[i].Id)
         var info_data = this.$store.getters.info_Data
         list.push(this.formatedata(info_data))
-        }
-         this.showdata=[{'content': list, 'title': this.cwt_title,'sum': list.length}]
+      }
+      this.showdata=[{'content': list, 'title': this.cwt_title,'sum': list.length}]
     },
     formatedata (datalist) {
       var Devicelist = []
@@ -62,18 +78,18 @@ export default {
         Devicelist.push(datalist.Name)
         for (var j = 0; j < datalist.Groups[i].Devices.length; j++) {
           if (datalist.Groups[i].Devices[j].Name === '自吸泵') {
-            this.$set(Devicelist, 1, this.deletesign(datalist.Groups[i].Devices[j].Status))
+            this.$set(Devicelist, 1, datalist.Groups[i].Devices[j].Status)
           }else if (datalist.Groups[i].Devices[j].Name === '风机') {
-          this.$set(Devicelist, 2, this.deletesign(datalist.Groups[i].Devices[j].Status))
+          this.$set(Devicelist, 2, datalist.Groups[i].Devices[j].Status)
         } else if (datalist.Groups[i].Devices[j].Name === '回流泵') {
-          this.$set(Devicelist, 3, this.deletesign(datalist.Groups[i].Devices[j].Status))
+          this.$set(Devicelist, 3, datalist.Groups[i].Devices[j].Status)
         } else if (datalist.Groups[i].Devices[j].Name === '除磷泵') {
-          this.$set(Devicelist, 4, this.deletesign(datalist.Groups[i].Devices[j].Status))
+          this.$set(Devicelist, 4, datalist.Groups[i].Devices[j].Status)
         }
         }
         for (var k = 0; k < datalist.Groups[i].Sensors.length; k++) {
           var item_name = datalist.Groups[i].Sensors[k].Name
-          var item = this.deletesign(datalist.Groups[i].Sensors[k].Value)
+          var item = datalist.Groups[i].Sensors[k].Value
           if (item_name === '膜池液位') {
           this.$set(Devicelist, 5, item)
         } else if (item_name === '除磷罐液位') {
@@ -91,16 +107,7 @@ export default {
         return Devicelist
       }
     },
-    deletesign (str) {
-      if (str) {
-        if (str.includes('{red}')) {
-          return str.replace('{red}', '')
-        } else if (str.includes('{green}')) {
-          return str.replace('{green}', '')
-        }
-      }
-      return str
-    }
+    
   },
   components: {
     Header, Footer

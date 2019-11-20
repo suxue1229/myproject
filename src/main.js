@@ -42,7 +42,6 @@ axios.interceptors.response.use(
     if (error.response) {
       switch (error.response.status) {
         case 401:
-          alert('401')
           router.replace({
             path: 'login'
           })

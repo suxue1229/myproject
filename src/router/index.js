@@ -1,11 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from '../store'
-import firstrouter from './firstrouter'
-import secondrouter from './secondrouter'
-import thirdrouter from './thirdrouter'
-import fourrouter from './fourrouter'
-import Login from '@/views/login'
 
 Vue.use(Router)
 export const router = new Router(
@@ -15,13 +10,25 @@ export const router = new Router(
     linkActiveClass: 'active',
     base: process.env.BASE_URL,
     routes: [
-      firstrouter,
-      secondrouter,
-      thirdrouter,
-      fourrouter,
+      {
+        path: '/first',
+        component: resolve => require(['@/views/first'], resolve) /* 路由懒加载 用时再加载  可以有效的分担首页所承担的加载压力，减少首页加载用时 */
+      },
+      {
+        path: '/second',
+        component: resolve => require(['@/views/second'], resolve)
+      },
+      {
+        path: '/third',
+        component: resolve => require(['@/views/third'], resolve)
+      },
+      {
+        path: '/four',
+        component: resolve => require(['@/views/four'], resolve)
+      },
       {
         path: '/login',
-        component: Login
+        component: resolve => require(['@/views/login'], resolve)
       },
       {
         path: '/',
