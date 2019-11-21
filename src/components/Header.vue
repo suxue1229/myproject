@@ -1,6 +1,6 @@
 <template>
-  <header>
-      <div class="navbar navbar-default">
+  <header class="navbar  navbar-fixed-top header-style">
+      <div class="navbar navbar-default ">
         <div class="navbar-header">
           <a href="#" class="navbar-brand">
             <img alt="Brand" class="logo" src="/static/img/header-logo.png">
@@ -43,6 +43,10 @@ export default {
 </script>
 
 <style scoped>
+  .header-style{
+    border-bottom: solid 1px rgba(16,46,86,.8);
+    padding: 0;
+  }
   .logo{
       height: 50px;
   }

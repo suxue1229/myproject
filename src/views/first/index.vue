@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <Header class="navbar  navbar-fixed-top header"/>
+    <Header />
         <div class="containter containter-style">
           <div class="row">
               <div class='col-md-2 '>
@@ -15,7 +15,7 @@
               </div>
           </div>
       </div>
-    <Footer class="footer navbar  navbar-fixed-bottom" />
+    <Footer />
   </div>
 </template>
 <script>
@@ -79,7 +79,7 @@ export default {
 }
 
 .containter-style{
-  flex: auto;
+  flex-grow: 1;
   color: #9ee1fb;
   padding-left: 15px;
   padding-right: 15px;

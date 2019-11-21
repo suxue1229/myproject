@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <Header class="navbar  navbar-fixed-top header"/>
+    <Header/>
       <div class="containter containter-style">
         <h2 class="h2-style">CWT工艺站点列表</h2>
         <transition-group appear>
@@ -18,7 +18,7 @@
          </table>
         </transition-group>
       </div>
-    <Footer/>
+    <Footer />
   </div>
 </template>
 <script>
@@ -122,13 +122,12 @@ export default {
 }
 
 .containter-style{
-  flex: auto;
+  flex-grow: 1;
   color: #9ee1fb;
-  padding-left: 15px;
-  padding-right: 15px;
   display: flex;
   flex-direction: column;
   margin: 0 auto;
+  background: rgba(16,46,86,.5);
 }
 .table-style{
   color: #9ee1fb;

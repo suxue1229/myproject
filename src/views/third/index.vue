@@ -99,7 +99,7 @@
           </div>
         </div>
       </div>
-    <Footer/>
+    <Footer class="footer navbar  navbar-fixed-bottom" />
   </div>
 </template>
 <script>
@@ -116,10 +116,9 @@ export default {
     Header, Footer
   },
   created () {
-    this.$store.dispatch('getdevicedata')
-    var datalist = JSON.parse(this.$store.state.data)
-    for (var i = 0; i < datalist.length; i++) {
-      this.$axios.get(this.HOST + '/data/' + datalist[i].Id, { headers: {Authorization: this.$store.state.authorization} })
+    var institute_Data = this.$store.getters.institute_Data
+      for (var i = 0; i < institute_Data.length; i++) {
+      this.$axios.get(this.HOST + '/data/' + institute_Data[i].Id, { headers: {Authorization: JSON.parse(sessionStorage.getItem('store')).login.Authorization} })
         .then(res2 => {
           if (res2.data.status === 0) {
             this.formatedata(res2.data.data)

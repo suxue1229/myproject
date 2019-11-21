@@ -30,7 +30,7 @@
           </ul>
         </div>
       </div>
-    <Footer/>
+    <Footer class="footer navbar  navbar-fixed-bottom" />
   </div>
 </template>
 <script>

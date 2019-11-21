@@ -1,10 +1,10 @@
 <template>
-  <div>
-    <router-link to="/first">{{list[0]}}</router-link>
-    <router-link to="/second">{{list[1]}}</router-link>
-    <router-link to="/third">{{list[2]}}</router-link>
-    <router-link to="/four">{{list[3]}}</router-link>
-  </div>
+  <footer class='navbar  navbar-fixed-bottom footer-style'>
+    <router-link to="/first" tag="a">{{list[0]}}</router-link>
+    <router-link to="/second" tag="a">{{list[1]}}</router-link>
+    <router-link to="/third" tag="a">{{list[2]}}</router-link>
+    <router-link to="/four" tag="a">{{list[3]}}</router-link>
+  </footer>
 </template>
 
 <script>
@@ -20,22 +20,24 @@ export default {
 </script>
 
 <style scoped>
-div {
-  width: 100%;
+.footer-style {
   height: 50px;
-  position: fixed;
-  left: 0px;
-  bottom: 0px;
   display: flex;
-}
+  justify-content: space-evenly;
+  border-top: solid 1px rgba(16,46,86,.8);
+  padding: 0;
+  background: #060C19;
+} 
 a {
+  flex: 1;
   text-decoration: none;
-  flex-grow: 1;
-  height: 50px;
   text-align: center;
   font-size: 15px;
   font-weight: bold;
-  line-height: 50px;
+  line-height: 3em;
   color: #0bf2fe;
+}
+.footer-style a:nth-child(n+2) {
+  border-left: solid 1px  rgba(16,46,86,0.8);
 }
 </style>
