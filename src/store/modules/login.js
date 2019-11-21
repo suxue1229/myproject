@@ -1,4 +1,3 @@
-import {userauthorize, useraccount} from '@/service/getData'
 const login = {
   state: {
     Authorization: sessionStorage.getItem('store') ? JSON.parse(sessionStorage.getItem('store')).login.Authorization : '',
@@ -14,29 +13,9 @@ const login = {
   },
   actions: {
     user_authorize ({ // 登陆授权
-      commit,
-      state
+      commit
     }, parameterData) {
-      return new Promise((resolve, reject) => {
-        userauthorize(parameterData).then(response => {
-          commit('SET_AUTHORIZATION', response.token_type + ' ' + response.access_token)
-          resolve(response)
-        }).catch(err => {
-          reject(err)
-        })
-      })
-    },
-    user_account ({
-      commit,
-      state
-    }, parameterData) {
-      return new Promise((resolve, reject) => {
-        useraccount(parameterData).then(response => {
-          resolve(response)
-        }).catch(err => {
-          reject(err)
-        })
-      })
+      commit('SET_AUTHORIZATION', parameterData.token_type + ' ' + parameterData.access_token)
     }
   }
 }

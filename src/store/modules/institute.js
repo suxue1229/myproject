@@ -1,4 +1,3 @@
-import {getinstitute, getdata} from '@/service/getData'
 const institute = {
   state: {
     institute_Data: sessionStorage.getItem('store') ? JSON.parse(sessionStorage.getItem('store')).institute.institute_Data : '',
@@ -14,34 +13,14 @@ const institute = {
   },
   actions: {
     get_institute ({
-      commit,
-      state
+      commit
     }, parameterData) {
-      return new Promise((resolve, reject) => {
-        getinstitute(parameterData).then(response => {
-          if (response.status === 0) {
-            commit('INSTITUTE_DATA', response.data)
-            resolve(response)
-          }
-        }).catch(err => {
-          reject(err)
-        })
-      })
+      commit('INSTITUTE_DATA', parameterData)
     },
     get_data ({
-      commit,
-      state
+      commit
     }, parameterData) {
-      return new Promise((resolve, reject) => {
-        getdata(parameterData).then(response => {
-          if (response.status === 0) {
-            commit('INFO_DATA', response.data)
-            resolve(response)
-          }
-        }).catch(err => {
-          reject(err)
-        })
-      })
+      commit('INFO_DATA', parameterData)
     }
   }
 }

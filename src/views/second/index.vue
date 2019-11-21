@@ -2,9 +2,9 @@
   <div class="content">
     <Header/>
       <div class="containter containter-style">
-        <h2 class="h2-style">CWT工艺站点列表</h2>
+        <h2 >CWT工艺站点列表</h2>
         <transition-group appear>
-          <table v-for= "(a,j) in showdata" :key="j" class="table table-striped table-style">
+          <table v-for= "(a,j) in showdata" :key="j" class="table table-style">
             <thead>
               <tr>
                 <td v-for= "(item, i) in showdata[j].title" :key="i">{{item}}</td>
@@ -36,29 +36,27 @@ export default {
   created () {
     this.initdata()
   },
-  
   mounted(){
     this.intervalid = setInterval(() => {
     this.initdata()
-    }, 10000)
+    }, 600000)
   },
    beforeDestroy(){
     clearInterval(this.intervalid)
   },
   filters:{
     deletesign (str) {
-      if (str) {
         if(typeof(str) === 'string'){
           if (str.includes('{red}')) {
             return str.replace('{red}', '')
           } else if (str.includes('{green}')) {
             return str.replace('{green}', '')
           }
+        }else if(typeof(str) === 'undefined'){
+            return '000'
         }
         return str
-      } else {
-        return '000'
-      }
+      
     }
   },
   methods: {
@@ -66,9 +64,15 @@ export default {
       var list= []
       var institute_Data = this.$store.getters.institute_Data
       for (var i = 0; i < institute_Data.length; i++) {
-         let get_data =await this.$store.dispatch('get_data', institute_Data[i].Id)
-        var info_data = this.$store.getters.info_Data
-        list.push(this.formatedata(info_data))
+        this.$axios.get(this.HOST + '/data/' + institute_Data[i].Id)
+        .then(res => {
+          if (res.data.status === 0) {
+            let Data =  this.$store.dispatch('get_data', res.data.data)
+            var info_data = this.$store.getters.info_Data
+            list.push(this.formatedata(info_data))
+          }
+        })
+        .catch(error => { console.log(error) })
       }
       this.showdata=[{'content': list, 'title': this.cwt_title,'sum': list.length}]
     },
@@ -116,26 +120,26 @@ export default {
 </script>
 <style scoped>
  .content{
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
 }
-
 .containter-style{
-  flex-grow: 1;
+  flex: 1;
   color: #9ee1fb;
+  padding-left: 15px;
+  padding-right: 15px;
+  background: rgba(16,46,86,.5);
   display: flex;
   flex-direction: column;
-  margin: 0 auto;
-  background: rgba(16,46,86,.5);
 }
-.table-style{
+.containter-style table{
   color: #9ee1fb;
 }
-.table-striped tbody tr:nth-of-type(odd) {
+.containter-style table tbody tr:nth-of-type(odd) {
     background-color: cadetblue;
 }
-.h2-style{
+.containter-style h2{
   margin: 20px auto;
 
 }

@@ -32,30 +32,28 @@ export default {
     }
   },
   methods: {
-    async Login () {
+    Login () {
       let _this = this
       this.$store.commit('SET_LOGINING', this.islogining )
       if (this.loginForm.username === '' || this.loginForm.password === '') {
         alert('账号或密码不能为空')
       } else {
-          if (this.$store.getters.Authorization) {
-            this.islogining = true
-            this.$store.commit('SET_LOGINING', this.islogining )
-            alert('已登陆')
-            _this.$router.push('/first')
-          }
-          else {
-            let Data = await this.$store.dispatch('user_authorize', QS.stringify({grant_type: 'password', username: this.loginForm.username, password: this.loginForm.password}).replace('%40', '@'))
-            .then(res => {
-              this.islogining = true
-              this.$store.commit('SET_LOGINING', this.islogining )
-              axios.defaults.headers.common['Authorization'] = this.$store.getters.Authorization
-              _this.$router.push('/first')
-            }).catch(error => {
-              alert('账号或密码错误')
-              console.log(error)
-            })
-          }
+         this.$axios.post(this.HOST + '/user/authorize',  QS.stringify({grant_type: 'password', username: this.loginForm.username, password: this.loginForm.password}).replace('%40', '@'), {headers: {'Content-Type': 'application/x-www-form-urlencoded', 'charset': 'utf-8'}})
+        .then(res => {
+            let Data = this.$store.dispatch('user_authorize', res.data)
+              .then(res => {
+                this.islogining = true
+                this.$store.commit('SET_LOGINING', this.islogining)
+                axios.defaults.headers.common['Authorization'] = this.$store.getters.Authorization
+                _this.$router.push('/first')
+              }).catch(error => {
+                alert('账号或密码错误')
+                console.log(error)
+              })
+        })
+        .catch(error => { console.log(error) })
+
+          // }
         }
      }
   }
