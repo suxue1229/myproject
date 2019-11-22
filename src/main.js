@@ -2,14 +2,16 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import axios from 'axios'
-import {Table, TableColumn, Input, Button} from 'element-ui'
+import {Table, TableColumn, Input, Button, Icon} from 'element-ui'
 import store from './store'
 import loading from '@/components/loading'
+import animated from '../public/css/animate.css'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 Vue.use(BootstrapVue)
+Vue.use(animated)
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
@@ -18,6 +20,7 @@ Vue.use(Table)
 Vue.use(TableColumn)
 Vue.use(Input)
 Vue.use(Button)
+Vue.use(Icon);
 Vue.component('loading', loading)
 
 // 添加请求拦截器，在请求头中加token

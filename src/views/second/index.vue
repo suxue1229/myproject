@@ -1,22 +1,22 @@
 <template>
   <div class="content">
-    <Header/>
+    <Header :class="navBarFixed == true ? 'navBarWrap' :''"/>
       <div class="containter containter-style">
         <h2 >CWT工艺站点列表</h2>
-        <transition-group appear>
+        <div class="animated bounceInRight" >
           <table v-for= "(a,j) in showdata" :key="j" class="table table-style">
             <thead>
               <tr>
                 <td v-for= "(item, i) in showdata[j].title" :key="i">{{item}}</td>
               </tr>
             </thead>
-            <tbody>
-              <tr v-for= "(item, i) in showdata[j].content" :key="i">
-                <td v-for= "(item, m) in showdata[j].content[i]" :key="m">{{item | deletesign(item)}}</td>
-              </tr>
+            <tbody >
+                <tr v-for= "(item, i) in showdata[j].content" :key="i">
+                  <td v-for= "(item, m) in showdata[j].content[i]" :key="m">{{item | deletesign(item)}}</td>
+                </tr>
             </tbody>
          </table>
-        </transition-group>
+        </div>
       </div>
     <Footer />
   </div>
@@ -28,6 +28,7 @@ export default {
   name: 'secondchild',
   data () {
     return {
+      navBarFixed: false,
       showdata: [],
       data:[],
       cwt_title: ['厂站名称','产水泵','风机','回流泵','除磷加药泵','膜池液位','除磷剂液位','产水流量(m³/h)','MBR压力(kpa)','累计电量(kwh)','累计水量(m³)'],
@@ -40,6 +41,9 @@ export default {
     this.intervalid = setInterval(() => {
     this.initdata()
     }, 600000)
+
+    // 事件监听滚动条
+    window.addEventListener('scroll', this.watchScroll)
   },
    beforeDestroy(){
     clearInterval(this.intervalid)
@@ -104,14 +108,22 @@ export default {
           this.$set(Devicelist, 8, item)
         } else if (item_name === '累计电量' || item_name === '电能') {
           this.$set(Devicelist, 9, item)
-        } else if (item_name === '累计产水量') {
+        } else if (item_name === '累计产水量'|| item_name === '累计流量') {
           this.$set(Devicelist, 10, item)
         }
         }
         return Devicelist
       }
     },
-    
+     watchScroll () {
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+        //  当滚动超过 50 时，实现吸顶效果
+        if (scrollTop > 49) {
+          this.navBarFixed = true
+        } else {
+          this.navBarFixed = false
+        }
+     }
   },
   components: {
     Header, Footer
@@ -119,13 +131,7 @@ export default {
 }
 </script>
 <style scoped>
- .content{
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
 .containter-style{
-  flex: 1;
   color: #9ee1fb;
   padding-left: 15px;
   padding-right: 15px;
@@ -141,12 +147,10 @@ export default {
 }
 .containter-style h2{
   margin: 20px auto;
-
 }
-.v-enter .v-leave-to{
-  opacity: 0;
-}
-.v-enter-active .v-leave-active{
-  transition: all 10s ease;
-}
+.navBarWrap {
+    position:fixed;
+    top:0;
+    z-index:999;
+  }
 </style>

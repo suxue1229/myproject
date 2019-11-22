@@ -1,5 +1,5 @@
 <template>
-  <header class="navbar  navbar-fixed-top header-style">
+  <header class="navbar fixed-top header-style">
       <div class="navbar navbar-default ">
         <div class="navbar-header">
           <a href="#" class="navbar-brand">
@@ -10,7 +10,8 @@
           <li><h1 class="narbar-color">CWT污水处理智慧管理平台</h1></li>
         </ul>
       </div>
-      <div class="navbar navbar-default navbar-right"><h3 class="narbar-color">{{formatDateTime(new Date())}}</h3></div>
+      <div class="navbar navbar-default navbar-right">
+        <h3 class="narbar-color">{{formatDateTime(new Date())}}</h3></div>
   </header>
 </template>
 
@@ -44,8 +45,10 @@ export default {
 
 <style scoped>
   .header-style{
-    border-bottom: solid 1px rgba(16,46,86,.8);
+    position: sticky;
+    background: #060C19;
     padding: 0;
+    border-bottom: solid 1px rgba(16,46,86,.8);
   }
   .logo{
       height: 50px;
