@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <Header :class="navBarFixed == true ? 'navBarWrap' :''"/>
+    <Header />
       <div class="containter containter-style">
         <h2 >CWT工艺站点列表</h2>
         <div class="animated bounceInRight" >
@@ -28,7 +28,6 @@ export default {
   name: 'secondchild',
   data () {
     return {
-      navBarFixed: false,
       showdata: [],
       data:[],
       cwt_title: ['厂站名称','产水泵','风机','回流泵','除磷加药泵','膜池液位','除磷剂液位','产水流量(m³/h)','MBR压力(kpa)','累计电量(kwh)','累计水量(m³)'],
@@ -41,9 +40,6 @@ export default {
     this.intervalid = setInterval(() => {
     this.initdata()
     }, 600000)
-
-    // 事件监听滚动条
-    window.addEventListener('scroll', this.watchScroll)
   },
    beforeDestroy(){
     clearInterval(this.intervalid)
@@ -98,7 +94,7 @@ export default {
         for (var k = 0; k < datalist.Groups[i].Sensors.length; k++) {
           var item_name = datalist.Groups[i].Sensors[k].Name
           var item = datalist.Groups[i].Sensors[k].Value
-          if (item_name === '膜池液位') {
+          if (item_name === '膜池低位') {
           this.$set(Devicelist, 5, item)
         } else if (item_name === '除磷罐液位') {
           this.$set(Devicelist, 6, item)
@@ -115,15 +111,6 @@ export default {
         return Devicelist
       }
     },
-     watchScroll () {
-        var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-        //  当滚动超过 50 时，实现吸顶效果
-        if (scrollTop > 49) {
-          this.navBarFixed = true
-        } else {
-          this.navBarFixed = false
-        }
-     }
   },
   components: {
     Header, Footer
@@ -148,9 +135,4 @@ export default {
 .containter-style h2{
   margin: 20px auto;
 }
-.navBarWrap {
-    position:fixed;
-    top:0;
-    z-index:999;
-  }
 </style>

@@ -46,6 +46,7 @@ export default {
 <style scoped>
   .header-style{
     position: sticky;
+    top: 0px;
     background: #060C19;
     padding: 0;
     border-bottom: solid 1px rgba(16,46,86,.8);

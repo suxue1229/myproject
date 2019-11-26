@@ -4,7 +4,7 @@
     <router-link to="/second" tag="a">{{list[1]}}</router-link>
     <router-link to="/third" tag="a">{{list[2]}}</router-link>
     <router-link to="/four" tag="a">{{list[3]}}</router-link>
-    <span class="el-icon-full-screen iconstyle"></span> 
+    <span class="el-icon-full-screen iconstyle" @click="zoom"></span> 
   </footer>
 </template>
 
@@ -13,9 +13,38 @@ export default {
   name: "Footer",
   data() {
     return {
+      iszooming: false,
       directive: "",
       list: ["项目总览", "设备监控", "统计分析", "事件报警"]
-    };
+    }
+  },
+  methods : {
+    zoom(){
+        let element = document.documentElement
+        if(this.iszooming) {
+          if(document.exitFullscreen) {
+            document.exitFullscreen()
+          } else if(document.webkitCancelFullScreen) {
+            document.webkitCancelFullScreen()
+          } else if(document.mozCancelFullScreen) {
+            document.mozCancelFullScreen()
+          } else if(document.msExitFullscreen) {
+            document.msExitFullscreen()
+          }
+          this.iszooming=false
+        } else {
+          if(element.requestFullscreen) {
+            element.requestFullscreen()
+          } else if(element.webkitRequestFullScreen) {
+            element.webkitRequestFullScreen()
+          } else if(element.mozRequestFullScreen) {
+            element.mozRequestFullScreen()
+          } else if(element.msRequestFullscreen) {
+            element.msRequestFullscreen()
+          }
+          this.iszooming=true
+      }
+    }
   }
 };
 </script>
@@ -42,10 +71,9 @@ a {
   border-left: solid 1px  rgba(16,46,86,0.8);
 }
 .iconstyle{
-  line-height: 3em;
+  font-size: 28px;
   color: #28d7fe;
   text-align: center;
-  font-size: 18px;
   flex: 0.2;
 }
 </style>
