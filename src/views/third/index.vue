@@ -16,7 +16,7 @@
               </h3>
               <div class="title">一期二期项目介绍</div>  
             </div>
-            <div class='content-left-table-detail'>
+            <div class='content-left-table-detail animated bounceInRight' >
               <el-table
                 :data="list"
                 :row-style="tableRowStyle"

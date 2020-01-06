@@ -29,52 +29,51 @@ export default {
   data () {
     return {
       showdata: [],
-      data:[],
-      cwt_title: ['厂站名称','产水泵','风机','回流泵','除磷加药泵','膜池液位','除磷剂液位','产水流量(m³/h)','MBR压力(kpa)','累计电量(kwh)','累计水量(m³)'],
-   }
+      data: [],
+      cwt_title: ['厂站名称', '产水泵', '风机', '回流泵', '除磷加药泵', '产水流量(m³/h)', 'MBR压力(kpa)', '累计电量(kwh)', '累计水量(m³)']
+    }
   },
   created () {
     this.initdata()
   },
-  mounted(){
+  mounted () {
     this.intervalid = setInterval(() => {
-    this.initdata()
-    }, 600000)
+      this.initdata()
+    }, 100000)
   },
-   beforeDestroy(){
+  beforeDestroy () {
     clearInterval(this.intervalid)
   },
-  filters:{
+  filters: {
     deletesign (str) {
-        if(typeof(str) === 'string'){
-          if (str.includes('{red}')) {
-            return str.replace('{red}', '')
-          } else if (str.includes('{green}')) {
-            return str.replace('{green}', '')
-          }
-        }else if(typeof(str) === 'undefined'){
-            return '000'
+      if (typeof (str) === 'string') {
+        if (str.includes('{red}')) {
+          return str.replace('{red}', '')
+        } else if (str.includes('{green}')) {
+          return str.replace('{green}', '')
         }
-        return str
-      
+      } else if (typeof (str) === 'undefined') {
+        return ''
+      }
+      return str
     }
   },
   methods: {
-   async initdata () {
-      var list= []
+    async initdata () {
+      var list = []
       var institute_Data = this.$store.getters.institute_Data
       for (var i = 0; i < institute_Data.length; i++) {
         this.$axios.get(this.HOST + '/data/' + institute_Data[i].Id)
-        .then(res => {
-          if (res.data.status === 0) {
-            let Data =  this.$store.dispatch('get_data', res.data.data)
-            var info_data = this.$store.getters.info_Data
-            list.push(this.formatedata(info_data))
-          }
-        })
-        .catch(error => { console.log(error) })
+          .then(res => {
+            if (res.data.status === 0) {
+              this.$store.dispatch('get_data', res.data.data)
+              var info_data = this.$store.getters.info_Data
+              list.push(this.formatedata(info_data))
+            }
+          })
+          .catch(error => { console.log(error) })
       }
-      this.showdata=[{'content': list, 'title': this.cwt_title,'sum': list.length}]
+      this.showdata = [{'content': list, 'title': this.cwt_title, 'sum': list.length}]
     },
     formatedata (datalist) {
       var Devicelist = []
@@ -83,34 +82,30 @@ export default {
         for (var j = 0; j < datalist.Groups[i].Devices.length; j++) {
           if (datalist.Groups[i].Devices[j].Name === '自吸泵') {
             this.$set(Devicelist, 1, datalist.Groups[i].Devices[j].Status)
-          }else if (datalist.Groups[i].Devices[j].Name === '风机') {
-          this.$set(Devicelist, 2, datalist.Groups[i].Devices[j].Status)
-        } else if (datalist.Groups[i].Devices[j].Name === '回流泵') {
-          this.$set(Devicelist, 3, datalist.Groups[i].Devices[j].Status)
-        } else if (datalist.Groups[i].Devices[j].Name === '除磷泵') {
-          this.$set(Devicelist, 4, datalist.Groups[i].Devices[j].Status)
-        }
+          } else if (datalist.Groups[i].Devices[j].Name === '风机') {
+            this.$set(Devicelist, 2, datalist.Groups[i].Devices[j].Status)
+          } else if (datalist.Groups[i].Devices[j].Name === '回流泵') {
+            this.$set(Devicelist, 3, datalist.Groups[i].Devices[j].Status)
+          } else if (datalist.Groups[i].Devices[j].Name === '除磷泵') {
+            this.$set(Devicelist, 4, datalist.Groups[i].Devices[j].Status)
+          }
         }
         for (var k = 0; k < datalist.Groups[i].Sensors.length; k++) {
           var item_name = datalist.Groups[i].Sensors[k].Name
           var item = datalist.Groups[i].Sensors[k].Value
-          if (item_name === '膜池低位') {
-          this.$set(Devicelist, 5, item)
-        } else if (item_name === '除磷罐液位') {
-          this.$set(Devicelist, 6, item)
-        } else if (item_name === '瞬时流量') {
-          this.$set(Devicelist, 7, item)
-        } else if (item_name === '压力') {
-          this.$set(Devicelist, 8, item)
-        } else if (item_name === '累计电量' || item_name === '电能') {
-          this.$set(Devicelist, 9, item)
-        } else if (item_name === '累计产水量'|| item_name === '累计流量') {
-          this.$set(Devicelist, 10, item)
-        }
+          if (item_name === '瞬时流量') {
+            this.$set(Devicelist, 7, item)
+          } else if (item_name === '压力') {
+            this.$set(Devicelist, 8, item)
+          } else if (item_name === '累计电量' || item_name === '电能') {
+            this.$set(Devicelist, 9, item)
+          } else if (item_name === '累计产水量' || item_name === '累计流量') {
+            this.$set(Devicelist, 10, item)
+          }
         }
         return Devicelist
       }
-    },
+    }
   },
   components: {
     Header, Footer
