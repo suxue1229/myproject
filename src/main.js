@@ -12,7 +12,6 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 Vue.use(BootstrapVue)
 Vue.use(animated)
-
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
 Vue.prototype.HOST = '/api'
@@ -20,7 +19,7 @@ Vue.use(Table)
 Vue.use(TableColumn)
 Vue.use(Input)
 Vue.use(Button)
-Vue.use(Icon);
+Vue.use(Icon)
 Vue.component('loading', loading)
 
 // 添加请求拦截器，在请求头中加token

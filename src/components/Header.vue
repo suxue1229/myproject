@@ -1,4 +1,5 @@
 <template>
+<div >
   <header class="navbar fixed-top header-style">
       <div class="navbar navbar-default ">
         <div class="navbar-header">
@@ -11,16 +12,28 @@
         </ul>
       </div>
       <div class="navbar navbar-default navbar-right">
-        <h3 class="narbar-color">{{formatDateTime(new Date())}}</h3></div>
+        <h3 class="narbar-color">{{formatDateTime(new Date())}}</h3>
+        <i class="el-icon-user iconstyle" @mouseover="getuserinfo"></i>
+      </div>
   </header>
+  <userinfo class="infostyle" v-show="isshowing"></userinfo>
+</div>
 </template>
 
 <script>
+import userinfo from './UserInfo'
 export default {
   name: 'Header',
   data () {
     return {
-      // msg: new Date('1900/1/1 00:00:00')
+      isshowing: false
+    }
+  },
+  components: {
+    userinfo
+  },
+  created () {
+    if (window.sessionStorage.getItem('loginForm')) {
     }
   },
   methods: {
@@ -38,6 +51,13 @@ export default {
       var second = date.getSeconds()
       second = second < 10 ? ('0' + second) : second
       return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second
+    },
+    getuserinfo () {
+      if (!this.isshowing) {
+        this.isshowing = true
+      } else {
+        this.isshowing = false
+      }
     }
   }
 }
@@ -47,7 +67,6 @@ export default {
   .header-style{
     position: sticky;
     top: 0px;
-    background: #060C19;
     padding: 0;
     border-bottom: solid 1px rgba(16,46,86,.8);
   }
@@ -55,6 +74,17 @@ export default {
       height: 50px;
   }
   .narbar-color{
-    color: #28d7fe;
+    color: #BFCBD9;
   }
+  .iconstyle{
+  font-size: 28px;
+  color: #BFCBD9;
+  margin-left: 30px;
+  flex: 0.2;
+}
+.infostyle {
+  position: fixed;
+  margin-left: 85%;
+  z-index: 9999 !important;
+}
 </style>

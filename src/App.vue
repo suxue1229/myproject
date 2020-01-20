@@ -8,18 +8,20 @@
 
 <script>
 export default{
-  name: 'app',
+  name: 'app'
 }
 </script>
 <style>
 
 body{
-  background: #060C19;
   font-family:"微软雅黑";
   width:100%;
   height: 100%;
+  background-color: #304156;
+  color:#BFCBD9;
 }
-.active{
-  background: cadetblue;
+.active {
+background-color: #1F2D3D;
+color: #28d7fe !important;
 }
 </style>

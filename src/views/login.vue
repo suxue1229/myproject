@@ -19,7 +19,6 @@
 </template>
 <script>
 import QS from 'qs'
-import axios from 'axios'
 export default {
   name: 'login',
   data () {
@@ -28,34 +27,35 @@ export default {
         username: '',
         password: ''
       },
-    islogining: false
+      logintime: '',
+      islogining: false
     }
   },
   methods: {
     Login () {
       let _this = this
-      this.$store.commit('SET_LOGINING', this.islogining )
+      this.$store.commit('SET_LOGINING', this.islogining)
       if (this.loginForm.username === '' || this.loginForm.password === '') {
         alert('账号或密码不能为空')
       } else {
-         this.$axios.post(this.HOST + '/user/authorize',  QS.stringify({grant_type: 'password', username: this.loginForm.username, password: this.loginForm.password}).replace('%40', '@'), {headers: {'Content-Type': 'application/x-www-form-urlencoded', 'charset': 'utf-8'}})
-        .then(res => {
-            let Data = this.$store.dispatch('user_authorize', res.data)
+        this.$axios.post(this.HOST + '/user/authorize', QS.stringify({grant_type: 'password', username: this.loginForm.username, password: this.loginForm.password}).replace('%40', '@'), {headers: {'Content-Type': 'application/x-www-form-urlencoded', 'charset': 'utf-8'}})
+          .then(res => {
+            this.$store.dispatch('user_authorize', res.data)
               .then(res => {
                 this.islogining = true
+                this.logintime = new Date().getTime()
                 this.$store.commit('SET_LOGINING', this.islogining)
-                axios.defaults.headers.common['Authorization'] = this.$store.getters.Authorization
+                this.$store.commit('GET_Time', this.logintime)
+                this.$axios.defaults.headers.common['Authorization'] = this.$store.getters.Authorization
                 _this.$router.push('/first')
               }).catch(error => {
                 alert('账号或密码错误')
                 console.log(error)
               })
-        })
-        .catch(error => { console.log(error) })
-
-          // }
-        }
-     }
+          })
+          .catch(error => { console.log(error) })
+      }
+    }
   }
 }
 </script>

@@ -3,19 +3,61 @@
     <Header />
       <div class="containter containter-style">
         <h2 >CWT工艺站点列表</h2>
-        <div class="animated bounceInRight" >
-          <table v-for= "(a,j) in showdata" :key="j" class="table table-style">
-            <thead>
-              <tr>
-                <td v-for= "(item, i) in showdata[j].title" :key="i">{{item}}</td>
-              </tr>
-            </thead>
-            <tbody >
-                <tr v-for= "(item, i) in showdata[j].content" :key="i">
-                  <td v-for= "(item, m) in showdata[j].content[i]" :key="m">{{item | deletesign(item)}}</td>
-                </tr>
-            </tbody>
-         </table>
+        <div class="animated bounceInRight " >
+         <el-table
+                :data="showdata"
+                :row-style="tableRowStyle"
+                :header-cell-style="tableHeaderColor"
+                style="width: 100%; min-height:100%; background-color: transparent;"
+                >
+                <el-table-column
+                  fixed
+                  prop="Name"
+                  label="厂站名称"
+                  min-width="20%"
+                  >
+                </el-table-column>
+                <el-table-column
+                  prop="Device[0]"
+                  label="产水泵"
+                  min-width="10%">
+                </el-table-column>
+                <el-table-column
+                  prop="Device[1]"
+                  label="风机"
+                  min-width="10%">
+                </el-table-column>
+                <el-table-column
+                  prop="Device[2]"
+                  label="回流泵"
+                  min-width="10%">
+                </el-table-column>
+                <el-table-column
+                  prop="Device[3]"
+                  label="除磷泵"
+                  min-width="10%">
+                </el-table-column>
+                <el-table-column
+                  prop="Device[4]"
+                  label="产水流量(m3/h)"
+                  min-width="10%">
+                </el-table-column>
+                <el-table-column
+                  prop="Device[5]"
+                  label="MBR压力(kpa)"
+                  min-width="10%">
+                </el-table-column>
+                <el-table-column
+                  prop="Device[6]"
+                  label="累计电量(kwh)"
+                  min-width="10%">
+                </el-table-column>
+                <el-table-column
+                  prop="Device[7]"
+                  label="累计水量(m3)"
+                  min-width="10%">
+                </el-table-column>
+              </el-table>
         </div>
       </div>
     <Footer />
@@ -28,9 +70,7 @@ export default {
   name: 'secondchild',
   data () {
     return {
-      showdata: [],
-      data: [],
-      cwt_title: ['厂站名称', '产水泵', '风机', '回流泵', '除磷加药泵', '产水流量(m³/h)', 'MBR压力(kpa)', '累计电量(kwh)', '累计水量(m³)']
+      showdata: []
     }
   },
   created () {
@@ -44,7 +84,7 @@ export default {
   beforeDestroy () {
     clearInterval(this.intervalid)
   },
-  filters: {
+  methods: {
     deletesign (str) {
       if (typeof (str) === 'string') {
         if (str.includes('{red}')) {
@@ -56,54 +96,66 @@ export default {
         return ''
       }
       return str
-    }
-  },
-  methods: {
+    },
     async initdata () {
-      var list = []
-      var institute_Data = this.$store.getters.institute_Data
-      for (var i = 0; i < institute_Data.length; i++) {
-        this.$axios.get(this.HOST + '/data/' + institute_Data[i].Id)
+      this.showdata = []
+      var instituteData = await this.$store.getters.institute_Data
+      for (var i = 0; i < instituteData.length; i++) {
+        this.$axios.get(this.HOST + '/data/' + instituteData[i].Id)
           .then(res => {
             if (res.data.status === 0) {
               this.$store.dispatch('get_data', res.data.data)
-              var info_data = this.$store.getters.info_Data
-              list.push(this.formatedata(info_data))
+              let infodata = this.$store.getters.info_Data
+              this.formatedata(infodata)
             }
           })
           .catch(error => { console.log(error) })
       }
-      this.showdata = [{'content': list, 'title': this.cwt_title, 'sum': list.length}]
     },
     formatedata (datalist) {
       var Devicelist = []
       for (var i = 0; i < datalist.Groups.length; i++) {
-        Devicelist.push(datalist.Name)
         for (var j = 0; j < datalist.Groups[i].Devices.length; j++) {
-          if (datalist.Groups[i].Devices[j].Name === '自吸泵') {
-            this.$set(Devicelist, 1, datalist.Groups[i].Devices[j].Status)
-          } else if (datalist.Groups[i].Devices[j].Name === '风机') {
-            this.$set(Devicelist, 2, datalist.Groups[i].Devices[j].Status)
-          } else if (datalist.Groups[i].Devices[j].Name === '回流泵') {
-            this.$set(Devicelist, 3, datalist.Groups[i].Devices[j].Status)
-          } else if (datalist.Groups[i].Devices[j].Name === '除磷泵') {
-            this.$set(Devicelist, 4, datalist.Groups[i].Devices[j].Status)
+          let itemname = datalist.Groups[i].Devices[j].Name
+          let item = this.deletesign(datalist.Groups[i].Devices[j].Status)
+          if (itemname === '自吸泵') {
+            this.$set(Devicelist, 0, item)
+          } else if (itemname === '风机') {
+            this.$set(Devicelist, 1, item)
+          } else if (itemname === '回流泵') {
+            this.$set(Devicelist, 2, item)
+          } else if (itemname === '除磷泵') {
+            this.$set(Devicelist, 3, item)
           }
         }
         for (var k = 0; k < datalist.Groups[i].Sensors.length; k++) {
-          var item_name = datalist.Groups[i].Sensors[k].Name
-          var item = datalist.Groups[i].Sensors[k].Value
-          if (item_name === '瞬时流量') {
+          let itemname = datalist.Groups[i].Sensors[k].Name
+          let item = this.deletesign(datalist.Groups[i].Sensors[k].Value)
+          if (itemname === '瞬时流量') {
+            this.$set(Devicelist, 4, item)
+          } else if (itemname === '压力') {
+            this.$set(Devicelist, 5, item)
+          } else if (itemname === '累计电量' || itemname === '电能') {
+            this.$set(Devicelist, 6, item)
+          } else if (itemname === '累计产水量' || itemname === '累计流量') {
             this.$set(Devicelist, 7, item)
-          } else if (item_name === '压力') {
-            this.$set(Devicelist, 8, item)
-          } else if (item_name === '累计电量' || item_name === '电能') {
-            this.$set(Devicelist, 9, item)
-          } else if (item_name === '累计产水量' || item_name === '累计流量') {
-            this.$set(Devicelist, 10, item)
           }
         }
-        return Devicelist
+        this.showdata.push({Name: datalist.Name, Device: Devicelist})
+      }
+    },
+    // 修改table tr行的背景色
+    tableRowStyle ({ row, rowIndex }) {
+      if (rowIndex % 2 === 0) {
+        return 'background-color: #f2f6fc; color: #606266; height:3px;'
+      } else {
+        return 'background-color: transparent; color: #606266; height:3px;'
+      }
+    },
+    // 修改table header的背景色
+    tableHeaderColor ({ row, column, rowIndex, columnIndex }) {
+      if (rowIndex === 0) {
+        return 'background-color: #f2f6fc; color: #606266; height: 5px;'
       }
     }
   },
@@ -114,18 +166,12 @@ export default {
 </script>
 <style scoped>
 .containter-style{
-  color: #9ee1fb;
+  color: #606266;
   padding-left: 15px;
   padding-right: 15px;
-  background: rgba(16,46,86,.5);
+  background: #f2f6fc;
   display: flex;
   flex-direction: column;
-}
-.containter-style table{
-  color: #9ee1fb;
-}
-.containter-style table tbody tr:nth-of-type(odd) {
-    background-color: cadetblue;
 }
 .containter-style h2{
   margin: 20px auto;

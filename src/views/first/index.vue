@@ -4,8 +4,19 @@
         <div class="containter containter-style">
           <div class="row row-style">
               <div class='col-md-2 row-left'>
-                  <h3 >项目概述</h3>
-                  <p >为了保护洱海流域敏感的水环境，大理州洱源县政府与北京碧水源科技股份有限公司签订了《洱源县乡镇及村落污水处理工程PPP合作协议》，对辖区内的分散污染源进行综合治理。本项目新建镇级污水处理厂6座，村落污水处理站53座，总设计处理规模2.392万吨/天；新建管网851.22km和提升泵站21座。总投资22.29亿元，分两期建设。</p>
+                <b-card
+                 border-variant="success"
+                  header="项目概述"
+                  header-text-variant="#212529"
+                  header-tag="header"
+                  header-bg-variant="success"
+                  align="center"
+                  style="max-width: 15rem;"
+                  class="mb-2"
+                >
+                <b-card-text>
+                   <p >为了保护洱海流域敏感的水环境，大理州洱源县政府与北京碧水源科技股份有限公司签订了《洱源县乡镇及村落污水处理工程PPP合作协议》，对辖区内的分散污染源进行综合治理。本项目新建镇级污水处理厂6座，村落污水处理站53座，总设计处理规模2.392万吨/天；新建管网851.22km和提升泵站21座。总投资22.29亿元，分两期建设。</p></b-card-text>
+                </b-card>
               </div>
               <div class='col-md-8 row-right-map'>
                   <h3>
@@ -14,12 +25,22 @@
                   <div  id="center-map" ></div>
               </div>
               <div class='col-md-2 row-right'>
-                <div class="row-right-list-title">
-                  <i class="el-icon-s-order "></i><h3>厂站列表</h3>
-                </div>
-                <ul class="row-right-list">
-                  <li v-for="(item, i) in datalist" :key="i" @click="getlocation(item)"><a href="#">{{item.Name}}</a></li>
-                </ul>
+                <b-card
+                border-variant="success"
+                  header="厂站列表"
+                  header-text-variant="#212529"
+                  header-tag="header"
+                  header-bg-variant="success"
+                  align="center"
+                  style="max-width: 15rem;"
+                  class="mb-2"
+                >
+                  <b-card-text>
+                    <ul class="row-right-list">
+                      <li v-for="(item, i) in datalist" :key="i" @click="getlocation(item)"><a href="#">{{item.Name}}</a></li>
+                    </ul>
+                  </b-card-text>
+                </b-card>
               </div>
           </div>
       </div>
@@ -35,7 +56,6 @@ export default {
   data () {
     return {
       datalist: [],
-      pointlist: [],
       map: null
     }
   },
@@ -101,10 +121,10 @@ export default {
 }
 .containter-style{
   flex: 1;
-  color: #9ee1fb;
+  color: #606266;
   padding-left: 15px;
   padding-right: 15px;
-  background: rgba(16,46,86,.5);
+  background: #f2f6fc;
   display: flex;
 }
 .row-style{
@@ -114,6 +134,9 @@ export default {
 .row-left{
  display: flex;
  flex-direction: column;
+}
+h3{
+  color:#909399;
 }
 .row-left p{
   flex: 1;
@@ -125,8 +148,8 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 400px;
-  max-height: 600px;
+  min-height: 600px;
+  max-height: 1600px;
 }
 #center-map{
   margin-top: 10px;
@@ -152,12 +175,16 @@ export default {
   flex-direction: column;
   list-style-type: none;
   padding: 0px;
+  max-height: 600px;
+  overflow: auto;
+  font-size: 15px;
 }
 .row-right-list a{
-  color: #9ee1fb;
-  font-size: 13px;
+  color: #606266;
+  text-decoration: none;
 }
 .row-right-list a:hover{
-  background: whitesmoke;
+  color: rgb(48, 65, 86);
+  background-color: #606266;
 }
 </style>
