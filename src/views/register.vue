@@ -1,7 +1,6 @@
 <!-- register -->
 <template>
   <div>
-     
   </div>
 </template>
 
@@ -9,7 +8,7 @@
 export default {
   data () {
     return {
-    };
+    }
   },
 
   watch: {},
@@ -18,9 +17,8 @@ export default {
 
   computed: {},
 
-  methods: {},
+  methods: {}
 
-  mounted: function() {}
 }
 
 </script>
