@@ -14,7 +14,7 @@ export default {
   data () {
     return {
       iszooming: false,
-      list: ['项目总览', '设备监控', '统计分析', '事件报警']
+      list: ['项目总览', '设备监控', '统计报表', '事件报警']
     }
   },
   methods: {

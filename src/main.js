@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import axios from 'axios'
-import {Table, TableColumn, Input, Button, Icon} from 'element-ui'
+import {Table, TableColumn, Input, Button, Icon, DatePicker, Select, Option} from 'element-ui'
 import store from './store'
 import loading from '@/components/loading'
 import animated from '../public/css/animate.css'
@@ -20,6 +20,9 @@ Vue.use(TableColumn)
 Vue.use(Input)
 Vue.use(Button)
 Vue.use(Icon)
+Vue.use(DatePicker)
+Vue.use(Select)
+Vue.use(Option)
 Vue.component('loading', loading)
 
 // 添加请求拦截器，在请求头中加token

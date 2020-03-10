@@ -158,7 +158,6 @@ h3{
 .row-right{
   display: flex;
   flex-direction: column;
-  justify-content: center;
 }
 .row-right-list-title{
   display: flex;

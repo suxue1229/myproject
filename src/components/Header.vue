@@ -4,7 +4,7 @@
       <div class="navbar navbar-default ">
         <div class="navbar-header">
           <a href="#" class="navbar-brand">
-            <img alt="Brand" class="logo" src="/static/img/header-logo.png">
+            <img alt="Brand" class="logo" src="/static/img/logo.png">
           </a>
         </div>
         <ul class="nav narbar-nav">
@@ -71,7 +71,8 @@ export default {
     border-bottom: solid 1px rgba(16,46,86,.8);
   }
   .logo{
-      height: 50px;
+    width: 100%;
+      height: 100%;
   }
   .narbar-color{
     color: #BFCBD9;
