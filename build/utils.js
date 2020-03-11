@@ -47,7 +47,8 @@ exports.cssLoaders = function (options) {
     if (options.extract) {
       return ExtractTextPlugin.extract({
         use: loaders,
-        fallback: 'vue-style-loader'
+        fallback: 'vue-style-loader',
+        publicPath: '../../'          // 新增内容 防止使用element框架的icon时候，开发环境下是没有问题的，打包完以后出现小方块，页面不显示小图标
       })
     } else {
       return ['vue-style-loader'].concat(loaders)
