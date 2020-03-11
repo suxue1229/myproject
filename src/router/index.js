@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from '../store'
+// import HelloWorld from '@/components/HelloWorld'
 
 Vue.use(Router)
 export const router = new Router(
   {
-    mode: 'history',
+    /* mode:'history'时build出现空白，要删除或mode:'hash' */
+    // mode: 'history',
     // 路由选项高亮设置
     linkActiveClass: 'active',
     base: process.env.BASE_URL,
