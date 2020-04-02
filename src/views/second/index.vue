@@ -1,63 +1,29 @@
 <template>
   <div class="content">
     <Header />
-      <div class="containter containter-style">
+      <div class="container-fluid container-style">
         <h2 >CWT工艺站点列表</h2>
-        <div class="animated bounceInRight " >
-         <el-table
-                :data="showdata"
-                :row-style="tableRowStyle"
-                :header-cell-style="tableHeaderColor"
-                style="width: 100%; min-height:100%; background-color: transparent;"
-                >
-                <el-table-column
-                  fixed
-                  prop="Name"
-                  label="厂站名称"
-                  min-width="20%"
-                  >
-                </el-table-column>
-                <el-table-column
-                  prop="Device[0]"
-                  label="产水泵"
-                  min-width="10%">
-                </el-table-column>
-                <el-table-column
-                  prop="Device[1]"
-                  label="风机"
-                  min-width="10%">
-                </el-table-column>
-                <el-table-column
-                  prop="Device[2]"
-                  label="回流泵"
-                  min-width="10%">
-                </el-table-column>
-                <el-table-column
-                  prop="Device[3]"
-                  label="除磷泵"
-                  min-width="10%">
-                </el-table-column>
-                <el-table-column
-                  prop="Device[4]"
-                  label="产水流量(m3/h)"
-                  min-width="10%">
-                </el-table-column>
-                <el-table-column
-                  prop="Device[5]"
-                  label="MBR压力(kpa)"
-                  min-width="10%">
-                </el-table-column>
-                <el-table-column
-                  prop="Device[6]"
-                  label="累计电量(kwh)"
-                  min-width="10%">
-                </el-table-column>
-                <el-table-column
-                  prop="Device[7]"
-                  label="累计水量(m3)"
-                  min-width="10%">
-                </el-table-column>
-              </el-table>
+        <div class="animated bounceInRight easytable" >
+          <v-table
+            :is-vertical-resize= 'true'
+            :width= '1295'
+            :height= '460'
+            :min-width= '800'
+            :vertical-resize-offset= '60'
+            is-horizontal-resize
+            :min-height= '400'
+            style="width:100%"
+            :columns="columns"
+            :table-data="tableData"
+            even-bg-color="#f4f4f4"
+             row-hover-color="#1F2D3D"
+             row-click-color="#edf7ff"
+             @sort-change="sortChange"
+             :paging-index="(pageIndex-1)*pageSize" >
+          </v-table>
+          <div class="mt20 mb20 bold">
+            <v-pagination  @page-change="pageChange" @page-size-change="pageSizeChange" :total="showdata.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+          </div>
         </div>
       </div>
     <Footer />
@@ -70,11 +36,31 @@ export default {
   name: 'secondchild',
   data () {
     return {
-      showdata: []
+      multipleSort: false,
+      pageIndex: 1,
+      pageSize: 10,
+      tableData: [],
+      showdata: null,
+      columns: [
+        {field: 'custome', title: '排序', width: 50, titleAlign: 'center', columnAlign: 'cneter', formatter: function (rowData, index, pagingIndex) {
+          var currentIndex = index + pagingIndex;
+          return currentIndex < 3 ? '<span style="color:red;font-weight: bold;">' + (currentIndex + 1) + '</span>' : currentIndex + 1
+        }},
+        {field: 'name', title: '厂站名称', width: 200, titleAlign: 'center', columnAlign: 'left', isResize: true},
+        {field: 'chansb', title: '产水泵', width: 100, titleAlign: 'center', columnAlign: 'center', isResize: true},
+        {field: 'fengj', title: '风机', width: 100, titleAlign: 'center', columnAlign: 'center', isResize: true},
+        {field: 'huilb', title: '回流泵', width: 100, titleAlign: 'center', columnAlign: 'center', isResize: true},
+        {field: 'chulb', title: '除磷泵', width: 100, titleAlign: 'center', columnAlign: 'center', isResize: true},
+        {field: 'chansll', title: '产水流量(m3/h)', width: 100, titleAlign: 'center', columnAlign: 'center', isResize: true},
+        {field: 'mbr', title: 'MBR压力(kpa)', width: 100, titleAlign: 'center', columnAlign: 'center', isResize: true},
+        {field: 'leijdl', title: '累计电量(kwh)', width: 100, titleAlign: 'center', columnAlign: 'center', isResize: true},
+        {field: 'leijsl', title: '累计水量(m3)', width: 100, titleAlign: 'center', columnAlign: 'center', isResize: true}
+      ]
     }
   },
   created () {
     this.initdata()
+    this.getTableData()
   },
   mounted () {
     this.intervalid = setInterval(() => {
@@ -141,21 +127,35 @@ export default {
             this.$set(Devicelist, 7, item)
           }
         }
-        this.showdata.push({Name: datalist.Name, Device: Devicelist})
+        this.showdata.push({'name': datalist.Name, 'chansb': Devicelist[0], 'fengj': Devicelist[1], 'huilb': Devicelist[2],
+          'chulb': Devicelist[3], 'chansll': Devicelist[4], 'mbr': Devicelist[5], 'leijdl': Devicelist[6], 'leijsl': Devicelist[7] })
+        this.tableData = this.showdata.slice((this.pageIndex - 1) * this.pageSize, (this.pageIndex) * this.pageSize)
       }
     },
-    // 修改table tr行的背景色
-    tableRowStyle ({ row, rowIndex }) {
-      if (rowIndex % 2 === 0) {
-        return 'background-color: #f2f6fc; color: #606266; height:3px;'
-      } else {
-        return 'background-color: transparent; color: #606266; height:3px;'
-      }
+    getTableData () {
+      this.tableData = this.showdata.slice((this.pageIndex - 1) * this.pageSize, (this.pageIndex) * this.pageSize)
     },
-    // 修改table header的背景色
-    tableHeaderColor ({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex === 0) {
-        return 'background-color: #f2f6fc; color: #606266; height: 5px;'
+    pageChange (pageIndex) {
+      this.pageIndex = pageIndex
+      this.getTableData()
+      console.log(pageIndex)
+    },
+    pageSizeChange (pageSize) {
+      this.pageIndex = 1
+      this.pageSize = pageSize
+      this.getTableData()
+    },
+    sortChange (params) {
+      if (params.height.length > 0) {
+        this.tableData.sort(function (a, b) {
+          if (params.height === 'asc') {
+            return a.height - b.height
+          } else if (params.height === 'desc') {
+            return b.height - a.height
+          } else {
+            return 0
+          }
+        })
       }
     }
   },
@@ -165,15 +165,26 @@ export default {
 }
 </script>
 <style scoped>
-.containter-style{
+.content {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+.container-style {
+  width: 100%;
+  position: absolute;
+  top: 85px;
+  bottom: 50px;
   color: #606266;
-  padding-left: 15px;
-  padding-right: 15px;
-  background: #f2f6fc;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
-.containter-style h2{
-  margin: 20px auto;
+.container-style h2{
+  margin:0 auto;
+  padding: 20px;
+}
+.containter-style .easytable{
+  flex: 1;
 }
 </style>

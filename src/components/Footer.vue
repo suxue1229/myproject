@@ -1,5 +1,5 @@
 <template>
-  <footer class='navbar  fixed-bottom footer-style'>
+  <footer class='navbar footer-style'>
     <router-link to="/first" tag="a">{{list[0]}}</router-link>
     <router-link to="/second" tag="a">{{list[1]}}</router-link>
     <router-link to="/third" tag="a">{{list[2]}}</router-link>
@@ -50,11 +50,14 @@ export default {
 
 <style scoped>
 .footer-style {
+  position: fixed;
+  width: 100%;
   height: 50px;
   display: flex;
   justify-content: space-evenly;
   border-top: solid 1px rgba(16,46,86,.8);
   padding: 0;
+  bottom: 0px;
   background: #304156;
 }
 a {

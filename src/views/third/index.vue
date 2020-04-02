@@ -1,11 +1,11 @@
 <template>
   <div class="content">
     <Header />
-      <div class="containter containter-style">
+      <div class="container-fluid container-style">
         <div class="row">
             <el-date-picker
             v-model="dateVals"
-            class="date-picker"
+            class="date-picker col-md-5"
             type="daterange"
             value-format="yyyy-MM-dd"
             range-separator="-"
@@ -14,7 +14,7 @@
             end-placeholder="结束日期">
             </el-date-picker>
           <template >
-            <el-select v-model="value" placeholder="请选择" class="select">
+            <el-select v-model="value" placeholder="请选择" class="select col-md-3">
               <el-option
                 v-for="(item, i) in showdata"
                 :key="i"
@@ -23,7 +23,7 @@
               </el-option>
             </el-select>
           </template>
-          <el-button class="button" type="primary" onclick="print()">生成报表</el-button>
+          <el-button class="button col-md-2" type="primary" onclick="print()">打印报表</el-button>
         </div>
         <div class="animated bounceInRight " >
           <template>
@@ -37,7 +37,7 @@
                 <el-table-column
                   fixed
                   prop="Name"
-                  label="厂站名称"
+                  label="时间"
                   min-width="20%"
                   >
                 </el-table-column>
@@ -198,24 +198,23 @@ export default {
 }
 </script>
 <style scoped>
-.containter-style{
+.content {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+.container-style {
+  width: 100%;
+  position: absolute;
+  top: 85px;
+  bottom: 50px;
   color: #606266;
-  padding-left: 15px;
-  padding-right: 15px;
-  background: #f2f6fc;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
 .row {
-  margin: 20px;
-  display: flex;
+  padding: 20px;
 }
-.select {
-  margin-left: 20%;
-  width: 300px;
-}
-.button{
-  margin-left: 50px;
-  width:200px;
-}
+
 </style>

@@ -12,16 +12,11 @@ export default{
 }
 </script>
 <style>
-
 body{
-  font-family:"微软雅黑";
-  width:100%;
-  height: 100%;
-  background-color: #304156;
-  color:#BFCBD9;
+  font-family:"微软雅黑",serif;
+  background-color: #f2f6fc;
 }
 .active {
-background-color: #1F2D3D;
-color: #0068B7 !important;
+  background-color: #1F2D3D;
 }
 </style>

@@ -9,6 +9,9 @@ import animated from '../public/css/animate.css'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'vue-easytable/libs/themes-base/index.css'
+
+import {VTable, VPagination} from 'vue-easytable'
 
 Vue.use(BootstrapVue)
 Vue.use(animated)
@@ -24,6 +27,10 @@ Vue.use(DatePicker)
 Vue.use(Select)
 Vue.use(Option)
 Vue.component('loading', loading)
+
+// Register to global
+Vue.component(VTable.name, VTable)
+Vue.component(VPagination.name, VPagination)
 
 // 添加请求拦截器，在请求头中加token
 axios.interceptors.request.use(

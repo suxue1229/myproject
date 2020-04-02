@@ -1,6 +1,5 @@
 <template>
-<div >
-  <header class="navbar fixed-top header-style">
+  <header class="navbar header-style">
       <div class="navbar navbar-default ">
         <div class="navbar-header">
           <a href="#" class="navbar-brand">
@@ -15,9 +14,8 @@
         <h3 class="narbar-color">{{formatDateTime(new Date())}}</h3>
         <i class="el-icon-user iconstyle" @mouseover="getuserinfo"></i>
       </div>
+      <userinfo class="infostyle" v-show="isshowing"></userinfo>
   </header>
-  <userinfo class="infostyle" v-show="isshowing"></userinfo>
-</div>
 </template>
 
 <script>
@@ -65,9 +63,11 @@ export default {
 
 <style scoped>
   .header-style{
-    position: sticky;
+    position: fixed;
+    width: 100%;
     top: 0px;
     padding: 0;
+    background: #304156;
     border-bottom: solid 1px rgba(16,46,86,.8);
   }
   .logo{
