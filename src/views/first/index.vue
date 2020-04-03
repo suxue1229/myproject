@@ -1,8 +1,8 @@
 <template>
   <div class="content">
     <Header />
-    <div class="container-fluid container-style">
-      <div class="row">
+    <div class="container-fluid">
+      <div class="row row-style">
         <div class="col-md-2 row-left">
           <b-card
             border-variant="success"
@@ -21,7 +21,7 @@
         </div>
         <div class="col-md-8 row-map">
           <h3>目前在线站点数目 {{this.datalist.length}} 个</h3>
-          <div id="center-map"></div>
+          <div id="map"></div>
         </div>
         <div class="col-md-2 row-right">
           <b-card
@@ -75,7 +75,7 @@ export default {
           if (res.data.status === 0) {
             this.$store.dispatch('get_institute', res.data.data)
             this.datalist = this.$store.getters.institute_Data
-            this.map = new BMap.Map('center-map')
+            this.map = new BMap.Map('map')
             var point = new BMap.Point(116.404, 39.915)
             this.map.centerAndZoom(point, 10)
             this.map.enableScrollWheelZoom(true)
@@ -99,7 +99,7 @@ export default {
               this.map.addOverlay(marker)
               var label = new BMap.Label(this.datalist[i].Name, {
                 offset: new BMap.Size(20, -10)
-              });
+              })
               label.setStyle({
                 color: 'rgba(16,46,86)',
                 fontSize: '12px',
@@ -128,51 +128,45 @@ export default {
   height: 100vh;
   position: relative;
 }
-.container-style {
+.row-style {
   width: 100%;
   position: absolute;
   top: 85px;
   bottom: 50px;
   color: #606266;
   overflow: hidden;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 .row-left {
-  display: flex;
-  flex-direction: column;
   height: 100%;
-  overflow: auto;
+}
+.mb-2{
+  height: 100%;
 }
 .card-body {
-  padding: 10px;
+  padding: 5px;
+  overflow: auto;
 }
 .row-left p {
-  flex: 1;
   padding: 5px;
   text-indent: 2rem;
   line-height: 2rem;
 }
 .row-map {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
   overflow: hidden;
+  padding: 0px;
+  padding-top: 10px;
 }
-#center-map {
-  margin-top: 10px;
-  flex: 1;
+#map {
+  height: 100%;
 }
 .row-right {
-  display: flex;
-  flex-direction: column;
   height: 100%;
-  overflow: auto;
 }
 .row-right-list {
+  height: 100%;
   padding: 5px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
   list-style-type: none;
   font-size: 13px;
 }
