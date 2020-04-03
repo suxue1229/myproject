@@ -12,7 +12,7 @@
       </div>
       <div class="navbar navbar-default navbar-right">
         <h3 class="narbar-color">{{formatDateTime(new Date())}}</h3>
-        <i class="el-icon-user iconstyle" @mouseover="getuserinfo"></i>
+        <i class="el-icon-user iconstyle" @click="getuserinfo"></i>
       </div>
       <userinfo class="infostyle" v-show="isshowing"></userinfo>
   </header>

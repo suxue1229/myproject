@@ -23,6 +23,7 @@
           <h3>目前在线站点数目 {{this.datalist.length}} 个</h3>
           <div id="map"></div>
         </div>
+        <!-- <DeviceInfo class="deviceinfo" v-else/> -->
         <div class="col-md-2 row-right">
           <b-card
             border-variant="success"
@@ -36,8 +37,8 @@
           >
             <b-card-text>
               <ul class="row-right-list">
-                <li v-for="(item, i) in datalist" :key="i" @click="getlocation(item)">
-                  <a href="#">{{item.Name}}</a>
+                <li v-for="(item, i) in datalist" :key="i" @click="getlocation(item)" to="first/:device" append>
+                  <a href="#" to="device" append>{{item.Name}}</a>
                 </li>
               </ul>
             </b-card-text>
@@ -52,17 +53,20 @@
 import BMap from 'BMap'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import DeviceInfo from '@/components/DeviceInfo'
 export default {
   name: 'firstchild',
   data () {
     return {
+      isshowing: false,
       datalist: [],
       map: null
     }
   },
   components: {
     Header,
-    Footer
+    Footer,
+    DeviceInfo
   },
   created () {
     this.initdata()
@@ -116,8 +120,14 @@ export default {
         })
     },
     getlocation (item) {
-      var point = new BMap.Point(item.Longitude, item.Latitude)
-      this.map.centerAndZoom(point, 18)
+      // var point = new BMap.Point(item.Longitude, item.Latitude)
+      // this.map.centerAndZoom(point, 18)
+      // if (!this.isshowing) {
+      //   this.isshowing = true
+      // } else {
+      //   this.isshowing = false
+      // }
+      this.$router.push('/first')
     }
   }
 }

@@ -17,7 +17,10 @@ export const router = new Router(
         component: resolve => require(['@/views/first'], resolve), /* 路由懒加载 用时再加载  可以有效的分担首页所承担的加载压力，减少首页加载用时 */
         meta: {
           login_required: true
-        }
+        },
+        children: [{
+          path: 'device'
+        }]
       },
       {
         path: '/second',
@@ -42,7 +45,7 @@ export const router = new Router(
       },
       {
         path: '/login',
-        component: resolve => require(['@/views/login'], resolve),
+        component: resolve => require(['@/views/login'], resolve)
       },
       {
         path: '/',
@@ -55,24 +58,10 @@ export default router
 // 导航守卫
 // 使用 router.beforeEach 注册一个全局前置守卫，判断用户是否登陆
 router.beforeEach((to, from, next) => {
-  if (to.path === '/login') {
-    next()
+  var islogining = store.getters.islogining
+  if (to.matched.some(item => item.meta.login_required) && !islogining) {
+    next('/login')
   } else {
-    var islogining = store.getters.islogining
-    if (islogining) {
-      next()
-    } else {
-      next('/login')
-    }
+    next()
   }
-  // var islogining = store.getters.islogining
-  // if (to.matched.some(item => item.meta.login_required)) {
-  //   if (islogining) {
-  //     next()
-  //   } else {
-  //     next('/login')
-  //   }
-  // } else {
-  //   next()
-  // }
 })
