@@ -47,7 +47,7 @@ export default {
                 this.$store.commit('SET_LOGINING', this.islogining)
                 this.$store.commit('GET_Time', this.logintime)
                 this.$axios.defaults.headers.common['Authorization'] = this.$store.getters.Authorization
-                _this.$router.push('/first')
+                _this.$router.push('/overview')
               }).catch(error => {
                 alert('账号或密码错误')
                 console.log(error)

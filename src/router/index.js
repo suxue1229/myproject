@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from '../store'
-// import HelloWorld from '@/components/HelloWorld'
 
 Vue.use(Router)
 export const router = new Router(
@@ -13,32 +12,41 @@ export const router = new Router(
     base: process.env.BASE_URL,
     routes: [
       {
-        path: '/first',
-        component: resolve => require(['@/views/first'], resolve), /* 路由懒加载 用时再加载  可以有效的分担首页所承担的加载压力，减少首页加载用时 */
+        path: '/overview',
+        name: 'overview',
+        component: resolve => require(['@/views/overview'], resolve), /* 路由懒加载 用时再加载  可以有效的分担首页所承担的加载压力，减少首页加载用时 */
         meta: {
           login_required: true
         },
         children: [{
-          path: 'device'
+          path: 'getInfo/:id',
+          name: 'getInfo',
+          component: resolve => require(['@/views/overview/getInfo'], resolve),
+          meta: {
+            login_required: true
+          }
         }]
       },
       {
-        path: '/second',
-        component: resolve => require(['@/views/second'], resolve),
+        path: '/monitor',
+        name: 'monitor',
+        component: resolve => require(['@/views/monitor'], resolve),
         meta: {
           login_required: true
         }
       },
       {
-        path: '/third',
-        component: resolve => require(['@/views/third'], resolve),
+        path: '/tables',
+        name: 'tables',
+        component: resolve => require(['@/views/tables'], resolve),
         meta: {
           login_required: true
         }
       },
       {
-        path: '/four',
-        component: resolve => require(['@/views/four'], resolve),
+        path: '/alters',
+        name: 'alters',
+        component: resolve => require(['@/views/alters'], resolve),
         meta: {
           login_required: true
         }

@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <Header />
-    <div class="container-fluid">
+    <div class="container-fluid" v-if="isshowing" >
       <div class="row row-style">
         <div class="col-md-2 row-left">
           <b-card
@@ -23,7 +23,6 @@
           <h3>目前在线站点数目 {{this.datalist.length}} 个</h3>
           <div id="map"></div>
         </div>
-        <!-- <DeviceInfo class="deviceinfo" v-else/> -->
         <div class="col-md-2 row-right">
           <b-card
             border-variant="success"
@@ -37,8 +36,8 @@
           >
             <b-card-text>
               <ul class="row-right-list">
-                <li v-for="(item, i) in datalist" :key="i" @click="getlocation(item)" to="first/:device" append>
-                  <a href="#" to="device" append>{{item.Name}}</a>
+                <li v-for="(item, i) in datalist" :key="i" @click="getlocation(item)" >
+                  <a href="#">{{item.Name}}</a>
                 </li>
               </ul>
             </b-card-text>
@@ -46,6 +45,7 @@
         </div>
       </div>
     </div>
+    <router-view class="deviceinfo" v-else @childFn="show"></router-view>
     <Footer />
   </div>
 </template>
@@ -53,20 +53,18 @@
 import BMap from 'BMap'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import DeviceInfo from '@/components/DeviceInfo'
 export default {
-  name: 'firstchild',
+  name: 'overview',
   data () {
     return {
-      isshowing: false,
+      isshowing: true,
       datalist: [],
       map: null
     }
   },
   components: {
     Header,
-    Footer,
-    DeviceInfo
+    Footer
   },
   created () {
     this.initdata()
@@ -120,14 +118,13 @@ export default {
         })
     },
     getlocation (item) {
-      // var point = new BMap.Point(item.Longitude, item.Latitude)
-      // this.map.centerAndZoom(point, 18)
-      // if (!this.isshowing) {
-      //   this.isshowing = true
-      // } else {
-      //   this.isshowing = false
-      // }
-      this.$router.push('/first')
+      this.isshowing = false
+      this.$router.push({name: 'getInfo', params: {id: item.Id}})
+    },
+    show (payload) {
+      this.isshowing = !payload
+      this.$router.push('/overview')
+      window.location.reload()
     }
   }
 }
