@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <Header />
-    <div class="container-fluid" v-if="isshowing" >
+    <div class="container-fluid" v-show="isshowing" >
       <div class="row row-style">
         <div class="col-md-2 row-left">
           <b-card
@@ -45,7 +45,7 @@
         </div>
       </div>
     </div>
-    <router-view class="deviceinfo" v-else @childFn="show"></router-view>
+    <router-view class="deviceinfo" v-if="!isshowing" @childFn="show"></router-view>
     <Footer />
   </div>
 </template>
@@ -123,8 +123,6 @@ export default {
     },
     show (payload) {
       this.isshowing = !payload
-      this.$router.push('/overview')
-      window.location.reload()
     }
   }
 }
