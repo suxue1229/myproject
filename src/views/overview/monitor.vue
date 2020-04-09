@@ -24,7 +24,6 @@
 <script>
 export default {
   name: 'getInfo',
-  childshowing: '',
   data () {
     return {
       data: {},
@@ -44,13 +43,12 @@ export default {
   },
   methods: {
     init () {
-      this.$axios.get(this.HOST + '/data/' + this.$route.params.id)
+      this.$axios.get(this.HOST + '/data/' + this.$route.query.id)
         .then(res => {
           if (res.data.status === 0) {
             this.$store.dispatch('get_data', res.data.data)
               .then(res => {
                 this.data = this.$store.getters.info_Data
-                console.log('data:'+JSON.stringify(this.data))
                 for (var i = 0; i < this.data.Groups.length; i++) {
                   this.infos.push(this.data.Groups[i].Devices)
                   this.infos.push(this.data.Groups[i].Sensors)
@@ -75,8 +73,7 @@ export default {
       return str
     },
     close () {
-      this.childshowing = false
-      this.$emit('childFn', this.childshowing)
+      this.$router.push('/overview')
     }
   }
 }
@@ -84,12 +81,13 @@ export default {
 
 <style scoped>
 .deviceinfo{
-  position: absolute;
+  position: absolute; /* 子页面覆盖在主页面上 如果不加background-color 主页面为透明存在 */
   top: 85px;
   bottom: 50px;
   overflow: hidden;
   padding-top: 5px;
   padding-bottom: 5px;
+  background-color: #f2f6fc;
 }
 .closestyle{
   float:right;
@@ -99,7 +97,7 @@ h3{
   padding: 10px;
 }
 .tablestyle{
- width: 80%;
+ width: 60%;
  height: 100%;
  margin: 0 auto;
  line-height: 1;

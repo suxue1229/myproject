@@ -1,7 +1,7 @@
 <template>
   <footer class='navbar footer-style'>
     <router-link to="/overview" tag="a">{{list[0]}}</router-link>
-    <router-link to="/monitor" tag="a">{{list[1]}}</router-link>
+    <router-link to="/institute" tag="a">{{list[1]}}</router-link>
     <router-link to="/tables" tag="a">{{list[2]}}</router-link>
     <router-link to="/alters" tag="a">{{list[3]}}</router-link>
     <span class="el-icon-full-screen iconstyle" @click="zoom" ></span>

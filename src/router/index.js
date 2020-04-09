@@ -19,18 +19,18 @@ export const router = new Router(
           login_required: true
         },
         children: [{
-          path: 'getInfo/:id',
-          name: 'getInfo',
-          component: resolve => require(['@/views/overview/getInfo'], resolve),
+          path: 'monitor',
+          name: 'monitor',
+          component: resolve => require(['@/views/overview/monitor'], resolve),
           meta: {
             login_required: true
           }
         }]
       },
       {
-        path: '/monitor',
-        name: 'monitor',
-        component: resolve => require(['@/views/monitor'], resolve),
+        path: '/institute',
+        name: 'institute',
+        component: resolve => require(['@/views/institute'], resolve),
         meta: {
           login_required: true
         }
@@ -56,8 +56,8 @@ export const router = new Router(
         component: resolve => require(['@/views/login'], resolve)
       },
       {
-        path: '/',
-        redirect: '/login'
+        path: '/*',
+        redirect: '/overview'
       }
     ]
   })

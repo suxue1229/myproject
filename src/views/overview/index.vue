@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <Header />
-    <div class="container-fluid" v-show="isshowing" >
+    <div class="container-fluid" >
       <div class="row row-style">
         <div class="col-md-2 row-left">
           <b-card
@@ -36,16 +36,14 @@
           >
             <b-card-text>
               <ul class="row-right-list">
-                <li v-for="(item, i) in datalist" :key="i" @click="getlocation(item)" >
-                  <a href="#">{{item.Name}}</a>
-                </li>
+                <li v-for="(item, i) in datalist" :key="i" @click="getlocation(item)" >{{item.Name}}</li>
               </ul>
             </b-card-text>
           </b-card>
         </div>
       </div>
     </div>
-    <router-view class="deviceinfo" v-if="!isshowing" @childFn="show"></router-view>
+    <router-view class="animated bounceInLeft"></router-view>
     <Footer />
   </div>
 </template>
@@ -57,7 +55,6 @@ export default {
   name: 'overview',
   data () {
     return {
-      isshowing: true,
       datalist: [],
       map: null
     }
@@ -69,6 +66,9 @@ export default {
   created () {
     this.initdata()
   },
+  // watch: { //还回后重新填充数据 一闪现象
+  //   '$route': 'initdata'
+  // },
   methods: {
     initdata () {
       this.$axios
@@ -118,11 +118,10 @@ export default {
         })
     },
     getlocation (item) {
-      this.isshowing = false
-      this.$router.push({name: 'getInfo', params: {id: item.Id}})
-    },
-    show (payload) {
-      this.isshowing = !payload
+      this.$router.push({ name: 'monitor',
+        query: {
+          id: item.Id
+        }})
     }
   }
 }
@@ -175,11 +174,12 @@ export default {
   list-style-type: none;
   font-size: 13px;
 }
-.row-right-list a {
-  color: #606266;
+.row-right-list li {
   text-decoration: none;
+  transition: all 0.5s;
+  line-height: 2;
 }
-.row-right-list a:hover {
-  background-color: #28a745;
+.row-right-list li:hover {
+  color: #28A745;
 }
 </style>
