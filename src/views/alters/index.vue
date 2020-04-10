@@ -3,7 +3,7 @@
     <Header />
       <div class="containter containter-style">
         <h2 >CWT工艺站点列表</h2>
-        <div class="animated bounceInRight " >
+        <!-- <div class="animated bounceInRight " >
          <el-table
                 :data="showdata"
                 :row-style="tableRowStyle"
@@ -58,7 +58,7 @@
                   min-width="10%">
                 </el-table-column>
               </el-table>
-        </div>
+        </div> -->
       </div>
     <Footer />
   </div>

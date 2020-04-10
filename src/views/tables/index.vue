@@ -111,7 +111,7 @@ export default {
       this.initdata()
     }, 100000)
   },
-  beforeDestroy () {
+  destroyed () {
     clearInterval(this.intervalid)
   },
   methods: {
