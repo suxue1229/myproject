@@ -118,10 +118,12 @@ export default {
 .chart{
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 .chartpart .toggle{
-height: 80px;
-display: flex;
+  height: 80px;
+  display: flex;
 }
 .chartpart .toggle .button{
   margin:auto;
@@ -133,7 +135,7 @@ display: flex;
   border-color: rgb(55, 137, 219);
 }
 #planet-chart{
-  margin: 30px auto;
+  margin: auto;
 }
 
 </style>

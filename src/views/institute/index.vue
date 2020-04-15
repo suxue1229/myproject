@@ -39,12 +39,13 @@ export default {
       multipleSort: false,
       pageIndex: 1,
       pageSize: 10,
+      infodata: {},
       tableData: [],
       showdata: null,
       columns: [
         {field: 'custome', title: '排序', width: 50, titleAlign: 'center', columnAlign: 'cneter', formatter: function (rowData, index, pagingIndex) {
           var currentIndex = index + pagingIndex;
-          return currentIndex < 3 ? '<span style="color:red;font-weight: bold;">' + (currentIndex + 1) + '</span>' : currentIndex + 1
+          return currentIndex < 3 ? (currentIndex + 1) : currentIndex + 1
         }},
         {field: 'name', title: '厂站名称', width: 200, titleAlign: 'center', columnAlign: 'left', isResize: true},
         {field: 'chansb', title: '产水泵', width: 100, titleAlign: 'center', columnAlign: 'center', isResize: true},
@@ -91,8 +92,8 @@ export default {
           .then(res => {
             if (res.data.status === 0) {
               this.$store.dispatch('get_data', res.data.data)
-              let infodata = this.$store.getters.info_Data
-              this.formatedata(infodata)
+              this.infodata = this.$store.getters.info_Data
+              this.formatedata(this.infodata)
             }
           })
           .catch(error => { console.log(error) })
@@ -113,6 +114,8 @@ export default {
           } else if (itemname === '除磷泵') {
             this.$set(Devicelist, 3, item)
           }
+          datalist.Status = {'status': item, 'name': itemname}
+          console.log('init:'+JSON.stringify(datalist))
         }
         for (var k = 0; k < datalist.Groups[i].Sensors.length; k++) {
           let itemname = datalist.Groups[i].Sensors[k].Name
@@ -185,6 +188,6 @@ export default {
   padding: 20px;
 }
 .containter-style .easytable{
-  flex: 1;
+  margin: auto;
 }
 </style>

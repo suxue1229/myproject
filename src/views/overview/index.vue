@@ -36,7 +36,7 @@
           >
             <b-card-text>
               <ul class="row-right-list">
-                <li v-for="(item, i) in datalist" :key="i" @click="getlocation(item)" >{{item.Name}}</li>
+                <li v-for="(item, i) in datalist" :key="i" @click="getinfo(item)" >{{item.Name}}</li>
               </ul>
             </b-card-text>
           </b-card>
@@ -88,6 +88,7 @@ export default {
                 this.datalist[i].Longitude,
                 this.datalist[i].Latitude
               )
+              this.geocodeSearch(pt, i)
               var convertor = new BMap.Convertor()
               var pointArr = []
               pointArr.push(pt)
@@ -117,11 +118,19 @@ export default {
           console.log(error)
         })
     },
-    getlocation (item) {
+    getinfo (item) {
       this.$router.push({ name: 'monitor',
         query: {
           id: item.Id
         }})
+    },
+    geocodeSearch (pt, index) {
+      let geoc = new BMap.Geocoder()
+      let addComp = ''
+      geoc.getLocation(pt, rs => {
+        addComp = rs.addressComponents
+        this.datalist[index].province = addComp.province
+      })
     }
   }
 }
