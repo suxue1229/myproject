@@ -69,3 +69,4 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+window.Event = new Vue()

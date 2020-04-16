@@ -32,6 +32,7 @@
 <script>
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import {deletesign} from '@/js/common.js'
 export default {
   name: 'secondchild',
   data () {
@@ -64,6 +65,7 @@ export default {
     this.getTableData()
   },
   mounted () {
+    // Event.$emit('senddata', this.tableData)
     this.intervalid = setInterval(() => {
       this.initdata()
     }, 100000)
@@ -72,18 +74,6 @@ export default {
     clearInterval(this.intervalid)
   },
   methods: {
-    deletesign (str) {
-      if (typeof (str) === 'string') {
-        if (str.includes('{red}')) {
-          return str.replace('{red}', '')
-        } else if (str.includes('{green}')) {
-          return str.replace('{green}', '')
-        }
-      } else if (typeof (str) === 'undefined') {
-        return ''
-      }
-      return str
-    },
     async initdata () {
       this.showdata = []
       var instituteData = await this.$store.getters.institute_Data
@@ -104,7 +94,7 @@ export default {
       for (var i = 0; i < datalist.Groups.length; i++) {
         for (var j = 0; j < datalist.Groups[i].Devices.length; j++) {
           let itemname = datalist.Groups[i].Devices[j].Name
-          let item = this.deletesign(datalist.Groups[i].Devices[j].Status)
+          let item = deletesign(datalist.Groups[i].Devices[j].Status)
           if (itemname === '自吸泵') {
             this.$set(Devicelist, 0, item)
           } else if (itemname === '风机') {
@@ -114,12 +104,10 @@ export default {
           } else if (itemname === '除磷泵') {
             this.$set(Devicelist, 3, item)
           }
-          datalist.Status = {'status': item, 'name': itemname}
-          console.log('init:'+JSON.stringify(datalist))
         }
         for (var k = 0; k < datalist.Groups[i].Sensors.length; k++) {
           let itemname = datalist.Groups[i].Sensors[k].Name
-          let item = this.deletesign(datalist.Groups[i].Sensors[k].Value)
+          let item = deletesign(datalist.Groups[i].Sensors[k].Value)
           if (itemname === '瞬时流量') {
             this.$set(Devicelist, 4, item)
           } else if (itemname === '压力') {

@@ -25,63 +25,29 @@
           </template>
           <el-button class="button col-md-2" type="primary" onclick="print()">打印报表</el-button>
         </div>
-        <div class="animated bounceInRight " >
+        <div class=" container" >
           <template>
             <section id="print">
-              <el-table
-                :data="showdata"
-                :row-style="tableRowStyle"
-                :header-cell-style="tableHeaderColor"
-                style="width: 100%; min-height:100%; background-color: transparent;"
-                >
-                <el-table-column
-                  fixed
-                  prop="Name"
-                  label="时间"
-                  min-width="20%"
-                  >
-                </el-table-column>
-                <el-table-column
-                  prop="Device[0]"
-                  label="产水泵"
-                  min-width="10%">
-                </el-table-column>
-                <el-table-column
-                  prop="Device[1]"
-                  label="风机"
-                  min-width="10%">
-                </el-table-column>
-                <el-table-column
-                  prop="Device[2]"
-                  label="回流泵"
-                  min-width="10%">
-                </el-table-column>
-                <el-table-column
-                  prop="Device[3]"
-                  label="除磷泵"
-                  min-width="10%">
-                </el-table-column>
-                <el-table-column
-                  prop="Device[4]"
-                  label="产水流量(m3/h)"
-                  min-width="10%">
-                </el-table-column>
-                <el-table-column
-                  prop="Device[5]"
-                  label="MBR压力(kpa)"
-                  min-width="10%">
-                </el-table-column>
-                <el-table-column
-                  prop="Device[6]"
-                  label="累计电量(kwh)"
-                  min-width="10%">
-                </el-table-column>
-                <el-table-column
-                  prop="Device[7]"
-                  label="累计水量(m3)"
-                  min-width="10%">
-                </el-table-column>
-              </el-table>
+              <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <td>日期</td>
+                      <td>站点名称</td>
+                      <td>设备名称</td>
+                      <td>报警内容</td>
+                      <td>状态</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(item, index) in tabledata" :key="index" >
+                      <td>{{item.Time}}</td>
+                      <td>{{item.Name}}</td>
+                      <td>{{item.Status.state.name}}</td>
+                      <td>{{item.Status.state.value}}</td>
+                      <td>{{item.Status.state.operation}}</td>
+                    </tr>
+                  </tbody>
+              </table>
             </section>
           </template>
         </div>
@@ -93,23 +59,34 @@
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import printJS from 'print-js'
+import {deletesign} from '@/js/common.js'
 
 export default {
   name: 'thirdchild',
   data () {
     return {
       dateVals: '',
+      value: '',
       showdata: [],
-      value: ''
+      datalist: {},
+      tabledata: []
     }
   },
   created () {
     this.initdata()
   },
-  mounted () {
-    this.intervalid = setInterval(() => {
-      this.initdata()
-    }, 100000)
+  watch: {
+    tabledata (newval, oldval) {
+      this.tabledata = newval
+      console.log('created:' + JSON.stringify(this.tabledata))
+    }
+    // Event.$on('senddata', data => {
+    //   this.showdata = data
+    //   console.log('data:' + data)
+    // })
+    // this.intervalid = setInterval(() => {
+    //   this.initdata()
+    // }, 100000)
   },
   destroyed () {
     clearInterval(this.intervalid)
@@ -118,63 +95,34 @@ export default {
     print () {
       printJS({printable: 'print', type: 'html', scanStyles: false, css: ['https://qiniu.smartpilot.cn/myreport.css'], style: ''})
     },
-    deletesign (str) {
-      if (typeof (str) === 'string') {
-        if (str.includes('{red}')) {
-          return str.replace('{red}', '')
-        } else if (str.includes('{green}')) {
-          return str.replace('{green}', '')
-        }
-      } else if (typeof (str) === 'undefined') {
-        return ''
-      }
-      return str
-    },
-    async initdata () {
-      this.showdata = []
-      var instituteData = await this.$store.getters.institute_Data
-      for (var i = 0; i < instituteData.length; i++) {
-        this.$axios.get(this.HOST + '/data/' + instituteData[i].Id)
+    initdata () {
+      var instituteData = this.$store.getters.institute_Data
+      var index = 0
+      for (var m = 0; m < instituteData.length; m++) {
+        this.$axios.get(this.HOST + '/data/' + instituteData[m].Id)
           .then(res => {
             if (res.data.status === 0) {
               this.$store.dispatch('get_data', res.data.data)
-              let infodata = this.$store.getters.info_Data
-              this.formatedata(infodata)
+              this.datalist = this.$store.getters.info_Data
+              for (let i = 0; i < this.datalist.Groups.length; i++) {
+                let count = 0
+                this.datalist.Groups[i].Devices.some(obj => {
+                  if (deletesign(obj.Status) === '故障') {
+                    this.tabledata[index] = {'Time': '', 'Name': '', 'Status': {}}
+                    this.tabledata[index].Time = res.data.time
+                    this.tabledata[index].Name = this.datalist.Name
+                    this.tabledata[index].Status = {'count': count, 'state': {'value': '', 'name': '', 'operation': '报警中'}}
+                    this.tabledata[index].Status.count = count
+                    this.tabledata[index].Status.state.value = deletesign(obj.Status)
+                    this.tabledata[index].Status.state.name = obj.Name
+                    count++
+                    index++
+                  }
+                })
+              }
             }
           })
           .catch(error => { console.log(error) })
-      }
-    },
-    formatedata (datalist) {
-      var Devicelist = []
-      for (var i = 0; i < datalist.Groups.length; i++) {
-        for (var j = 0; j < datalist.Groups[i].Devices.length; j++) {
-          let itemname = datalist.Groups[i].Devices[j].Name
-          let item = this.deletesign(datalist.Groups[i].Devices[j].Status)
-          if (itemname === '自吸泵') {
-            this.$set(Devicelist, 0, item)
-          } else if (itemname === '风机') {
-            this.$set(Devicelist, 1, item)
-          } else if (itemname === '回流泵') {
-            this.$set(Devicelist, 2, item)
-          } else if (itemname === '除磷泵') {
-            this.$set(Devicelist, 3, item)
-          }
-        }
-        for (var k = 0; k < datalist.Groups[i].Sensors.length; k++) {
-          let itemname = datalist.Groups[i].Sensors[k].Name
-          let item = this.deletesign(datalist.Groups[i].Sensors[k].Value)
-          if (itemname === '瞬时流量') {
-            this.$set(Devicelist, 4, item)
-          } else if (itemname === '压力') {
-            this.$set(Devicelist, 5, item)
-          } else if (itemname === '累计电量' || itemname === '电能') {
-            this.$set(Devicelist, 6, item)
-          } else if (itemname === '累计产水量' || itemname === '累计流量') {
-            this.$set(Devicelist, 7, item)
-          }
-        }
-        this.showdata.push({Name: datalist.Name, Device: Devicelist})
       }
     },
     // 修改table tr行的背景色
