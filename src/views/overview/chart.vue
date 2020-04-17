@@ -23,17 +23,18 @@ export default {
     }
   },
   props: {
-    sensor: {
-      type: Object,
-      required: true
-    }
+    sensor: {} // 不能限定type，接收刚开始的null,和之后的数组lists
   },
   /* 子组件mounted->父组件mounted->watch */
   watch: {
-    sensor (newval) {
-      this.id = newval.Id
-      this.name = newval.Name
-      this.initchart(this.id, this.level)
+    sensor (newval, oldval) {
+      this.$nextTick(() => { /* 这里为什么需要使用this.nextTick()呢？当我们监听到lists发生变化的时候，数据虽然到来了，但是通过数据渲染到的对应dom还没有执行，我们还不能获取到对应的dom，只能通过异步的方式处理（this.nextTick() */
+        if (newval) {
+          this.id = newval.Id
+          this.name = newval.Name
+          this.initchart(newval.Id, this.level)
+        }
+      })
     }
   },
   methods: {

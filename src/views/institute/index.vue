@@ -74,9 +74,9 @@ export default {
     clearInterval(this.intervalid)
   },
   methods: {
-    async initdata () {
+    initdata () {
       this.showdata = []
-      var instituteData = await this.$store.getters.institute_Data
+      var instituteData = this.$store.getters.institute_Data
       for (var i = 0; i < instituteData.length; i++) {
         this.$axios.get(this.HOST + '/data/' + instituteData[i].Id)
           .then(res => {

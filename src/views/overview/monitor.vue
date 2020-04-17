@@ -52,11 +52,7 @@ export default {
     this.init()
   },
   mounted () {
-    setTimeout(() => {
-      var btn = document.getElementById('tag_a')
-      btn.click()
-    }, 1000)
-    this.intervalid()
+    // this.intervalid()
   },
   destroyed () {
     clearInterval(this.intervalid)
@@ -73,6 +69,12 @@ export default {
                 for (var i = 0; i < this.data.Groups.length; i++) {
                   this.infos.push(this.data.Groups[i].Devices)
                   this.infos.push(this.data.Groups[i].Sensors)
+                  // this.$set(this.infos, 0, this.data.Groups[i].Devices) 两种表达方式都对
+                  // this.$set(this.infos, 1, this.data.Groups[i].Sensors)
+                }
+                if (this.infos[1].length > 0) {
+                  let arr = this.infos[1][0]
+                  this.sensor = arr // 默认第一个数据
                 }
               }).catch(error => {
                 console.log(error)

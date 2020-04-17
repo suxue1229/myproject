@@ -25,10 +25,10 @@
           </template>
           <el-button class="button col-md-2" type="primary" onclick="print()">打印报表</el-button>
         </div>
-        <div class=" container" >
+        <div class=" container" v-if= "tabledata.length >0">
           <template>
             <section id="print">
-              <table class="table table-striped">
+              <table class="table table-striped" >
                   <thead>
                     <tr>
                       <td>日期</td>
@@ -75,18 +75,7 @@ export default {
   created () {
     this.initdata()
   },
-  watch: {
-    tabledata (newval, oldval) {
-      this.tabledata = newval
-      console.log('created:' + JSON.stringify(this.tabledata))
-    }
-    // Event.$on('senddata', data => {
-    //   this.showdata = data
-    //   console.log('data:' + data)
-    // })
-    // this.intervalid = setInterval(() => {
-    //   this.initdata()
-    // }, 100000)
+  mounted () {
   },
   destroyed () {
     clearInterval(this.intervalid)
@@ -108,9 +97,9 @@ export default {
                 let count = 0
                 this.datalist.Groups[i].Devices.some(obj => {
                   if (deletesign(obj.Status) === '故障') {
-                    this.tabledata[index] = {'Time': '', 'Name': '', 'Status': {}}
-                    this.tabledata[index].Time = res.data.time
-                    this.tabledata[index].Name = this.datalist.Name
+                    var tablearray = {'Time': res.data.time, 'Name': this.datalist.Name, 'Status': {}}
+                    this.$set(this.tabledata, index, tablearray) // 最佳方式
+                    // this.tabledata.push(tablearray) 也可以实现结构添加，但this.tabledata[index]=tablearray不可以 原因是vue检测不到这种更新
                     this.tabledata[index].Status = {'count': count, 'state': {'value': '', 'name': '', 'operation': '报警中'}}
                     this.tabledata[index].Status.count = count
                     this.tabledata[index].Status.state.value = deletesign(obj.Status)
