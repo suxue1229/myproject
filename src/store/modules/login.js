@@ -1,42 +1,49 @@
+import {setCookie, removeToken} from '@/js/untils/validate.js'
 const login = {
   state: {
-    data: sessionStorage.getItem('store') ? JSON.parse(sessionStorage.getItem('store')).login.data : '',
-    Authorization: sessionStorage.getItem('store') ? JSON.parse(sessionStorage.getItem('store')).login.Authorization : '',
-    islogining: sessionStorage.getItem('store') ? JSON.parse(sessionStorage.getItem('store')).login.islogining : '',
-    login_time: sessionStorage.getItem('store') ? JSON.parse(sessionStorage.getItem('store')).login_time : new Date(0)
+    user: {
+      UserName: '',
+      Email: '',
+      FirstName: '',
+      LastName: '',
+      NickName: '',
+      RegisterDate: '',
+      LastLoginDate: '',
+      Company: '',
+      Department: ''
+    },
+    token: ''
   },
   mutations: {
-    SET_ACCOUNT (state, res) {
-      state.data = res
+    SET_User (state, res) {
+      state.user = res
     },
-    SET_AUTHORIZATION (state, res) {
+    SET_Token (state, res) {
+      state.token = res
       state.Authorization = res
-    },
-    SET_LOGINING (state, res) {
-      state.islogining = res
-    },
-    GET_Time (state, res) {
-      state.login_time = res
     }
   },
   actions: {
     user_account ({
       commit
     }, parameterData) {
-      commit('SET_ACCOUNT', parameterData)
+      setCookie('user', parameterData)
+      commit('SET_User', parameterData)
     },
     user_authorize ({ // 登陆授权
       commit
     }, parameterData) {
-      commit('SET_AUTHORIZATION', parameterData.token_type + ' ' + parameterData.access_token)
+      const token = parameterData.token_type + ' ' + parameterData.access_token
+      setCookie('token', token)
+      commit('SET_Token', token)
     },
     logout ({ // 注销
       commit
     }, parameterData) {
-      alert('logout')
-      commit('SET_ACCOUNT', '')
-      commit('SET_AUTHORIZATION', '')
-      commit('SET_LOGINING', false)
+      commit('SET_User', '')
+      commit('SET_Token', '')
+      removeToken('token')
+      removeToken('logined_time')
     }
   }
 }

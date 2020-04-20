@@ -28,7 +28,7 @@
         <div class=" container" v-if= "tabledata.length >0">
           <template>
             <section id="print">
-              <table class="table table-striped" >
+              <table class="table" >
                   <thead>
                     <tr>
                       <td>日期</td>
@@ -36,6 +36,7 @@
                       <td>设备名称</td>
                       <td>报警内容</td>
                       <td>状态</td>
+                      <td>操作</td>
                     </tr>
                   </thead>
                   <tbody>
@@ -45,6 +46,7 @@
                       <td>{{item.Status.state.name}}</td>
                       <td>{{item.Status.state.value}}</td>
                       <td>{{item.Status.state.operation}}</td>
+                      <td><a href="javascript: ;" id='action' @click="action(index)" >{{item.Action}}</a></td>
                     </tr>
                   </tbody>
               </table>
@@ -69,7 +71,8 @@ export default {
       value: '',
       showdata: [],
       datalist: {},
-      tabledata: []
+      tabledata: [],
+      isaction: true
     }
   },
   created () {
@@ -97,7 +100,7 @@ export default {
                 let count = 0
                 this.datalist.Groups[i].Devices.some(obj => {
                   if (deletesign(obj.Status) === '故障') {
-                    var tablearray = {'Time': res.data.time, 'Name': this.datalist.Name, 'Status': {}}
+                    var tablearray = {'Time': res.data.time, 'Name': this.datalist.Name, 'Status': {}, 'Action': '未解除'}
                     this.$set(this.tabledata, index, tablearray) // 最佳方式
                     // this.tabledata.push(tablearray) 也可以实现结构添加，但this.tabledata[index]=tablearray不可以 原因是vue检测不到这种更新
                     this.tabledata[index].Status = {'count': count, 'state': {'value': '', 'name': '', 'operation': '报警中'}}
@@ -114,20 +117,15 @@ export default {
           .catch(error => { console.log(error) })
       }
     },
-    // 修改table tr行的背景色
-    tableRowStyle ({ row, rowIndex }) {
-      if (rowIndex % 2 === 0) {
-        return 'background-color: #f2f6fc; color: #606266; height:3px;'
-      } else {
-        return 'background-color: transparent; color: #606266; height:3px;'
-      }
-    },
-    // 修改table header的背景色
-    tableHeaderColor ({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex === 0) {
-        return 'background-color: #f2f6fc; color: #606266; height: 5px;'
+    action (index) {
+      if (this.isaction === true) {
+        let con = confirm('你是否要解除报警')
+        if (con === true) {
+          this.$delete(this.tabledata, index)
+        }
       }
     }
+   
   },
   components: {
     Header, Footer

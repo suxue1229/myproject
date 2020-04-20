@@ -31,8 +31,6 @@ export default {
     userinfo
   },
   created () {
-    if (window.sessionStorage.getItem('loginForm')) {
-    }
   },
   methods: {
     // 时间戳转日期格式
@@ -69,10 +67,11 @@ export default {
     padding: 0;
     background: #304156;
     border-bottom: solid 1px rgba(16,46,86,.8);
+    z-index: 999;
   }
   .logo{
     width: 100%;
-      height: 100%;
+    height: 100%;
   }
   .narbar-color{
     color: #BFCBD9;
@@ -85,7 +84,8 @@ export default {
 }
 .infostyle {
   position: fixed;
-  margin-left: 85%;
-  z-index: 9999 !important;
+  top:90px;
+  right: 30px;
+  z-index: 999 !important;
 }
 </style>

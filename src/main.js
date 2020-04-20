@@ -10,8 +10,8 @@ import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'vue-easytable/libs/themes-base/index.css'
-
 import {VTable, VPagination} from 'vue-easytable'
+
 Vue.use(BootstrapVue)
 Vue.use(animated)
 Vue.config.productionTip = false

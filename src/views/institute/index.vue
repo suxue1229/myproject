@@ -37,6 +37,7 @@ export default {
   name: 'secondchild',
   data () {
     return {
+      instituteData: this.$store.getters.institute_Data,
       multipleSort: false,
       pageIndex: 1,
       pageSize: 10,
@@ -66,19 +67,16 @@ export default {
   },
   mounted () {
     // Event.$emit('senddata', this.tableData)
-    this.intervalid = setInterval(() => {
-      this.initdata()
-    }, 100000)
+    this.Interval()
   },
   beforeDestroy () {
-    clearInterval(this.intervalid)
+    clearInterval(this.Interval())
   },
   methods: {
     initdata () {
       this.showdata = []
-      var instituteData = this.$store.getters.institute_Data
-      for (var i = 0; i < instituteData.length; i++) {
-        this.$axios.get(this.HOST + '/data/' + instituteData[i].Id)
+      for (var i = 0; i < this.instituteData.length; i++) {
+        this.$axios.get(this.HOST + '/data/' + this.instituteData[i].Id)
           .then(res => {
             if (res.data.status === 0) {
               this.$store.dispatch('get_data', res.data.data)
@@ -129,7 +127,6 @@ export default {
     pageChange (pageIndex) {
       this.pageIndex = pageIndex
       this.getTableData()
-      console.log(pageIndex)
     },
     pageSizeChange (pageSize) {
       this.pageIndex = 1
@@ -148,6 +145,11 @@ export default {
           }
         })
       }
+    },
+    Interval () {
+      return setInterval(() => {
+        this.initdata()
+      }, 60000)
     }
   },
   components: {

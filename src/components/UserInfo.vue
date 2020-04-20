@@ -1,14 +1,14 @@
 <template>
   <div class='usercard'>
     <b-card
-      :header="data.UserName"
-      header-text-variant="#212529"
-      header-tag="header"
-      header-bg-variant="#F2F2F2"
       align="center"
       style="max-width: 15rem;"
       class="mb-2"
     >
+    <template v-slot:header>
+        <img class="portrait" src='../assets/userlogo.jpg'>
+        <small class="header-style">{{username}}</small>
+    </template>
     <div class="list-group list-group-flush" >
       <a href="#" class="list-group-item list-group-item-action" ><i class="el-icon-setting icon-style"></i><p class="text-style">设置</p></a>
       <a href="#" class="list-group-item list-group-item-action" @click="exit"><i class="el-icon-close icon-style"></i><p class="text-style">注销</p></a>
@@ -21,17 +21,26 @@
 </template>
 
 <script>
+import {getCookie, setCookie} from '@/js/untils/validate.js'
 export default {
   name: 'UserInfo',
   data () {
     return {
-      data: {},
-      logined_time: window.sessionStorage.getItem('time') > 0 ? window.sessionStorage.getItem('time') : 0
+      username: '',
+      logined_time: getCookie('logined_time') ? getCookie('logined_time') : 0
     }
   },
   created () {
     this.init()
     this.gettime()
+  },
+  watch: {
+    logined_time () {
+      this.Interval()
+    }
+  },
+  destroyed () {
+    clearInterval(this.Interval())
   },
   methods: {
     init () {
@@ -40,7 +49,7 @@ export default {
           if (res.data.status === 0) {
             this.$store.dispatch('user_account', res.data.data)
               .then(res => {
-                this.data = this.$store.getters.account_data
+                this.username = JSON.parse(getCookie('user')).UserName
               }).catch(error => {
                 console.log(error)
               })
@@ -49,25 +58,35 @@ export default {
         .catch(error => { console.log(error) })
     },
     exit () {
-      window.sessionStorage.removeItem('store')
-      window.sessionStorage.removeItem('time')
+      this.$store.dispatch('logout')
       this.$router.push('/login')
-      window.location.reload()
+    },
+    Interval () {
+      return setInterval(() => {
+        this.gettime()
+      }, 10000)
     },
     gettime () {
-      setInterval(() => {
-        this.logined_time = Math.round((new Date().getTime() - this.$store.getters.login_time) / 60000)
-        window.sessionStorage.setItem('time', this.logined_time)
-      }, 10000)
+      this.logined_time = Math.round((new Date().getTime() - new Date(JSON.parse(getCookie('user')).LastLoginDate).getTime()) / 60000)
+      setCookie('logined_time', this.logined_time)
     }
-
   }
 }
 </script>
 
 <style scoped>
+.usercard{
+  width:200px;
+  height:300px;
+}
+.card{
+  background-color: #304156;
+}
 .card-body {
   padding: 0px;
+}
+.header-style{
+  color:#CCCCCC
 }
 .list-group-item{
   display: flex;
@@ -76,7 +95,7 @@ export default {
   text-align: center;
 }
 .icon-style{
-  color: #28d7fe;
+  color: #304156;
   flex: 0.5;
   font-size: 20px;
   text-align: center;
@@ -87,8 +106,22 @@ export default {
   margin-bottom: 0px;
 }
 a.hover{
-  background-color: #E6F7FF;
+  background-color: #304156;
 }
+.portrait{
+  width: 100px;
+  height: 100px;
+  overflow:hidden;
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  -ms-border-radius: 100%;
+  -o-border-radius: 100%;;
+  border-radius: 100%;
+  background-color: #304156;
+  margin:0 auto;
+  border: 2px solid #CCCCCC;
+  display: block;
+  }
 /* .list-group-item{
   padding: 10px;
 } */

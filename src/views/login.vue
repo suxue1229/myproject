@@ -3,10 +3,10 @@
     <form class='login-form'>
       <h3 class='title'>洱源污水处理智慧管理平台</h3>
       <div class='input-box username'>
-        <el-input type="text" autofocus required="required" placeholder="请输入用户名" prefix-icon="el-icon-user" v-model="loginForm.username"> </el-input>
+        <el-input type="text" autofocus required="required" placeholder="请输入用户名" prefix-icon="el-icon-user" v-model="user.loginForm.username"> </el-input>
       </div>
       <div class='input-box password'>
-        <el-input placeholder="请输入密码" required="required" prefix-icon="el-icon-lock" @keyup.enter="Login" v-model="loginForm.password" show-password></el-input>
+        <el-input placeholder="请输入密码" required="required" prefix-icon="el-icon-lock" @keyup.enter="Login" v-model="user.loginForm.password" show-password></el-input>
       </div>
       <div class='register'>
         <a href="#">注册账号</a>
@@ -23,29 +23,25 @@ export default {
   name: 'login',
   data () {
     return {
-      loginForm: {
-        username: '',
-        password: ''
-      },
-      logintime: '',
-      islogining: false
+      user: {
+        loginForm: {
+          username: '',
+          password: ''
+        },
+        logintime: ''
+      }
     }
   },
   methods: {
     Login () {
       let _this = this
-      this.$store.commit('SET_LOGINING', this.islogining)
-      if (this.loginForm.username === '' || this.loginForm.password === '') {
+      if (this.user.loginForm.username === '' || this.user.loginForm.password === '') {
         alert('账号或密码不能为空')
       } else {
-        this.$axios.post(this.HOST + '/user/authorize', QS.stringify({grant_type: 'password', username: this.loginForm.username, password: this.loginForm.password}).replace('%40', '@'), {headers: {'Content-Type': 'application/x-www-form-urlencoded', 'charset': 'utf-8'}})
+        this.$axios.post(this.HOST + '/user/authorize', QS.stringify({grant_type: 'password', username: this.user.loginForm.username, password: this.user.loginForm.password}).replace('%40', '@'), {headers: {'Content-Type': 'application/x-www-form-urlencoded', 'charset': 'utf-8'}})
           .then(res => {
             this.$store.dispatch('user_authorize', res.data)
               .then(res => {
-                this.islogining = true
-                this.logintime = new Date().getTime()
-                this.$store.commit('SET_LOGINING', this.islogining)
-                this.$store.commit('GET_Time', this.logintime)
                 this.$axios.defaults.headers.common['Authorization'] = this.$store.getters.Authorization
                 _this.$router.push('/overview')
               }).catch(error => {

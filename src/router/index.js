@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import store from '../store'
+import {getCookie} from '@/js/untils/validate.js'
 
 Vue.use(Router)
 export const router = new Router(
@@ -57,7 +57,7 @@ export const router = new Router(
       },
       {
         path: '/*',
-        redirect: '/overview'
+        redirect: '/login'
       }
     ]
   })
@@ -66,8 +66,8 @@ export default router
 // 导航守卫
 // 使用 router.beforeEach 注册一个全局前置守卫，判断用户是否登陆
 router.beforeEach((to, from, next) => {
-  var islogining = store.getters.islogining
-  if (to.matched.some(item => item.meta.login_required) && !islogining) {
+  var token = getCookie('token')
+  if (to.matched.some(item => item.meta.login_required) && !token) {
     next('/login')
   } else {
     next()

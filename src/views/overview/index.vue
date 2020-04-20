@@ -66,9 +66,14 @@ export default {
   created () {
     this.initdata()
   },
-  // watch: { //还回后重新填充数据 一闪现象
-  //   '$route': 'initdata'
-  // },
+  watch: {
+    datalist () {
+      this.Interval()
+    }
+  },
+  destroyed () {
+    clearInterval(this.Interval())
+  },
   methods: {
     initdata () {
       this.$axios
@@ -117,6 +122,11 @@ export default {
         .catch(error => {
           console.log(error)
         })
+    },
+    Interval () {
+      return setInterval(() => {
+        this.initdata()
+      }, 60000)
     },
     getinfo (item) {
       this.$router.push({ name: 'monitor',
