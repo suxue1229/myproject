@@ -14,7 +14,7 @@ import {VTable, VPagination} from 'vue-easytable'
 
 Vue.use(BootstrapVue)
 Vue.use(animated)
-Vue.config.productionTip = false
+Vue.config.productionTip = false // 消息提示的环境配置，设置为开发环境或者生产环境(开发环境下，Vue 会提供很多警告来帮你对付常见的错误与陷阱。而在生产环境下，这些警告语句却没有用，反而会增加应用的体积)
 Vue.prototype.$axios = axios
 Vue.prototype.HOST = '/api'
 Vue.use(Table)

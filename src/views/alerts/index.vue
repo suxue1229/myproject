@@ -1,9 +1,9 @@
 <template>
   <div class="content">
     <Header />
-      <div class="container-fluid container-style">
+      <div class="container container-style">
         <div class="row">
-            <el-date-picker
+            <!-- <el-date-picker
             v-model="dateVals"
             class="date-picker col-md-5"
             type="daterange"
@@ -12,7 +12,7 @@
             unlink-panels
             start-placeholder="开始日期"
             end-placeholder="结束日期">
-            </el-date-picker>
+            </el-date-picker> -->
           <template >
             <el-select v-model="item" placeholder="请选择" class="select col-md-3" @change="handle(item)">
               <el-option
@@ -26,7 +26,7 @@
           </template>
           <el-button class="button col-md-2" type="primary" onclick="print()">打印报表</el-button>
         </div>
-        <div class=" container" v-if= "tabledata.length >0">
+        <div v-if= "tabledata.length >0">
           <template>
             <section id="print">
               <table class="table" id= '_table'>
@@ -40,7 +40,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="(item, index) in tabledata" :key="index" id="row"  >
+                    <tr v-for="(item, index) in tabledata" :key="index" >
                       <td>{{item.Time}}</td>
                       <td>{{item.Name}}</td>
                       <td>{{item.Status.state.name}}</td>
@@ -63,7 +63,7 @@ import printJS from 'print-js'
 import {deletesign} from '@/js/common.js'
 
 export default {
-  name: 'thirdchild',
+  name: 'alerts',
   data () {
     return {
       dateVals: '',
@@ -146,9 +146,11 @@ export default {
 }
 .container-style {
   width: 100%;
-  position: absolute;
+  position: absolute;/* class="container" 在position：relative时是居中显示的*/
   top: 85px;
   bottom: 50px;
+  left:50%;
+  transform: translateX(-50%);/* left:50%;transform: translateX(-50%);居中 */
   color: #606266;
   overflow: hidden;
   display: flex;
@@ -156,6 +158,10 @@ export default {
 }
 .row {
   padding: 20px;
+  display: flex;
+}
+.button{
+  margin-left: auto;
 }
 .table tbody tr{
   background-color: #dc3545;

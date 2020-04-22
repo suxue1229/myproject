@@ -44,9 +44,9 @@ export const router = new Router(
         }
       },
       {
-        path: '/alters',
-        name: 'alters',
-        component: resolve => require(['@/views/alters'], resolve),
+        path: '/alerts',
+        name: 'alerts',
+        component: resolve => require(['@/views/alerts'], resolve),
         meta: {
           login_required: true
         }
