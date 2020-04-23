@@ -26,12 +26,16 @@ export default {
   name: 'UserInfo',
   data () {
     return {
-      username: getCookie('user') ? getCookie('user') : '',
       logined_time: getCookie('logined_time') ? getCookie('logined_time') : 0
     }
   },
   created () {
     this.gettime()
+  },
+  computed: {
+    username () {
+      return this.$store.state.login.user.UserName
+    }
   },
   watch: {
     logined_time () {
@@ -106,10 +110,4 @@ a.hover{
   border: 2px solid #CCCCCC;
   display: block;
   }
-/* .list-group-item{
-  padding: 10px;
-} */
-/* .list-group-item{
-  padding: 10px;
-} */
 </style>

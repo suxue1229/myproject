@@ -1,7 +1,7 @@
 const institute = {
   state: {
-    institute_Data: sessionStorage.getItem('store') ? JSON.parse(sessionStorage.getItem('store')).institute.institute_Data : '',
-    info_Data: sessionStorage.getItem('store') ? JSON.parse(sessionStorage.getItem('store')).institute.info_Data : ''
+    institute_Data: '',
+    info_Data: ''
   },
   mutations: {
     INSTITUTE_DATA (state, res) {

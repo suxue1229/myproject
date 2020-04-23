@@ -16,12 +16,18 @@ const login = {
   },
   mutations: {
     SET_User (state, res) {
-      state.user = res
-      setCookie('user', state.user.UserName)
+      state.user.UserName = res.UserName
+      state.user.Email = res.Email
+      state.user.FirstName = res.FirstName
+      state.user.LastName = res.LastName
+      state.user.NickName = res.NickName
+      state.user.RegisterDate = res.RegisterDate
+      state.user.LastLoginDate = res.LastLoginDate
+      state.user.Company = res.Company
+      state.user.Department = res.Department
     },
     SET_Token (state, res) {
       state.token = res
-      state.Authorization = res
     }
   },
   actions: {
@@ -43,7 +49,6 @@ const login = {
     }, parameterData) {
       commit('SET_User', '')
       commit('SET_Token', '')
-      removeToken('user')
       removeToken('token')
       removeToken('logined_time')
     }

@@ -16,6 +16,8 @@
           >
             <b-card-text>
               <p>为了保护洱海流域敏感的水环境，大理州洱源县政府与北京碧水源科技股份有限公司签订了《洱源县乡镇及村落污水处理工程PPP合作协议》，对辖区内的分散污染源进行综合治理。本项目新建镇级污水处理厂6座，村落污水处理站53座，总设计处理规模2.392万吨/天；新建管网851.22km和提升泵站21座。总投资22.29亿元，分两期建设。</p>
+              <p>为了保护洱海流域敏感的水环境，大理州洱源县政府与北京碧水源科技股份有限公司签订了《洱源县乡镇及村落污水处理工程PPP合作协议》，对辖区内的分散污染源进行综合治理。本项目新建镇级污水处理厂6座，村落污水处理站53座，总设计处理规模2.392万吨/天；新建管网851.22km和提升泵站21座。总投资22.29亿元，分两期建设。</p>
+              <p>为了保护洱海流域敏感的水环境，大理州洱源县政府与北京碧水源科技股份有限公司签订了《洱源县乡镇及村落污水处理工程PPP合作协议》，对辖区内的分散污染源进行综合治理。本项目新建镇级污水处理厂6座，村落污水处理站53座，总设计处理规模2.392万吨/天；新建管网851.22km和提升泵站21座。总投资22.29亿元，分两期建设。</p>
             </b-card-text>
           </b-card>
         </div>
@@ -64,14 +66,14 @@ export default {
     Footer
   },
   created () {
-    this.getUserInfo()
     this.initdata()
   },
-  watch: {
-    datalist () {
-      this.Interval()
-    }
-  },
+  // computed: {
+  //   datalist () {
+  //     // this.Interval()
+  //     return this.$store.getters.institute_Data
+  //   }
+  // },
   destroyed () {
     clearInterval(this.Interval())
   },
@@ -82,7 +84,7 @@ export default {
         .then(res => {
           if (res.data.status === 0) {
             this.$store.dispatch('get_institute', res.data.data)
-            this.datalist = this.$store.getters.institute_Data
+            // this.datalist = this.$store.getters.institute_Data
             this.map = new BMap.Map('map')
             var point = new BMap.Point(116.404, 39.915)
             this.map.centerAndZoom(point, 10)
@@ -128,15 +130,6 @@ export default {
       return setInterval(() => {
         this.initdata()
       }, 60000)
-    },
-    getUserInfo () {
-      this.$axios.get(this.HOST + '/user/account')
-        .then(res => {
-          if (res.data.status === 0) {
-            this.$store.dispatch('user_account', res.data.data)
-          }
-        })
-        .catch(error => { console.log(error) })
     },
     getinfo (item) {
       this.$router.push({ name: 'monitor',

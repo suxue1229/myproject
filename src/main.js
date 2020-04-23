@@ -35,7 +35,7 @@ Vue.component(VPagination.name, VPagination)
 axios.interceptors.request.use(
   config => {
     if (sessionStorage.getItem('store')) {
-      config.headers.Authorization = JSON.parse(sessionStorage.getItem('store')).login.Authorization
+      config.headers.Authorization = JSON.parse(sessionStorage.getItem('store')).login.token
     }
     if (config.url.charAt(config.url.length - 1) === '/') {
       config.url = config.url + config.data
