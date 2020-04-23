@@ -26,8 +26,7 @@
           </template>
           <el-button class="button col-md-2" type="primary" onclick="print()">打印报表</el-button>
         </div>
-        <div class=" container" v-if= "tabledata.length >0">
-          <template>
+        <div  v-if= "tabledata.length >0">
             <section id="print">
               <table class="table" id= '_table'>
                   <thead>
@@ -50,7 +49,6 @@
                   </tbody>
               </table>
             </section>
-          </template>
         </div>
       </div>
     <Footer />

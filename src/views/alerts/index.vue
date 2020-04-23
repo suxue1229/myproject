@@ -26,31 +26,29 @@
           </template>
           <el-button class="button col-md-2" type="primary" onclick="print()">打印报表</el-button>
         </div>
-        <div v-if= "tabledata.length >0">
-          <template>
-            <section id="print">
-              <table class="table" id= '_table'>
-                  <thead>
-                    <tr>
-                      <td>日期</td>
-                      <td>站点名称</td>
-                      <td>设备名称</td>
-                      <td>报警内容</td>
-                      <td>状态</td>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(item, index) in tabledata" :key="index" >
-                      <td>{{item.Time}}</td>
-                      <td>{{item.Name}}</td>
-                      <td>{{item.Status.state.name}}</td>
-                      <td>{{item.Status.state.value}}</td>
-                      <td>{{item.Status.state.operation}}</td>
-                    </tr>
-                  </tbody>
-              </table>
-            </section>
-          </template>
+        <div class="div_table" v-if= "tabledata.length >0">
+          <section id="print">
+            <table class="table" id= '_table'>
+                <thead>
+                  <tr>
+                    <td>日期</td>
+                    <td>站点名称</td>
+                    <td>设备名称</td>
+                    <td>报警内容</td>
+                    <td>状态</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(item, index) in tabledata" :key="index" >
+                    <td>{{item.Time}}</td>
+                    <td>{{item.Name}}</td>
+                    <td>{{item.Status.state.name}}</td>
+                    <td>{{item.Status.state.value}}</td>
+                    <td>{{item.Status.state.operation}}</td>
+                  </tr>
+                </tbody>
+            </table>
+          </section>
         </div>
       </div>
     <Footer />
@@ -162,6 +160,16 @@ export default {
 }
 .button{
   margin-left: auto;
+}
+.div_table{
+  overflow: auto;
+  text-align: center;
+}
+.table thead tr{
+  background-color: #304156;
+  font-size: 20px;
+  color: #BFCBD9;
+  font-weight: bold;
 }
 .table tbody tr{
   background-color: #dc3545;

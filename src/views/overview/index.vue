@@ -64,6 +64,7 @@ export default {
     Footer
   },
   created () {
+    this.getUserInfo()
     this.initdata()
   },
   watch: {
@@ -128,6 +129,15 @@ export default {
         this.initdata()
       }, 60000)
     },
+    getUserInfo () {
+      this.$axios.get(this.HOST + '/user/account')
+        .then(res => {
+          if (res.data.status === 0) {
+            this.$store.dispatch('user_account', res.data.data)
+          }
+        })
+        .catch(error => { console.log(error) })
+    },
     getinfo (item) {
       this.$router.push({ name: 'monitor',
         query: {
@@ -188,7 +198,6 @@ export default {
   height: 100%;
 }
 .row-right-list {
-  height: 100%;
   padding: 5px;
   list-style-type: none;
   font-size: 13px;

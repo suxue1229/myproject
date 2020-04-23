@@ -21,17 +21,16 @@
 </template>
 
 <script>
-import {getCookie, setCookie} from '@/js/untils/validate.js'
+import {getCookie} from '@/js/untils/validate.js'
 export default {
   name: 'UserInfo',
   data () {
     return {
-      username: '',
+      username: getCookie('user') ? getCookie('user') : '',
       logined_time: getCookie('logined_time') ? getCookie('logined_time') : 0
     }
   },
   created () {
-    this.init()
     this.gettime()
   },
   watch: {
@@ -43,20 +42,6 @@ export default {
     clearInterval(this.Interval())
   },
   methods: {
-    init () {
-      this.$axios.get(this.HOST + '/user/account')
-        .then(res => {
-          if (res.data.status === 0) {
-            this.$store.dispatch('user_account', res.data.data)
-              .then(res => {
-                this.username = JSON.parse(getCookie('user')).UserName
-              }).catch(error => {
-                console.log(error)
-              })
-          }
-        })
-        .catch(error => { console.log(error) })
-    },
     exit () {
       this.$store.dispatch('logout')
       this.$router.push('/login')
@@ -67,8 +52,7 @@ export default {
       }, 10000)
     },
     gettime () {
-      this.logined_time = Math.round((new Date().getTime() - new Date(JSON.parse(getCookie('user')).LastLoginDate).getTime()) / 60000)
-      setCookie('logined_time', this.logined_time)
+      this.logined_time = Math.round((new Date().getTime() - getCookie('firstlogin_time')) / 60000)
     }
   }
 }

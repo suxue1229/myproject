@@ -27,8 +27,7 @@ export default {
         loginForm: {
           username: '',
           password: ''
-        },
-        logintime: ''
+        }
       }
     }
   },
@@ -41,15 +40,13 @@ export default {
         this.$axios.post(this.HOST + '/user/authorize', QS.stringify({grant_type: 'password', username: this.user.loginForm.username, password: this.user.loginForm.password}).replace('%40', '@'), {headers: {'Content-Type': 'application/x-www-form-urlencoded', 'charset': 'utf-8'}})
           .then(res => {
             this.$store.dispatch('user_authorize', res.data)
-              .then(res => {
-                this.$axios.defaults.headers.common['Authorization'] = this.$store.getters.Authorization
-                _this.$router.push('/overview')
-              }).catch(error => {
-                alert('账号或密码错误')
-                console.log(error)
-              })
+            this.$axios.defaults.headers.common['Authorization'] = this.$store.getters.Authorization
+            _this.$router.push('/overview')
           })
-          .catch(error => { console.log(error) })
+          .catch(error => {
+            alert('账号或密码错误')
+            console.log(error)
+          })
       }
     }
   }
