@@ -68,12 +68,9 @@ export default {
   created () {
     this.initdata()
   },
-  // computed: {
-  //   datalist () {
-  //     // this.Interval()
-  //     return this.$store.getters.institute_Data
-  //   }
-  // },
+  mounted () {
+    this.Interval()
+  },
   destroyed () {
     clearInterval(this.Interval())
   },
@@ -84,7 +81,7 @@ export default {
         .then(res => {
           if (res.data.status === 0) {
             this.$store.dispatch('get_institute', res.data.data)
-            // this.datalist = this.$store.getters.institute_Data
+            this.datalist = this.$store.getters.institute_Data
             this.map = new BMap.Map('map')
             var point = new BMap.Point(116.404, 39.915)
             this.map.centerAndZoom(point, 10)

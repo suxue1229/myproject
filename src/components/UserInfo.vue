@@ -48,7 +48,7 @@ export default {
   methods: {
     exit () {
       this.$store.dispatch('logout')
-      this.$router.push('/login')
+      location.reload() // 为了重新实例化vue-router对象 避免bug
     },
     Interval () {
       return setInterval(() => {
