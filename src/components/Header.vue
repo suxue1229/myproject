@@ -31,6 +31,7 @@ export default {
     userinfo
   },
   created () {
+    this.isshowing = false
   },
   methods: {
     // 时间戳转日期格式

@@ -3,7 +3,7 @@
     <i class="el-icon-close closestyle" @click="close"></i>
     <h3>{{data.Name}}</h3>
     <div class="main">
-      <div class="tablestyle">
+      <div class="tablestyle" v-if="infos.length>0">
           <h4>设备状态</h4>
           <table class="table table-striped">
             <tr v-for="(item,i) in infos[0]" :key="i">
@@ -13,19 +13,18 @@
           </table>
           <h4>仪表数据</h4>
           <table class="table table-striped">
-            <tr v-for="(ite,index) in infos[1]" :key="index">
+            <tr v-for="(ite,index) in infos[1]" :key="index" v-cloak>
               <td class="col_name"><a id="tag_a" href="javascript:void(0)" class="astyle" @click="sendItem(ite)">{{ite.Name}}</a></td>
               <td class="col_value">{{ite.Value}} {{ite.Unit}}</td>
             </tr>
           </table>
       </div>
       <div class="chartpart">
-      <drawChart :sensor="sensor"></drawChart>
+        <drawChart :sensor="sensor"></drawChart>
       </div>
     </div>
   </div>
 </template>
-
 <script>
 /*
 父beforeCreate->父created->父beforeMount->子beforeCreate->子created->子beforeMount->子mounted->父mounted */
@@ -51,34 +50,39 @@ export default {
   created () {
     this.init()
   },
-  mounted () {
-    // this.intervalid()
-  },
+  // mounted () {
+  //   this.intervalid()
+  // },
+  // watch: {
+  //   infos (newval, oldval) {
+  //     this.intervalid()
+  //     return newval
+  //   }
+  // },
   destroyed () {
     clearInterval(this.intervalid)
   },
   methods: {
     init () {
-      this.infos = []
+      // if (this.infos) {
+      //   this.infos = []
+      // }
       this.$axios.get(this.HOST + '/data/' + this.$route.query.id)
         .then(res => {
           if (res.data.status === 0) {
             this.$store.dispatch('get_data', res.data.data)
-              .then(res => {
-                this.data = this.$store.getters.info_Data
-                for (var i = 0; i < this.data.Groups.length; i++) {
-                  this.infos.push(this.data.Groups[i].Devices)
-                  this.infos.push(this.data.Groups[i].Sensors)
-                  // this.$set(this.infos, 0, this.data.Groups[i].Devices) 两种表达方式都对
-                  // this.$set(this.infos, 1, this.data.Groups[i].Sensors)
-                }
-                if (this.infos[1].length > 0) {
-                  let arr = this.infos[1][0]
-                  this.sensor = arr // 默认第一个数据
-                }
-              }).catch(error => {
-                console.log(error)
-              })
+            this.data = this.$store.getters.info_Data
+            for (var i = 0; i < this.data.Groups.length; i++) {
+              /* 两种表达方式都可以将数据加入到数组中并渲染，但使用push 如何此方法首先不对数组赋值，则以后数据在数组最后一个index后继续添加,表现为数组越变越大;而每次清空 出现闪现，但$set只会在原有数据上更新 */
+              // this.infos.push(this.data.Groups[i].Devices)
+              // this.infos.push(this.data.Groups[i].Sensors)
+              this.$set(this.infos, 0, this.data.Groups[i].Devices)
+              this.$set(this.infos, 1, this.data.Groups[i].Sensors)
+            }
+            if (this.infos[1].length > 0) {
+              let arr = this.infos[1][0]
+              this.sensor = arr // 默认第一个数据
+            }
           }
         })
         .catch(error => { console.log(error) })
@@ -142,6 +146,9 @@ h3{
 }
 .table:last-child{
   margin-bottom: 60px;
+}
+[v-cloak]{
+  display:none;
 }
 .col_name{
   width: 20%;

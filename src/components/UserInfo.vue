@@ -51,12 +51,12 @@ export default {
       location.reload() // 为了重新实例化vue-router对象 避免bug
     },
     Interval () {
-      return setInterval(() => {
+      setInterval(() => {
         this.gettime()
       }, 10000)
     },
     gettime () {
-      this.logined_time = Math.round((new Date().getTime() - getCookie('firstlogin_time')) / 60000)
+      this.logined_time = Math.round((new Date().getTime() - getCookie('logined_time')) / 60000)
     }
   }
 }

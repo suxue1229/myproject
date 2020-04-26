@@ -41,7 +41,7 @@ const login = {
     }, parameterData) {
       const token = parameterData.token_type + ' ' + parameterData.access_token
       setCookie('token', token)
-      setCookie('firstlogin_time', new Date().getTime())
+      setCookie('logined_time', new Date().getTime())
       commit('SET_Token', token)
     },
     logout ({ // 注销

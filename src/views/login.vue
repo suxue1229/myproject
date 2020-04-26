@@ -40,7 +40,6 @@ export default {
         this.$axios.post(this.HOST + '/user/authorize', QS.stringify({grant_type: 'password', username: this.user.loginForm.username, password: this.user.loginForm.password}).replace('%40', '@'), {headers: {'Content-Type': 'application/x-www-form-urlencoded', 'charset': 'utf-8'}})
           .then(res => {
             this.$store.dispatch('user_authorize', res.data)
-            this.$axios.defaults.headers.common['token'] = this.$store.getters.token
             this.getUserInfo()
             _this.$router.push('/overview')
           })

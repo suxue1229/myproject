@@ -43,12 +43,18 @@ export default {
       pageSize: 10,
       infodata: {},
       tableData: [],
-      showdata: null,
+      showdata: [],
       columns: [
-        {field: 'custome', title: '排序', width: 50, titleAlign: 'center', columnAlign: 'cneter', formatter: function (rowData, index, pagingIndex) {
-          var currentIndex = index + pagingIndex;
-          return currentIndex < 3 ? (currentIndex + 1) : currentIndex + 1
-        }},
+        {
+          field: 'custome',
+          title: '排序',
+          width: 50,
+          titleAlign: 'center',
+          columnAlign: 'cneter',
+          formatter: function (rowData, index, pagingIndex) {
+            var currentIndex = index + pagingIndex
+            return currentIndex < 3 ? (currentIndex + 1) : currentIndex + 1
+          }},
         {field: 'name', title: '厂站名称', width: 200, titleAlign: 'center', columnAlign: 'left', isResize: true},
         {field: 'chansb', title: '产水泵', width: 100, titleAlign: 'center', columnAlign: 'center', isResize: true},
         {field: 'fengj', title: '风机', width: 100, titleAlign: 'center', columnAlign: 'center', isResize: true},
@@ -63,10 +69,18 @@ export default {
   },
   created () {
     this.initdata()
-    this.getTableData()
   },
   mounted () {
-    // Event.$emit('senddata', this.tableData)
+      // if (this.timer) {
+      //   console.log('aaa')
+      //   clearInterval(this.timer)
+      //   return this.timer
+      // } else {
+      //   console.log('bbb')
+      //   this.timer = setInterval(() => {
+      //     this.initdata()
+      //   }, 10000)
+      // }
     this.Interval()
   },
   beforeDestroy () {
@@ -74,14 +88,27 @@ export default {
   },
   methods: {
     initdata () {
-      this.showdata = []
-      for (var i = 0; i < this.instituteData.length; i++) {
+      for (let i = 0; i < this.instituteData.length; i++) {
         this.$axios.get(this.HOST + '/data/' + this.instituteData[i].Id)
           .then(res => {
             if (res.data.status === 0) {
-              this.$store.dispatch('get_data', res.data.data)
-              this.infodata = this.$store.getters.info_Data
-              this.formatedata(this.infodata)
+              this.$store.dispatch('get_data', res.data.data).then(
+                () => {
+                  this.infodata = this.$store.getters.info_Data
+                  let arrtemp = this.formatedata(this.infodata)
+                  this.$set(this.showdata, i, {
+                    'name': arrtemp[8],
+                    'chansb': arrtemp[0],
+                    'fengj': arrtemp[1],
+                    'huilb': arrtemp[2],
+                    'chulb': arrtemp[3],
+                    'chansll': arrtemp[4],
+                    'mbr': arrtemp[5],
+                    'leijdl': arrtemp[6],
+                    'leijsl': arrtemp[7] })
+                  this.getTableData()
+                }
+              )
             }
           })
           .catch(error => { console.log(error) })
@@ -89,6 +116,7 @@ export default {
     },
     formatedata (datalist) {
       var Devicelist = []
+      this.$set(Devicelist, 8, datalist.Name)
       for (var i = 0; i < datalist.Groups.length; i++) {
         for (var j = 0; j < datalist.Groups[i].Devices.length; j++) {
           let itemname = datalist.Groups[i].Devices[j].Name
@@ -116,10 +144,8 @@ export default {
             this.$set(Devicelist, 7, item)
           }
         }
-        this.showdata.push({'name': datalist.Name, 'chansb': Devicelist[0], 'fengj': Devicelist[1], 'huilb': Devicelist[2],
-          'chulb': Devicelist[3], 'chansll': Devicelist[4], 'mbr': Devicelist[5], 'leijdl': Devicelist[6], 'leijsl': Devicelist[7] })
-        this.tableData = this.showdata.slice((this.pageIndex - 1) * this.pageSize, (this.pageIndex) * this.pageSize)
       }
+      return Devicelist
     },
     getTableData () {
       this.tableData = this.showdata.slice((this.pageIndex - 1) * this.pageSize, (this.pageIndex) * this.pageSize)
@@ -147,9 +173,12 @@ export default {
       }
     },
     Interval () {
+      console.log('@@@@')
       return setInterval(() => {
-        this.initdata()
-      }, 60000)
+        setTimeout(() => {
+          this.initdata()
+        }, 0)
+      }, 10000)
     }
   },
   components: {
