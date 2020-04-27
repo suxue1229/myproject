@@ -1,162 +1,59 @@
 <template>
-  <div class="content">
-    <Header />
-      <div class="container-fluid container-style">
-        <div class="row">
-            <el-date-picker
-            v-model="dateVals"
-            class="date-picker col-md-5"
-            type="daterange"
-            value-format="yyyy-MM-dd"
-            range-separator="-"
-            unlink-panels
-            start-placeholder="开始日期"
-            end-placeholder="结束日期">
-            </el-date-picker>
-          <template >
-            <el-select v-model="item" placeholder="请选择" class="select col-md-3" @change="handle(item)">
-              <el-option
-                v-for="(item, i) in instituteData"
-                :item="item"
-                :key="i"
-                :label="item.Name"
-                :value="item.Name">
-              </el-option>
-            </el-select>
-          </template>
-          <el-button class="button col-md-2" type="primary" onclick="print()">打印报表</el-button>
-        </div>
-        <div  v-if= "tabledata.length >0">
-            <section id="print">
-              <table class="table" id= '_table'>
-                  <thead>
-                    <tr>
-                      <td>日期</td>
-                      <td>站点名称</td>
-                      <td>设备名称</td>
-                      <td>报警内容</td>
-                      <td>状态</td>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(item, index) in tabledata" :key="index" id="row"  >
-                      <td>{{item.Time}}</td>
-                      <td>{{item.Name}}</td>
-                      <td>{{item.Status.state.name}}</td>
-                      <td>{{item.Status.state.value}}</td>
-                      <td>{{item.Status.state.operation}}</td>
-                    </tr>
-                  </tbody>
-              </table>
-            </section>
-        </div>
-      </div>
-    <Footer />
+  <div class="test">
+
   </div>
 </template>
 <script>
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
-import printJS from 'print-js'
-import {deletesign} from '@/js/common.js'
-
-export default {
-  name: 'thirdchild',
-  data () {
-    return {
-      dateVals: '',
-      item: '',
-      showdata: [],
-      datalist: {},
-      tabledata: [],
-      isaction: true
-    }
-  },
-  created () {
-    this.initdata()
-  },
-  mounted () {
-  },
-  computed: {
-    instituteData () {
-      return this.$store.getters.institute_Data
-    }
-  },
-  destroyed () {
-    clearInterval(this.intervalid)
-  },
-  methods: {
-    print () {
-      printJS({printable: 'print', type: 'html', scanStyles: false, css: ['https://qiniu.smartpilot.cn/myreport.css'], style: ''})
-    },
-    initdata () {
-      var index = 0
-      for (var m = 0; m < this.instituteData.length; m++) {
-        this.$axios.get(this.HOST + '/data/' + this.instituteData[m].Id)
-          .then(res => {
-            if (res.data.status === 0) {
-              this.$store.dispatch('get_data', res.data.data)
-              this.datalist = this.$store.getters.info_Data
-              for (let i = 0; i < this.datalist.Groups.length; i++) {
-                let count = 0
-                this.datalist.Groups[i].Devices.some(obj => {
-                  if (deletesign(obj.Status) === '故障') {
-                    var tablearray = {'Time': res.data.time, 'Name': this.datalist.Name, 'Status': {}}
-                    this.$set(this.tabledata, index, tablearray) // 最佳方式
-                    // this.tabledata.push(tablearray) 也可以实现结构添加，但this.tabledata[index]=tablearray不可以 原因是vue检测不到这种更新
-                    this.tabledata[index].Status = {'count': count, 'state': {'value': '', 'name': '', 'operation': '报警中'}}
-                    this.tabledata[index].Status.count = count
-                    this.tabledata[index].Status.state.value = deletesign(obj.Status)
-                    this.tabledata[index].Status.state.name = obj.Name
-                    count++
-                    index++
-                  }
-                })
-              }
-            }
-          })
-          .catch(error => { console.log(error) })
-      }
-    },
-    handle (it) {
-      let _table = document.getElementById('_table')
-      var str = _table.getElementsByTagName('tr')// 取得行
-      for (var i = 1; i < str.length; i++) {
-        var td = str[i].children
-        if (td[1].innerHTML === it) {
-          str[i].style.display = '' // 隐藏
-        } else {
-          str[i].style.display = 'none' // 显现
-        }
-      }
-    }
-  },
-  components: {
-    Header, Footer
-  }
-}
+// import {getCookie} from '@/js/untils/validate.js'
+// export default {
+//   name: 'test',
+//   data () {
+//     return {
+//       websock: null
+//     }
+//   },
+//   created () {
+//     this.initWebSocket()
+//   },
+//   destroyed () {
+//     this.websock.close() // 离开路由之后断开websocket连接
+//   },
+//   methods: {
+//     initWebSocket () { // 初始化weosocket
+//       let token = getCookie('token')
+//       const wsuri = 'ws://127.0.0.1:8090/api/institute?Authorization=' + token
+//       console.log('wsuri:'+wsuri)
+//       this.websock = new WebSocket(wsuri)
+//       this.websock.onmessage = this.websocketonmessage
+//       this.websock.onopen = this.websocketonopen
+//       this.websock.onerror = this.websocketonerror
+//       this.websock.onclose = this.websocketclose
+//     },
+//     websocketonopen () { // 连接建立之后执行send方法发送数据
+//       // let header = {'Content-Type': 'application/x-www-form-urlencoded', 'charset': 'utf-8', 'Connection': 'Upgrade', 'Upgrade': 'websocket'}
+     
+//       // this.websock.send(header)
+//       // this.websock.send(token)
+//       let actions = {'test': '12345'}
+//       this.websocketsend(JSON.stringify(actions))
+//       console.log(111)
+//     },
+//     websocketonerror () { // 连接建立失败重连
+//       console.log('连接error, 重连')
+//       this.initWebSocket()
+//     },
+//     websocketonmessage (e) { // 数据接收
+//       const redata = JSON.parse(e.data)
+//       console.log('redata:'+JSON.stringify(redata))
+//     },
+//     websocketsend (Data) { // 数据发送
+//       this.websock.send(Data)
+//     }
+//     // websocketclose (e) { // 关闭
+//     //   console.log('断开连接', e)
+//     // }
+//   }
+// }
 </script>
 <style scoped>
-.content {
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-}
-.container-style {
-  width: 100%;
-  position: absolute;
-  top: 85px;
-  bottom: 50px;
-  color: #606266;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-.row {
-  padding: 20px;
-}
-.table tbody tr{
-  background-color: #dc3545;
-}
-
 </style>

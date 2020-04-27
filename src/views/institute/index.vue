@@ -173,12 +173,11 @@ export default {
       }
     },
     Interval () {
-      console.log('@@@@')
       return setInterval(() => {
         setTimeout(() => {
           this.initdata()
         }, 0)
-      }, 10000)
+      }, 600000)
     }
   },
   components: {
