@@ -72,15 +72,12 @@ export default {
   created () {
     this.initdata()
   },
-  mounted () {
-    // this.Interval()
-  },
   beforeDestroy () {
-    clearInterval(this.timer)
+    clearTimeout(this.timer)
   },
   methods: {
     initdata () {
-      clearInterval(this.timer)
+      clearTimeout(this.timer)
       for (let i = 0; i < this.instituteData.length; i++) {
         this.$axios.get(this.HOST + '/data/' + this.instituteData[i].Id)
           .then(res => {
@@ -100,7 +97,7 @@ export default {
                     'leijdl': arrtemp[6],
                     'leijsl': arrtemp[7] }
                   this.showdata.push(obj)
-                  // this.$set(this.showdata, i, obj)
+                  // this.$set(this.showdata, i, obj) //easytable出现 field 没定义的错误
                   this.getTableData()
                 }
               )
@@ -108,13 +105,11 @@ export default {
           })
           .catch(error => { console.log(error) })
       }
-      this.timer = setInterval(() => {
+      this.timer = setTimeout(() => {
         if (this.showdata) {
           this.showdata = []
         }
-        setTimeout(() => {
-          this.initdata()
-        }, 0)
+        this.initdata()
       }, 60000)
     },
     formatedata (datalist) {
@@ -173,16 +168,6 @@ export default {
           }
         })
       }
-    },
-    Interval () {
-      return setInterval(() => {
-        if (this.showdata) {
-          this.showdata.splice(0, this.showdata.length)
-        }
-        setTimeout(() => {
-          this.initdata()
-        }, 0)
-      }, 10000)
     }
   },
   components: {
