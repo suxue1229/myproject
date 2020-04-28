@@ -44,14 +44,16 @@ export default {
       infodata: {},
       tableData: [],
       showdata: [],
+      timerarr: [],
+      timer: { },
       columns: [
         {
           field: 'custome',
           title: '排序',
           width: 50,
           titleAlign: 'center',
-          columnAlign: 'cneter',
-          formatter: function (rowData, index, pagingIndex) {
+          columnAlign: 'center',
+          formatter (rowData, index, pagingIndex) {
             var currentIndex = index + pagingIndex
             return currentIndex < 3 ? (currentIndex + 1) : currentIndex + 1
           }},
@@ -71,23 +73,14 @@ export default {
     this.initdata()
   },
   mounted () {
-      // if (this.timer) {
-      //   console.log('aaa')
-      //   clearInterval(this.timer)
-      //   return this.timer
-      // } else {
-      //   console.log('bbb')
-      //   this.timer = setInterval(() => {
-      //     this.initdata()
-      //   }, 10000)
-      // }
-    this.Interval()
+    // this.Interval()
   },
   beforeDestroy () {
-    clearInterval(this.Interval())
+    clearInterval(this.timer)
   },
   methods: {
     initdata () {
+      clearInterval(this.timer)
       for (let i = 0; i < this.instituteData.length; i++) {
         this.$axios.get(this.HOST + '/data/' + this.instituteData[i].Id)
           .then(res => {
@@ -96,8 +89,8 @@ export default {
                 () => {
                   this.infodata = this.$store.getters.info_Data
                   let arrtemp = this.formatedata(this.infodata)
-                  this.$set(this.showdata, i, {
-                    'name': arrtemp[8],
+                  let obj = {
+                    'name': this.infodata.Name,
                     'chansb': arrtemp[0],
                     'fengj': arrtemp[1],
                     'huilb': arrtemp[2],
@@ -105,7 +98,9 @@ export default {
                     'chansll': arrtemp[4],
                     'mbr': arrtemp[5],
                     'leijdl': arrtemp[6],
-                    'leijsl': arrtemp[7] })
+                    'leijsl': arrtemp[7] }
+                  this.showdata.push(obj)
+                  // this.$set(this.showdata, i, obj)
                   this.getTableData()
                 }
               )
@@ -113,10 +108,17 @@ export default {
           })
           .catch(error => { console.log(error) })
       }
+      this.timer = setInterval(() => {
+        if (this.showdata) {
+          this.showdata = []
+        }
+        setTimeout(() => {
+          this.initdata()
+        }, 0)
+      }, 60000)
     },
     formatedata (datalist) {
       var Devicelist = []
-      this.$set(Devicelist, 8, datalist.Name)
       for (var i = 0; i < datalist.Groups.length; i++) {
         for (var j = 0; j < datalist.Groups[i].Devices.length; j++) {
           let itemname = datalist.Groups[i].Devices[j].Name
@@ -174,10 +176,13 @@ export default {
     },
     Interval () {
       return setInterval(() => {
+        if (this.showdata) {
+          this.showdata.splice(0, this.showdata.length)
+        }
         setTimeout(() => {
           this.initdata()
         }, 0)
-      }, 600000)
+      }, 10000)
     }
   },
   components: {
