@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <keep-alive>
+    <keep-alive :include="['overview','institute','tables','alerts']">
       <router-view />
     </keep-alive>
   </div>

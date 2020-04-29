@@ -26,6 +26,7 @@ export default {
   name: 'UserInfo',
   data () {
     return {
+      Interval: {},
       logined_time: getCookie('logined_time') ? getCookie('logined_time') : 0
     }
   },
@@ -34,29 +35,23 @@ export default {
   },
   computed: {
     username () {
-      return this.$store.state.login.user.UserName
+      return this.$store.getters.user.UserName
     }
   },
-  watch: {
-    logined_time () {
-      this.Interval()
-    }
-  },
-  destroyed () {
-    clearInterval(this.Interval())
+  beforeDestroy () {
+    clearInterval(this.Interval)
   },
   methods: {
     exit () {
       this.$store.dispatch('logout')
       location.reload() // 为了重新实例化vue-router对象 避免bug
     },
-    Interval () {
-      setInterval(() => {
+    gettime () {
+      clearInterval(this.Interval)
+      this.logined_time = Math.round((new Date().getTime() - getCookie('logined_time')) / 60000)
+      this.Interval = setInterval(() => {
         this.gettime()
       }, 10000)
-    },
-    gettime () {
-      this.logined_time = Math.round((new Date().getTime() - getCookie('logined_time')) / 60000)
     }
   }
 }

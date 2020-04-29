@@ -36,56 +36,58 @@
 父beforeDestroy->子beforeDestroy->子destroyed->父destroyed */
 import drawChart from './chart'
 export default {
-  name: 'getInfo',
+  name: 'monitor',
   data () {
     return {
       data: {},
       infos: [],
-      sensor: {}
+      sensor: {},
+      timer: {},
+      btntimer: ''
     }
   },
   components: {
     drawChart
   },
+  computed: {
+    id () {
+      return this.$route.query.id
+    }
+  },
   created () {
     this.init()
+    this.btntimer = setTimeout(() => {
+      let btn = document.getElementById('tag_a')
+      btn.click()
+    }, 1000)
   },
-  // mounted () {
-  //   this.intervalid()
-  // },
-  // watch: {
-  //   infos (newval, oldval) {
-  //     this.intervalid()
-  //     return newval
-  //   }
-  // },
-  destroyed () {
-    clearInterval(this.intervalid)
+  beforeDestroy () {
+    clearTimeout(this.timer)
+    clearTimeout(this.btntimer)
   },
   methods: {
     init () {
-      // if (this.infos) {
-      //   this.infos = []
-      // }
-      this.$axios.get(this.HOST + '/data/' + this.$route.query.id)
-        .then(res => {
-          if (res.data.status === 0) {
-            this.$store.dispatch('get_data', res.data.data)
-            this.data = this.$store.getters.info_Data
-            for (var i = 0; i < this.data.Groups.length; i++) {
-              /* 两种表达方式都可以将数据加入到数组中并渲染，但使用push 如何此方法首先不对数组赋值，则以后数据在数组最后一个index后继续添加,表现为数组越变越大;而每次清空 出现闪现，但$set只会在原有数据上更新 */
-              // this.infos.push(this.data.Groups[i].Devices)
-              // this.infos.push(this.data.Groups[i].Sensors)
-              this.$set(this.infos, 0, this.data.Groups[i].Devices)
-              this.$set(this.infos, 1, this.data.Groups[i].Sensors)
+      if (this.id) {
+        clearTimeout(this.timer)
+        this.$axios.get(this.HOST + '/data/' + this.id)
+          .then(res => {
+            if (res.data.status === 0) {
+              this.$store.dispatch('get_data', res.data.data)
+              this.data = this.$store.getters.info_Data
+              for (var i = 0; i < this.data.Groups.length; i++) {
+                /* 两种表达方式都可以将数据加入到数组中并渲染，但使用push 如何此方法首先不对数组赋值，则以后数据在数组最后一个index后继续添加,表现为数组越变越大;而每次清空 出现闪现，但$set只会在原有数据上更新 */
+                // this.infos.push(this.data.Groups[i].Devices)
+                // this.infos.push(this.data.Groups[i].Sensors)
+                this.$set(this.infos, 0, this.data.Groups[i].Devices)
+                this.$set(this.infos, 1, this.data.Groups[i].Sensors)
+              }
             }
-            if (this.infos[1].length > 0) {
-              let arr = this.infos[1][0]
-              this.sensor = arr // 默认第一个数据
-            }
-          }
-        })
-        .catch(error => { console.log(error) })
+          })
+          .catch(error => { console.log(error) })
+        this.timer = setTimeout(() => {
+          this.init()
+        }, 10000)
+      }
     },
     sendItem (item) {
       this.sensor = item
@@ -104,11 +106,6 @@ export default {
     },
     close () {
       this.$router.push('/overview')
-    },
-    intervalid () {
-      return setInterval(() => {
-        this.init()
-      }, 10000)
     }
   }
 }

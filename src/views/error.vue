@@ -19,7 +19,7 @@
 import img_404 from '@/assets/gif_404.gif'
 
 export default {
-  name: 'wrongPage',
+  name: 'error',
   data () {
     return {
       img_404

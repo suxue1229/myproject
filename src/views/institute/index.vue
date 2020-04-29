@@ -34,7 +34,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import {deletesign} from '@/js/common.js'
 export default {
-  name: 'secondchild',
+  name: 'institute',
   data () {
     return {
       instituteData: this.$store.getters.institute_Data,
@@ -44,7 +44,6 @@ export default {
       infodata: {},
       tableData: [],
       showdata: [],
-      timerarr: [],
       timer: { },
       columns: [
         {
@@ -73,6 +72,7 @@ export default {
     this.initdata()
   },
   beforeDestroy () {
+    console.log('institute')
     clearTimeout(this.timer)
   },
   methods: {

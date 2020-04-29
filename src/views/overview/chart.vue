@@ -12,14 +12,15 @@
 <script>
 import Chart from 'chart.js'
 export default {
-  name: 'drawchart',
+  name: 'chart',
   data () {
     return {
       id: '',
       name: '',
       level: 1,
       time: this.formatDateTime(new Date()),
-      myChart: ''
+      chartdata: {},
+      timer: {}
     }
   },
   props: {
@@ -27,30 +28,34 @@ export default {
   },
   /* 子组件mounted->父组件mounted->watch */
   watch: {
-    sensor (newval, oldval) {
+    sensor (newval) {
       this.$nextTick(() => { /* 这里为什么需要使用this.nextTick()呢？当我们监听到lists发生变化的时候，数据虽然到来了，但是通过数据渲染到的对应dom还没有执行，我们还不能获取到对应的dom，只能通过异步的方式处理（this.nextTick() */
         if (newval) {
           this.id = newval.Id
           this.name = newval.Name
-          this.initchart(newval.Id, this.level)
+          this.initchart()
         }
       })
     }
   },
+  beforeDestroy () {
+    clearTimeout(this.timer)
+  },
   methods: {
-    initchart (id, level) {
-      if (this.myChart) {
-        this.myChart.destroy()
+    initchart () {
+      if (this.chartdata) {
+        this.chartdata = {}
       }
-      this.$axios.get(this.HOST + '/sensor/' + id + '?level=' + this.level + '&time=' + this.time)
+      clearTimeout(this.timer)
+      this.$axios.get(this.HOST + '/sensor/' + this.id + '?level=' + this.level + '&time=' + this.time)
         .then(res => {
           if (res.data.status === 0) {
             this.chartdata = res.data.data
             var label1 = []
             var data1 = []
             for (var i = 0; i < this.chartdata.his.length; i++) {
-              label1.push(this.chartdata.his[i].time)
-              data1.push(this.chartdata.his[i].value)
+              this.$set(label1, i, this.chartdata.his[i].time)
+              this.$set(data1, i, this.chartdata.his[i].value)
             }
             let data = {
               labels: label1,
@@ -72,10 +77,13 @@ export default {
           }
         })
         .catch(error => { console.log(error) })
+      this.timer = setTimeout(() => {
+        this.initchart()
+      }, 600000)
     },
     getlevel (m) {
       this.level = m
-      this.initchart(this.id, this.level)
+      this.initchart()
     },
     // 时间戳转日期格式
     formatDateTime (date) {
