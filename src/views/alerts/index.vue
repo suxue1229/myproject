@@ -69,7 +69,7 @@ export default {
       showdata: [],
       datalist: {},
       tabledata: [],
-      isaction: true
+      timer: {}
     }
   },
   created () {
@@ -83,13 +83,14 @@ export default {
     }
   },
   destroyed () {
-    clearInterval(this.intervalid)
+    clearInterval(this.timer)
   },
   methods: {
     print () {
       printJS({printable: 'print', type: 'html', scanStyles: false, css: ['https://qiniu.smartpilot.cn/myreport.css'], style: ''})
     },
     initdata () {
+      clearTimeout(this.timer)
       var index = 0
       for (var m = 0; m < this.instituteData.length; m++) {
         this.$axios.get(this.HOST + '/data/' + this.instituteData[m].Id)
@@ -117,6 +118,9 @@ export default {
           })
           .catch(error => { console.log(error) })
       }
+      this.timer = setTimeout(() => {
+        this.initdata()
+      }, 60000)
     },
     handle (it) {
       let _table = document.getElementById('_table')

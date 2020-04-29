@@ -3,10 +3,10 @@
     <form class='login-form'>
       <h3 class='title'>洱源污水处理智慧管理平台</h3>
       <div class='input-box username'>
-        <el-input type="text" autofocus required="required" placeholder="请输入用户名" prefix-icon="el-icon-user" v-model="user.loginForm.username"> </el-input>
+        <el-input type="text" autofocus required="required" placeholder="请输入用户名" prefix-icon="el-icon-user" v-model.trim="user.loginForm.username"> </el-input>
       </div>
       <div class='input-box password'>
-        <el-input placeholder="请输入密码" required="required" prefix-icon="el-icon-lock" @keyup.enter="Login" v-model="user.loginForm.password" show-password></el-input>
+        <el-input placeholder="请输入密码" required="required" prefix-icon="el-icon-lock" @keyup.enter="Login" v-model.trim="user.loginForm.password" show-password></el-input>
       </div>
       <div class='register'>
         <a href="#">注册账号</a>

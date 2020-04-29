@@ -66,11 +66,7 @@ export default {
   created () {
     this.initdata()
   },
-  mounted () {
-    this.Interval()
-  },
   destroyed () {
-    clearInterval(this.Interval())
   },
   methods: {
     initdata () {
@@ -120,11 +116,6 @@ export default {
         .catch(error => {
           console.log(error)
         })
-    },
-    Interval () {
-      return setInterval(() => {
-        this.initdata()
-      }, 60000)
     },
     getinfo (item) {
       this.$router.push({ name: 'monitor',
