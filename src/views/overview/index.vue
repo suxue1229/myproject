@@ -55,7 +55,6 @@ export default {
   name: 'overview',
   data () {
     return {
-      datalist: [],
       map: null
     }
   },
@@ -66,16 +65,17 @@ export default {
   created () {
     this.initdata()
   },
-  destroyed () {
+  computed: {
+    datalist () {
+      return this.$store.getters.institute_Data
+    }
   },
   methods: {
     initdata () {
-      this.$axios
-        .get(this.HOST + '/institute')
+      this.$axios.get(this.HOST + '/institute')
         .then(res => {
           if (res.data.status === 0) {
             this.$store.dispatch('get_institute', res.data.data)
-            this.datalist = this.$store.getters.institute_Data
             this.map = new BMap.Map('map')
             var point = new BMap.Point(116.404, 39.915)
             this.map.centerAndZoom(point, 10)

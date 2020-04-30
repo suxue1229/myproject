@@ -37,11 +37,9 @@ export default {
   name: 'institute',
   data () {
     return {
-      instituteData: this.$store.getters.institute_Data,
       multipleSort: false,
       pageIndex: 1,
       pageSize: 10,
-      infodata: {},
       tableData: [],
       showdata: [],
       timer: { },
@@ -71,8 +69,15 @@ export default {
   created () {
     this.initdata()
   },
+  computed: {
+    instituteData () {
+      return this.$store.getters.institute_Data
+    },
+    infodata () {
+      return this.$store.getters.info_Data
+    }
+  },
   beforeDestroy () {
-    console.log('institute')
     clearTimeout(this.timer)
   },
   methods: {
@@ -84,7 +89,6 @@ export default {
             if (res.data.status === 0) {
               this.$store.dispatch('get_data', res.data.data).then(
                 () => {
-                  this.infodata = this.$store.getters.info_Data
                   let arrtemp = this.formatedata(this.infodata)
                   let obj = {
                     'name': this.infodata.Name,

@@ -3,16 +3,6 @@
     <Header />
       <div class="container container-style">
         <div class="row">
-            <!-- <el-date-picker
-            v-model="dateVals"
-            class="date-picker col-md-5"
-            type="daterange"
-            value-format="yyyy-MM-dd"
-            range-separator="-"
-            unlink-panels
-            start-placeholder="开始日期"
-            end-placeholder="结束日期">
-            </el-date-picker> -->
           <template >
             <el-select v-model="item" placeholder="请选择" class="select col-md-3" @change="handle(item)">
               <el-option
@@ -67,7 +57,6 @@ export default {
       dateVals: '',
       item: '',
       showdata: [],
-      datalist: {},
       tabledata: [],
       timer: {}
     }
@@ -80,6 +69,9 @@ export default {
   computed: {
     instituteData () {
       return this.$store.getters.institute_Data
+    },
+    datalist () {
+      return this.$store.getters.info_Data
     }
   },
   destroyed () {
@@ -97,7 +89,6 @@ export default {
           .then(res => {
             if (res.data.status === 0) {
               this.$store.dispatch('get_data', res.data.data)
-              this.datalist = this.$store.getters.info_Data
               for (let i = 0; i < this.datalist.Groups.length; i++) {
                 let count = 0
                 this.datalist.Groups[i].Devices.some(obj => {

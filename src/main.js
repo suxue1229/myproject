@@ -26,14 +26,9 @@ Vue.component('loading', loading)
 Vue.component(VTable.name, VTable)
 Vue.component(VPagination.name, VPagination)
 
-let requestList = new Set() // 存储请求url
 // request拦截器
 axios.interceptors.request.use(config => {
-  // // 利用cancelToken 取消当次请求
-  // config.cancelToken = new axios.CancelToken(e => {
-  // // 在这里阻止重复请求，上个请求未完成时，相同的请求不会再次执行
-  //   requestList.has(config.url) ? e(`${location.host}${config.url}---重复请求被中断`) : requestList.add(config.url)
-  // })
+  Console.log('token:'+store.getters.token)
   if (store.getters.token) {
     config.headers['Authorization'] = getCookie('token') // 让每个请求携带自定义token 请根据实际情况自行修改
   }
@@ -42,17 +37,11 @@ axios.interceptors.request.use(config => {
   }
   return config
 }, error => {
-  // Do something with request error
-  console.log(error) // for debug
   Promise.reject(error)
 })
 
 axios.interceptors.response.use(
   response => {
-    // // 相同请求不得在600毫秒内重复发送，反之继续执行
-    // setTimeout(() => {
-    //   requestList.delete(response.config.url)
-    // }, 600)
     return response
   },
   error => {
@@ -64,7 +53,6 @@ axios.interceptors.response.use(
           })
       }
     }
-    requestList.delete(error.response.config.url)
     return Promise.reject(error) // 返回接口返回的错误信息
   }
 )
@@ -76,4 +64,4 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
-window.Event = new Vue()
+// window.Event = new Vue() //平行组件传值
