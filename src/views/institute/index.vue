@@ -3,7 +3,8 @@
     <Header />
       <div class="container-fluid container-style">
         <h2 >CWT工艺站点列表</h2>
-        <div class="animated bounceInRight easytable" >
+        <loading v-if= "isshowing"/>
+        <div v-else class="animated bounceInRight easytable" >
           <v-table
             :is-vertical-resize= 'true'
             :width= '1295'
@@ -40,8 +41,10 @@ export default {
       multipleSort: false,
       pageIndex: 1,
       pageSize: 10,
-      tableData: [],
+      infodata: '',
+      isshowing: true,
       showdata: [],
+      tableData: [],
       timer: { },
       columns: [
         {
@@ -73,8 +76,8 @@ export default {
     instituteData () {
       return this.$store.getters.institute_Data
     },
-    infodata () {
-      return this.$store.getters.info_Data
+    allData () {
+      return this.$store.getters.all_Data
     }
   },
   beforeDestroy () {
@@ -83,12 +86,14 @@ export default {
   methods: {
     initdata () {
       clearTimeout(this.timer)
+      this.$store.commit('ALL_DATA')
       for (let i = 0; i < this.instituteData.length; i++) {
         this.$axios.get(this.HOST + '/data/' + this.instituteData[i].Id)
           .then(res => {
             if (res.data.status === 0) {
-              this.$store.dispatch('get_data', res.data.data).then(
+              this.$store.dispatch('get_data', res.data).then(
                 () => {
+                  this.infodata = this.$store.getters.info_Data.data
                   let arrtemp = this.formatedata(this.infodata)
                   let obj = {
                     'name': this.infodata.Name,
@@ -103,6 +108,7 @@ export default {
                   this.showdata.push(obj)
                   // this.$set(this.showdata, i, obj) //easytable出现 field 没定义的错误
                   this.getTableData()
+                  this.isshowing = false
                 }
               )
             }

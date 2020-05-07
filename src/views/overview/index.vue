@@ -11,7 +11,7 @@
             header-tag="header"
             header-bg-variant="success"
             align="center"
-            style="max-width: 15rem; min-width: 10rem;"
+            style="max-width: 15rem; min-width: 10rem; height:100%;"
             class="mb-2"
           >
             <b-card-text>
@@ -31,7 +31,7 @@
             header-tag="header"
             header-bg-variant="success"
             align="center"
-            style="max-width: 15rem; min-width: 10rem;"
+            style="max-width: 15rem; min-width: 10rem; height:100%;"
             class="mb-2"
           >
             <b-card-text>

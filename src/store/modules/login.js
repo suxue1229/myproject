@@ -12,7 +12,7 @@ const login = {
       Company: '',
       Department: ''
     },
-    token: ''
+    token: sessionStorage.getItem('store') ? JSON.parse(sessionStorage.getItem('store')).login.token : ''
   },
   mutations: {
     SET_User (state, res) {

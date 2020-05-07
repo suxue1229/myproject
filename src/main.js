@@ -28,8 +28,7 @@ Vue.component(VPagination.name, VPagination)
 
 // request拦截器
 axios.interceptors.request.use(config => {
-  Console.log('token:'+store.getters.token)
-  if (store.getters.token) {
+  if (getCookie('token')) {
     config.headers['Authorization'] = getCookie('token') // 让每个请求携带自定义token 请根据实际情况自行修改
   }
   if (config.url.charAt(config.url.length - 1) === '/') {
@@ -50,6 +49,11 @@ axios.interceptors.response.use(
         case 401:
           router.replace({
             path: 'login'
+          })
+          break
+        default:
+          router.replace({
+            path: 'error'
           })
       }
     }

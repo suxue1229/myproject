@@ -19,6 +19,7 @@
 </template>
 <script>
 import QS from 'qs'
+import {setCookie} from '@/js/untils/validate.js'
 export default {
   name: 'login',
   data () {
@@ -31,17 +32,22 @@ export default {
       }
     }
   },
+  computed: {
+    token () {
+      return this.$store.getters.token
+    }
+  },
   methods: {
     Login () {
-      let _this = this
       if (this.user.loginForm.username === '' || this.user.loginForm.password === '') {
         alert('账号或密码不能为空')
       } else {
         this.$axios.post(this.HOST + '/user/authorize', QS.stringify({grant_type: 'password', username: this.user.loginForm.username, password: this.user.loginForm.password}).replace('%40', '@'), {headers: {'Content-Type': 'application/x-www-form-urlencoded', 'charset': 'utf-8'}})
           .then(res => {
             this.$store.dispatch('user_authorize', res.data)
+            setCookie('token', this.token)
             this.getUserInfo()
-            _this.$router.push('/overview')
+            this.$router.push('/overview')
           })
           .catch(error => {
             alert('账号或密码错误')

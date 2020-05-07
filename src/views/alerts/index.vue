@@ -40,6 +40,11 @@
             </table>
           </section>
         </div>
+        <div v-else-if= "tabledata.length = 0" class="no_table">
+          <img src="@/assets/erwu.jpg" >
+          <h3>所有设备都在正常运行中...</h3>
+        </div>
+        <loading v-else/>
       </div>
     <Footer />
   </div>
@@ -58,6 +63,7 @@ export default {
       item: '',
       showdata: [],
       tabledata: [],
+      isLoading: true,
       timer: {}
     }
   },
@@ -71,7 +77,7 @@ export default {
       return this.$store.getters.institute_Data
     },
     datalist () {
-      return this.$store.getters.info_Data
+      return this.$store.getters.all_Data
     }
   },
   destroyed () {
@@ -84,45 +90,44 @@ export default {
     initdata () {
       clearTimeout(this.timer)
       var index = 0
-      for (var m = 0; m < this.instituteData.length; m++) {
-        this.$axios.get(this.HOST + '/data/' + this.instituteData[m].Id)
-          .then(res => {
-            if (res.data.status === 0) {
-              this.$store.dispatch('get_data', res.data.data)
-              for (let i = 0; i < this.datalist.Groups.length; i++) {
-                let count = 0
-                this.datalist.Groups[i].Devices.some(obj => {
-                  if (deletesign(obj.Status) === '故障') {
-                    var tablearray = {'Time': res.data.time, 'Name': this.datalist.Name, 'Status': {}}
-                    this.$set(this.tabledata, index, tablearray) // 最佳方式
-                    // this.tabledata.push(tablearray) 也可以实现结构添加，但this.tabledata[index]=tablearray不可以 原因是vue检测不到这种更新
-                    this.tabledata[index].Status = {'count': count, 'state': {'value': '', 'name': '', 'operation': '报警中'}}
-                    this.tabledata[index].Status.count = count
-                    this.tabledata[index].Status.state.value = deletesign(obj.Status)
-                    this.tabledata[index].Status.state.name = obj.Name
-                    count++
-                    index++
-                  }
-                })
-              }
+      this.isLoading = false
+      for (let i = 0; i < this.datalist.length; i++) {
+        let count = 0
+        for (let j = 0; j < this.datalist[i].data.Groups.length; j++) {
+          this.datalist[i].data.Groups[j].Devices.some(obj => {
+            if (deletesign(obj.Status) === '故障') {
+              this.$set(this.showdata, i, this.datalist[i].data)
+              var tablearray = {'Time': this.datalist[i].time, 'Name': this.datalist[i].data.Name, 'Status': {}}
+              this.$set(this.tabledata, index, tablearray) // 最佳方式
+              // this.tabledata.push(tablearray) 也可以实现结构添加，但this.tabledata[index]=tablearray不可以 原因是vue检测不到这种更新
+              this.tabledata[index].Status = {'count': count, 'state': {'value': '', 'name': '', 'operation': '报警中'}}
+              this.tabledata[index].Status.count = count
+              this.tabledata[index].Status.state.value = deletesign(obj.Status)
+              this.tabledata[index].Status.state.name = obj.Name
+              count++
+              index++
             }
           })
-          .catch(error => { console.log(error) })
+        }
       }
       this.timer = setTimeout(() => {
         this.initdata()
       }, 60000)
     },
     handle (it) {
-      let _table = document.getElementById('_table')
-      var str = _table.getElementsByTagName('tr')// 取得行
-      for (var i = 1; i < str.length; i++) {
-        var td = str[i].children
-        if (td[1].innerHTML === it) {
-          str[i].style.display = '' // 隐藏
-        } else {
-          str[i].style.display = 'none' // 显现
+      if (document.getElementById('_table')) {
+        let _table = document.getElementById('_table')
+        var str = _table.getElementsByTagName('tr')// 取得行
+        for (var i = 1; i < str.length; i++) {
+          var td = str[i].children
+          if (td[1].innerHTML === it) {
+            str[i].style.display = ''
+          } else {
+            str[i].style.display = 'none'
+          }
         }
+      } else {
+        alert('故障设备列表为空！')
       }
     }
   },
@@ -169,5 +174,19 @@ export default {
 .table tbody tr{
   background-color: #dc3545;
 }
-
+.no_table{
+  margin-top: 30px;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.no_table img{
+  max-width: 1000px;
+}
+.no_table h3{
+  margin-top: 20px;
+  color: #0EEC3F;
+}
 </style>
