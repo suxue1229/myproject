@@ -133,18 +133,17 @@ export default {
 .chartpart .toggle{
   height: 80px;
   display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 20px;
 }
 .chartpart .toggle .button{
-  margin:auto;
   text-align: center;
   transition: all 0.5s;
 }
 .chartpart .toggle .button:focus {
   background-color: rgb(55, 137, 219);
   border-color: rgb(55, 137, 219);
-}
-#planet-chart{
-  margin: auto;
 }
 
 </style>

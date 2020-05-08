@@ -1,11 +1,11 @@
 <template>
-  <footer class='navbar footer-style'>
+  <nav class='navbar footer-style'>
     <router-link to="/overview" tag="a">{{list[0]}}</router-link>
     <router-link to="/institute" tag="a">{{list[1]}}</router-link>
     <router-link to="/tables" tag="a">{{list[2]}}</router-link>
     <router-link to="/alerts" tag="a">{{list[3]}}</router-link>
     <span class="el-icon-full-screen iconstyle" @click="zoom" ></span>
-  </footer>
+  </nav>
 </template>
 
 <script>
@@ -77,8 +77,7 @@ a {
   text-align: center;
   flex: 0.2;
 }
- /* a :hover{
+.active {
   background-color: #1F2D3D;
-  color: #409EFF;
-  } */
+}
 </style>

@@ -13,12 +13,11 @@
             :vertical-resize-offset= '60'
             is-horizontal-resize
             :min-height= '400'
-            style="width:100%"
+            style="width:100%;"
             :columns="columns"
             :table-data="tableData"
             even-bg-color="#f4f4f4"
-             row-hover-color="#1F2D3D"
-             row-click-color="#edf7ff"
+             row-hover-color="#edf7ff"
              @sort-change="sortChange"
              :paging-index="(pageIndex-1)*pageSize" >
           </v-table>
@@ -200,12 +199,13 @@ export default {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
-.container-style h2{
-  margin:0 auto;
-  padding: 20px;
+h2{
+  padding: 20px; /*此处使用 margin: auto无效，虽然父组件为flex布局，但确是absolute定位，浮动的父组件不可以实现子组件的居中*/
 }
-.containter-style .easytable{
-  margin: auto;
+.easytable{
+  width: 100%;
 }
 </style>

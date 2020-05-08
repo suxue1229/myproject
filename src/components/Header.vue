@@ -1,6 +1,6 @@
 <template>
   <header class="navbar header-style">
-      <div class="navbar navbar-default ">
+      <div class="navbar ">
         <div class="navbar-header">
           <a href="#" class="navbar-brand">
             <img alt="Brand" class="logo" src="/static/img/logo.png">
@@ -10,7 +10,7 @@
           <li><h1 class="narbar-color">CWT污水处理智慧管理平台</h1></li>
         </ul>
       </div>
-      <div class="navbar navbar-default navbar-right">
+      <div class="navbar ">
         <h3 class="narbar-color">{{formatDateTime(new Date())}}</h3>
         <i class="el-icon-user iconstyle" @click="getuserinfo"></i>
       </div>
@@ -65,7 +65,7 @@ export default {
     position: fixed;
     width: 100%;
     top: 0px;
-    padding: 0;
+    padding: 0px;
     background: #304156;
     border-bottom: solid 1px rgba(16,46,86,.8);
     z-index: 999;
@@ -81,12 +81,10 @@ export default {
   font-size: 28px;
   color: #BFCBD9;
   margin-left: 30px;
-  flex: 0.2;
 }
 .infostyle {
   position: fixed;
   top:90px;
   right: 30px;
-  z-index: 999 !important;
 }
 </style>

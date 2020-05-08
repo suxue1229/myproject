@@ -1,5 +1,5 @@
 <template>
-  <div class='login-box'>
+  <div class='login-box container'>
     <form class='login-form'>
       <h3 class='title'>洱源污水处理智慧管理平台</h3>
       <div class='input-box username'>
@@ -72,7 +72,6 @@ export default {
     position: relative;
     width: 100%;
     height: 100%;
-    height: 100vh;
     background-color: #2d3a4b;
   }
   .login-box .login-form{

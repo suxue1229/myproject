@@ -158,11 +158,11 @@ h3{
 }
 
 .chartpart{
- margin:0 auto;
+ /* margin:0 auto; */
  height: 100%;
  flex: 1;
- overflow: auto;
+ /* overflow: auto;
  display: flex;
- flex-direction: column;
+ flex-direction: column; */
 }
 </style>

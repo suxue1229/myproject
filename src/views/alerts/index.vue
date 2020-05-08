@@ -18,7 +18,7 @@
         </div>
         <div class="div_table" v-if= "tabledata.length >0">
           <section id="print">
-            <table class="table" id= '_table'>
+            <table class="table" id= 'error_table'>
                 <thead>
                   <tr>
                     <td>日期</td>
@@ -115,8 +115,8 @@ export default {
       }, 60000)
     },
     handle (it) {
-      if (document.getElementById('_table')) {
-        let _table = document.getElementById('_table')
+      if (document.getElementById('error_table')) {
+        let _table = document.getElementById('error_table')
         var str = _table.getElementsByTagName('tr')// 取得行
         for (var i = 1; i < str.length; i++) {
           var td = str[i].children
