@@ -92,7 +92,7 @@ export default {
             if (res.data.status === 0) {
               this.$store.dispatch('get_data', res.data).then(
                 () => {
-                  this.infodata = this.$store.getters.info_Data
+                  this.infodata = this.$store.getters.info_Data.data
                   let arrtemp = this.formatedata(this.infodata)
                   let obj = {
                     'name': this.infodata.Name,
