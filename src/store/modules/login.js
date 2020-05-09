@@ -47,8 +47,7 @@ const login = {
     logout ({ // 注销
       commit
     }, parameterData) {
-      commit('SET_User', '')
-      commit('SET_Token', '')
+      sessionStorage.clear()
       removeToken('token')
       removeToken('logined_time')
     }

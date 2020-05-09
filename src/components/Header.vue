@@ -1,20 +1,20 @@
 <template>
-  <header class="navbar header-style">
-      <div class="navbar ">
-        <div class="navbar-header">
-          <a href="#" class="navbar-brand">
-            <img alt="Brand" class="logo" src="/static/img/logo.png">
-          </a>
+  <header class="main-style">
+    <div class="navbar header-style">
+        <div class="navbar ">
+          <div class="navbar-header">
+            <a href="#" class="navbar-brand">
+              <img alt="Brand" class="logo" src="/static/img/logo.png">
+            </a>
+          </div>
+          <h1 class="narbar-color">CWT污水处理智慧管理平台</h1>
         </div>
-        <ul class="nav narbar-nav">
-          <li><h1 class="narbar-color">CWT污水处理智慧管理平台</h1></li>
-        </ul>
-      </div>
-      <div class="navbar ">
-        <h3 class="narbar-color">{{formatDateTime(new Date())}}</h3>
-        <i class="el-icon-user iconstyle" @click="getuserinfo"></i>
-      </div>
-      <userinfo class="infostyle" v-show="isshowing"></userinfo>
+        <div class="navbar ">
+          <h3 class="narbar-color">{{formatDateTime(new Date())}}</h3>
+          <i class="el-icon-user iconstyle" @click="getuserinfo" ></i>
+        </div>
+    </div>
+    <userinfo class="infostyle" v-show="isshowing"></userinfo>
   </header>
 </template>
 
@@ -61,14 +61,17 @@ export default {
 </script>
 
 <style scoped>
+.main-style{
+  position: fixed;
+  width: 100%;
+  top: 0px;
+  padding: 0px;
+  background: #304156;
+  border-bottom: solid 1px rgba(16,46,86,.8);
+  z-index: 999;
+}
   .header-style{
-    position: fixed;
-    width: 100%;
-    top: 0px;
     padding: 0px;
-    background: #304156;
-    border-bottom: solid 1px rgba(16,46,86,.8);
-    z-index: 999;
   }
   .logo{
     width: 100%;

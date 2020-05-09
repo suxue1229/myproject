@@ -27,7 +27,6 @@ const institute = {
       commit
     }, parameterData) {
       commit('INFO_DATA', parameterData)
-
     }
   }
 }

@@ -1,31 +1,31 @@
 <template>
   <div class="content">
     <Header />
-      <div class="container-fluid container-style">
-        <h2 >CWT工艺站点列表</h2>
-        <loading v-if= "isshowing"/>
-        <div v-else class="animated bounceInRight easytable" >
-          <v-table
-            :is-vertical-resize= 'true'
-            :width= '1295'
-            :height= '460'
-            :min-width= '800'
-            :vertical-resize-offset= '60'
-            is-horizontal-resize
-            :min-height= '400'
-            style="width:100%;"
-            :columns="columns"
-            :table-data="tableData"
-            even-bg-color="#f4f4f4"
-             row-hover-color="#edf7ff"
-             @sort-change="sortChange"
-             :paging-index="(pageIndex-1)*pageSize" >
-          </v-table>
-          <div class="mt20 mb20 bold">
-            <v-pagination  @page-change="pageChange" @page-size-change="pageSizeChange" :total="showdata.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
-          </div>
+    <div class="container-fluid container-style">
+      <h2 >CWT工艺站点列表</h2>
+      <loading v-if= "isshowing"/>
+      <div v-else class="animated bounceInRight easytable" >
+        <v-table
+          :is-vertical-resize= 'true'
+          :width= '1295'
+          :height= '460'
+          :min-width= '800'
+          :vertical-resize-offset= '60'
+          is-horizontal-resize
+          :min-height= '400'
+          style="width:100%;"
+          :columns="columns"
+          :table-data="tableData"
+          even-bg-color="#f4f4f4"
+            row-hover-color="#edf7ff"
+            @sort-change="sortChange"
+            :paging-index="(pageIndex-1)*pageSize" >
+        </v-table>
+        <div class="mt20 mb20 bold">
+          <v-pagination  @page-change="pageChange" @page-size-change="pageSizeChange" :total="showdata.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
         </div>
       </div>
+    </div>
     <Footer />
   </div>
 </template>
@@ -92,7 +92,7 @@ export default {
             if (res.data.status === 0) {
               this.$store.dispatch('get_data', res.data).then(
                 () => {
-                  this.infodata = this.$store.getters.info_Data.data
+                  this.infodata = this.$store.getters.info_Data
                   let arrtemp = this.formatedata(this.infodata)
                   let obj = {
                     'name': this.infodata.Name,
