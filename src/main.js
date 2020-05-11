@@ -13,6 +13,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'vue-easytable/libs/themes-base/index.css'
 import {VTable, VPagination} from 'vue-easytable'
 import {getCookie} from '@/js/untils/validate.js'
+import '@/assets/iconfont/IconFont.css'
 
 Vue.use(BootstrapVue)
 Vue.use(animated)

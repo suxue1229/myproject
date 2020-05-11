@@ -4,7 +4,7 @@
     <router-link to="/institute" tag="a">{{list[1]}}</router-link>
     <router-link to="/tables" tag="a">{{list[2]}}</router-link>
     <router-link to="/alerts" tag="a">{{list[3]}}</router-link>
-    <span class="el-icon-full-screen iconstyle" @click="zoom" ></span>
+    <a href="javascript:;" id="iconzoom" class="el-icon-full-screen iconstyle" @click="zoom" ></a>
   </nav>
 </template>
 
@@ -20,6 +20,7 @@ export default {
   methods: {
     zoom () {
       let element = document.documentElement
+      let zoom = document.getElementById('iconzoom')
       if (this.iszooming) {
         if (document.exitFullscreen) {
           document.exitFullscreen()
@@ -30,6 +31,8 @@ export default {
         } else if (document.msExitFullscreen) {
           document.msExitFullscreen()
         }
+        zoom.style.color = 'rgba(255,255,255,.5)'
+        zoom.className = 'el-icon-full-screen'
         this.iszooming = false
       } else {
         if (element.requestFullscreen) {
@@ -41,6 +44,8 @@ export default {
         } else if (element.msRequestFullscreen) {
           element.msRequestFullscreen()
         }
+        zoom.style.color = '#BFCBD9'
+        zoom.className = 'el-icon-exit-screen'
         this.iszooming = true
       }
     }
@@ -66,36 +71,34 @@ a {
   text-decoration: none;
   text-align: center;
   font-size: 18px;
-  font-weight: bold;
-  color: #BFCBD9;
+  font-weight: 300;
+  color: rgba(255,255,255,.5);
 }
 /* 未访问的链接 */
 a:link {
   text-decoration: none;
-  color: #BFCBD9;
+  color: rgba(255,255,255,.5);
 }
 /* 已访问的链接 */
 a:visited {
   text-decoration: none;
-  color: #BFCBD9;
+  color: rgba(255,255,255,.5);
 }
 /* 鼠标移动到链接上 */
 a:hover {
   text-decoration: none;
-  color: #BFCBD9;
+  color: rgba(255,255,255,.5);
 }
 /* 选定的链接 */
 a:active {
   text-decoration: none;
-  color: #BFCBD9;
+  color: rgba(255,255,255,.5);
   }
 .footer-style a:nth-child(n+2) {
   border-left: solid 1px  rgba(16,46,86,0.8);
 }
-.iconstyle{
-  font-size: 28px;
-  text-align: center;
-  line-height: 50px;
+.footer-style a:last-child{
+  font-size: 25px;
   flex: 0.2;
 }
 .active{

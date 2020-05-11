@@ -1,0 +1,25 @@
+@font-face {font-family: "element-icons";
+  src: url('iconfont.eot?t=1589181141836'); /* IE9 */
+  src: url('iconfont.eot?t=1589181141836#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAPQAAsAAAAACHgAAAOBAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCCfgqEHINgATYCJAMMCwgABCAFhSkHRRtpBxEVnDnIvsRUZKS7gsi2hbbRdNilXHjn4MOTwQ9kGwQU4AcAAACGUvLwtd/ruW83BGQzleyAQXeqANgptBGqiLr6G3Hzs7FAA16DAw04si7e25dhaQ2ss4EsaS0uQpU81AHIUhca+J++f1wpWCVOxGB/1JT+8/2f86vGRkTNFeUsyu2jL9yUHp28jP7nfq/+SsCoq/5FIxMzMRof8K/jbV3b8Z0R7Qxkgr4GSCoci+yuICzzYwLV+s2K5e7KjSpl5q5AnPSP7FOZMcs1+aFSKAcuZnEPUaayuI5aANwNfj/+QQoChbLEPLj28IqDFv+UfxW093vOzlAIyXhO8NdImEUmNoPutVIUmZVUq5FslHWlBj+V7x5GFq/2Hx6hIMqZ6lqMnzQWzkjiqJ2aBEcVOPdrlKMSL8A7gm9NzXJXJ59PigSOcOPY/CS2l7uJjha3yDU3E8g43zbyUtgQZyORhJoI52Iwo+NrW4Qtlm2M6i5/Cx7vcKdpKG5ck9agSNYooiRjU3wXHDuoeRr6HJofWzsZ3umJhjdGeas2hlIzJXLTYxrzEpGOLPsK1TrUNdUBpXJCOCy0DT2wS8ykPagx8TPPHD4FQ8lWKpjoywA12MNk/vmbe5k0uFpZbyz0Q7iuhJxQvw09tJAyqA9qST3KPhYuFi8CWPRSLI8AdahHuXiJE3g5JVIuJ72sClDy/V3wRipAg4Tmc9k60JQl1Cc1+RcYK6spkMZxCSbBeeXCCopAmfw5e0HpT3F0J6UvpdFdP/lvnDnboqsF539lTQZvH/E5CJa+jGjnpfI1eIJfKmnZkjWZaUlZETtiw5PsTQUVYKHgU4Lpb/axv7atdS6hTlsChQrDkNSZQmf8PJSpsQzK1VkN1WbsuF6jxRUkkasw7TmC0O0NFOp9gKTbP1SmBxbKtIcH5QLCCxv/cXtwax9ZJqgVHTUfGlvv2BW6gYGF0zQ3N36jf5hapPLUT/8hcfSOyqyA4lc4yLhH4rOvVJlYvKXLBJ+DMZ6C+AmtZoNqOOQ5k2/KWm+TjSMBNQUd0vggo5bnsLdebYABFrL6tHZ99A16D0Y9Tk1tagRD/0CoesyOlpQyRVv1tShqX3HNz0VPvYpSjDDheS+57ELEZxoeCbBzAhJRmaFHKDjIrU7cVp3NrLVPvwuqmY+lKCJFtpvjhzFpbAVwY+A9qilJAAAAAA==') format('woff2'),
+  url('iconfont.woff?t=1589181141836') format('woff'),
+  url('iconfont.ttf?t=1589181141836') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
+  url('iconfont.svg?t=1589181141836#element-icons') format('svg'); /* iOS 4.1- */
+}
+
+.element-icons {
+  font-family: "element-icons" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.el-icon-full-screen:before {
+  content: "\e633";
+}
+
+.el-icon-exit-screen:before {
+  content: "\e634";
+}
+

@@ -11,7 +11,7 @@
         </div>
         <div class="navbar ">
           <h3 class="narbar-color">{{formatDateTime(new Date())}}</h3>
-          <i class="el-icon-user iconstyle" @click="getuserinfo" ></i>
+          <i class="el-icon-user iconstyle" id="usericon" @click="getuserinfo" ></i>
         </div>
     </div>
     <userinfo class="infostyle" v-show="isshowing"></userinfo>
@@ -50,9 +50,12 @@ export default {
       return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second
     },
     getuserinfo () {
+      let usericon = document.getElementById('usericon')
       if (!this.isshowing) {
+        usericon.style.color = '#BFCBD9'
         this.isshowing = true
       } else {
+        usericon.style.color = 'rgba(255,255,255,.5)'
         this.isshowing = false
       }
     }
@@ -78,12 +81,13 @@ export default {
     height: 100%;
   }
   .narbar-color{
-    color: #BFCBD9;
+    color: rgba(255,255,255,.5);
   }
   .iconstyle{
   font-size: 28px;
-  color: #BFCBD9;
+  color: rgba(255,255,255,.5);
   margin-left: 30px;
+  height:100%;
 }
 .infostyle {
   position: fixed;
