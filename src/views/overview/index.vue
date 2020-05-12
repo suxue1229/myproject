@@ -1,66 +1,56 @@
 <template>
-  <div class="content">
-    <Header />
-    <div class="container-fluid" >
-      <div class="row row-style">
-        <div class="col-md-2 row-left">
-          <b-card
-            border-variant="success"
-            header="项目概述"
-            header-text-variant="#212529"
-            header-tag="header"
-            header-bg-variant="success"
-            align="center"
-            style="max-width: 15rem; min-width: 10rem; height:100%;"
-            class="mb-2"
-          >
-            <b-card-text>
-              <p>为了保护洱海流域敏感的水环境，大理州洱源县政府与北京碧水源科技股份有限公司签订了《洱源县乡镇及村落污水处理工程PPP合作协议》，对辖区内的分散污染源进行综合治理。本项目新建镇级污水处理厂6座，村落污水处理站53座，总设计处理规模2.392万吨/天；新建管网851.22km和提升泵站21座。总投资22.29亿元，分两期建设。</p>
-            </b-card-text>
-          </b-card>
-        </div>
-        <div class="col-md-8 row-map">
-          <h3>目前在线站点数目 {{this.datalist.length}} 个</h3>
-          <div id="map"></div>
-        </div>
-        <div class="col-md-2 row-right">
-          <b-card
-            border-variant="success"
-            header="厂站列表"
-            header-text-variant="#212529"
-            header-tag="header"
-            header-bg-variant="success"
-            align="center"
-            style="max-width: 15rem; min-width: 10rem; height:100%;"
-            class="mb-2"
-          >
-            <b-card-text>
-              <ul class="row-right-list">
-                <li v-for="(item, i) in datalist" :key="i" @click="getinfo(item)" >{{item.Name}}</li>
-              </ul>
-            </b-card-text>
-          </b-card>
-        </div>
+  <div class="main">
+    <div class="row row-style">
+      <div class="col-md-2 row-left">
+        <b-card
+          border-variant="success"
+          header="项目概述"
+          header-text-variant="#212529"
+          header-tag="header"
+          header-bg-variant="success"
+          align="center"
+          style="max-width: 15rem; min-width: 10rem; height:100%;"
+          class="mb-2"
+        >
+          <b-card-text>
+            <p>为了保护洱海流域敏感的水环境，大理州洱源县政府与北京碧水源科技股份有限公司签订了《洱源县乡镇及村落污水处理工程PPP合作协议》，对辖区内的分散污染源进行综合治理。本项目新建镇级污水处理厂6座，村落污水处理站53座，总设计处理规模2.392万吨/天；新建管网851.22km和提升泵站21座。总投资22.29亿元，分两期建设。</p>
+          </b-card-text>
+        </b-card>
+      </div>
+      <div class="col-md-8 row-map">
+        <h3>目前在线站点数目 {{this.datalist.length}} 个</h3>
+        <div id="map"></div>
+      </div>
+      <div class="col-md-2 row-right">
+        <b-card
+          border-variant="success"
+          header="厂站列表"
+          header-text-variant="#212529"
+          header-tag="header"
+          header-bg-variant="success"
+          align="center"
+          style="max-width: 15rem; min-width: 10rem; height:100%;"
+          class="mb-2"
+        >
+          <b-card-text>
+            <ul class="row-right-list">
+              <li v-for="(item, i) in datalist" :key="i" @click="getinfo(item)" >{{item.Name}}</li>
+            </ul>
+          </b-card-text>
+        </b-card>
       </div>
     </div>
     <router-view class="animated bounceInLeft"></router-view>
-    <Footer />
   </div>
 </template>
 <script>
 import BMap from 'BMap'
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
 export default {
   name: 'overview',
   data () {
     return {
       map: null
     }
-  },
-  components: {
-    Header,
-    Footer
   },
   created () {
     this.initdata()
@@ -135,20 +125,12 @@ export default {
 }
 </script>
 <style scoped>
-.content {
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-}
 .row-style {
   width: 100%;
+  height:100%;
   position: absolute;
-  top: 85px;
-  bottom: 50px;
-  color: #606266;
-  overflow: hidden;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  top: 0px;
+  bottom: 0px;
 }
 .row-left {
   height: 100%;

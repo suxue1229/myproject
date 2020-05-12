@@ -1,53 +1,47 @@
 <template>
-  <div class="content">
-    <Header />
-    <div class="container container-style">
-      <div class="selectpart">
-        <template >
-          <el-select v-model="item" placeholder="请选择" class="select"  @change="handle(item)">
-            <el-option
-              v-for="(item, i) in instituteData"
-              :item="item"
-              :key="i"
-              :label="item.Name"
-              :value="item.Name">
-            </el-option>
-          </el-select>
-        </template>
-        <el-button class="button " type="primary" onclick="print()">打印报表</el-button>
-      </div>
-      <div class="div_table" v-if="tabledata.length > 0">
-        <section id="print">
-          <table class="table" id= 'error_table'>
-              <thead>
-                <tr>
-                  <th>日期</th>
-                  <th>站点名称</th>
-                  <th>设备名称</th>
-                  <th>报警内容</th>
-                  <th>状态</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(item, index) in tabledata" :key="index" >
-                  <td>{{item.Time}}</td>
-                  <td>{{item.Name}}</td>
-                  <td>{{item.Status.state.name}}</td>
-                  <td>{{item.Status.state.value}}</td>
-                  <td>{{item.Status.state.operation}}</td>
-                </tr>
-              </tbody>
-          </table>
-        </section>
-      </div>
-      <loading v-else/>
+  <div class="container">
+    <div class="selectpart">
+      <template >
+        <el-select v-model="item" placeholder="请选择" class="select"  @change="handle(item)">
+          <el-option
+            v-for="(item, i) in instituteData"
+            :item="item"
+            :key="i"
+            :label="item.Name"
+            :value="item.Name">
+          </el-option>
+        </el-select>
+      </template>
+      <el-button class="button " type="primary" onclick="print()">打印报表</el-button>
     </div>
-    <Footer />
+    <div class="div_table" v-if="tabledata.length > 0">
+      <section id="print">
+        <table class="table" id= 'error_table'>
+            <thead>
+              <tr>
+                <th>日期</th>
+                <th>站点名称</th>
+                <th>设备名称</th>
+                <th>报警内容</th>
+                <th>状态</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item, index) in tabledata" :key="index" >
+                <td>{{item.Time}}</td>
+                <td>{{item.Name}}</td>
+                <td>{{item.Status.state.name}}</td>
+                <td>{{item.Status.state.value}}</td>
+                <td>{{item.Status.state.operation}}</td>
+              </tr>
+            </tbody>
+        </table>
+      </section>
+    </div>
+    <loading v-else/>
   </div>
 </template>
 <script>
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
 import printJS from 'print-js'
 import {deletesign} from '@/js/common.js'
 
@@ -132,29 +126,13 @@ export default {
         alert('故障设备列表为空！')
       }
     }
-  },
-  components: {
-    Header, Footer
   }
+
 }
 </script>
 <style scoped>
-.content {
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-}
-.container-style {
-  width: 100%;
-  position: absolute;/* class="container" 在position：relative时是居中显示的*/
-  top: 85px;
-  bottom: 50px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: #606266;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
+.container{
+   height:100%;
 }
 .selectpart {
   padding-top: 20px;
@@ -168,6 +146,7 @@ export default {
   margin-left: auto;
 }
 .div_table{
+  height:100%;
   overflow: auto;
   text-align: center;
 }

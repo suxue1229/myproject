@@ -47,7 +47,7 @@ export default {
             this.$store.dispatch('user_authorize', res.data)
             setCookie('token', this.token)
             this.getUserInfo()
-            this.$router.push('/overview')
+            this.$router.push('/')
           })
           .catch(error => {
             alert('账号或密码错误')

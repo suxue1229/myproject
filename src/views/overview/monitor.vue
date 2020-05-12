@@ -114,15 +114,19 @@ export default {
 <style scoped>
 .deviceinfo{
   position: absolute; /* 子页面覆盖在主页面上 如果不加background-color 子页面为透明存在 */
-  top: 85px;
-  bottom: 50px;
+  top: 0px;
+  bottom: 0px;
   overflow: hidden;
   padding-top: 5px;
   padding-bottom: 5px;
   background-color: #f2f6fc;
 }
 .closestyle{
-  float:right;
+  float: right;
+  padding: 0px;
+  padding-right: 30px;
+  padding-top: 10px;
+  font-size: 18px;
 }
 h3{
   text-align: center;
@@ -158,11 +162,7 @@ h3{
 }
 
 .chartpart{
- /* margin:0 auto; */
  height: 100%;
  flex: 1;
- /* overflow: auto;
- display: flex;
- flex-direction: column; */
 }
 </style>

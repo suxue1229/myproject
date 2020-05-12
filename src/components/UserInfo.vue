@@ -10,7 +10,7 @@
         <small class="header-style">{{username}}</small>
     </template>
     <div class="list-group list-group-flush" >
-      <a href="#" class="list-group-item list-group-item-action" ><i class="el-icon-setting icon-style"></i><p class="text-style">设置</p></a>
+      <a href="#" class="list-group-item list-group-item-action" @click="set"><i class="el-icon-setting icon-style"></i><p class="text-style">设置</p></a>
       <a href="#" class="list-group-item list-group-item-action" @click="exit"><i class="el-icon-close icon-style"></i><p class="text-style">注销</p></a>
       </div>
     <template v-slot:footer>
@@ -45,6 +45,9 @@ export default {
     exit () {
       this.$store.dispatch('logout')
       location.reload() // 为了重新实例化vue-router对象 避免bug
+    },
+    set () {
+      this.$router.push({name: 'setinfo'})
     },
     gettime () {
       clearInterval(this.Interval)

@@ -21,6 +21,7 @@
     "jquery": "^3.4.1",
     "js-cookie": "^2.2.1",
     "mockjs": "^1.0.1-beta3",
+    "normalize.css": "^8.0.1",
     "print-js": "^1.0.63",
     "vue": "^2.5.2",
     "vue-easytable": "^1.7.2",

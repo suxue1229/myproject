@@ -91,7 +91,7 @@ export default {
 }
 .infostyle {
   position: fixed;
-  top:90px;
+  top:100px;
   right: 30px;
 }
 </style>
