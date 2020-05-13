@@ -47,6 +47,7 @@ export default {
       location.reload() // 为了重新实例化vue-router对象 避免bug
     },
     set () {
+      this.$emit('userinfoshow', false)
       this.$router.push({name: 'setinfo'})
     },
     gettime () {

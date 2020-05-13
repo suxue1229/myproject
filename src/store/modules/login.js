@@ -1,21 +1,12 @@
 import {setCookie, removeToken} from '@/js/untils/validate.js'
 const login = {
   state: {
-    user: {
-      UserName: '',
-      Email: '',
-      FirstName: '',
-      LastName: '',
-      NickName: '',
-      RegisterDate: '',
-      LastLoginDate: '',
-      Company: '',
-      Department: ''
-    },
+    user: sessionStorage.getItem('store') ? JSON.parse(sessionStorage.getItem('store')).login.user : '',
     token: sessionStorage.getItem('store') ? JSON.parse(sessionStorage.getItem('store')).login.token : ''
   },
   mutations: {
     SET_User (state, res) {
+      console.log('res:'+JSON.stringify(res))
       state.user.UserName = res.UserName
       state.user.Email = res.Email
       state.user.FirstName = res.FirstName
@@ -25,6 +16,8 @@ const login = {
       state.user.LastLoginDate = res.LastLoginDate
       state.user.Company = res.Company
       state.user.Department = res.Department
+      console.log('user:'+JSON.stringify(state.user))
+      sessionStorage.setItem('store', JSON.stringify(state.user))
     },
     SET_Token (state, res) {
       state.token = res

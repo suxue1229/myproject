@@ -14,7 +14,7 @@
           <i class="el-icon-user iconstyle" id="usericon" @click="getuserinfo" ></i>
         </div>
     </div>
-    <userinfo class="infostyle" v-show="isshowing"></userinfo>
+    <userinfo class="infostyle" @userinfoshow="getshow"  v-show="isshowing"></userinfo>
   </header>
 </template>
 
@@ -48,6 +48,9 @@ export default {
       var second = date.getSeconds()
       second = second < 10 ? ('0' + second) : second
       return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second
+    },
+    getshow (el) {
+      this.isshowing = el
     },
     getuserinfo () {
       let usericon = document.getElementById('usericon')
