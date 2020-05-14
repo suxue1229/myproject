@@ -14,20 +14,19 @@
       <a href="#" class="list-group-item list-group-item-action" @click="exit"><i class="el-icon-close icon-style"></i><p class="text-style">注销</p></a>
       </div>
     <template v-slot:footer>
-        <small class="text-muted">已登录 {{logined_time}} 分钟</small>
+        <small class="text-muted">已登录 {{start_time}} 分钟</small>
     </template>
     </b-card>
   </div>
 </template>
 
 <script>
-import {getCookie} from '@/js/untils/validate.js'
 export default {
   name: 'UserInfo',
   data () {
     return {
       Interval: {},
-      logined_time: getCookie('logined_time') ? getCookie('logined_time') : 0
+      start_time: sessionStorage.getItem('start_time')
     }
   },
   created () {
@@ -52,7 +51,7 @@ export default {
     },
     gettime () {
       clearInterval(this.Interval)
-      this.logined_time = Math.round((new Date().getTime() - getCookie('logined_time')) / 60000)
+      this.start_time = Math.round((new Date().getTime() - sessionStorage.getItem('start_time')) / 60000)
       this.Interval = setInterval(() => {
         this.gettime()
       }, 10000)
@@ -102,11 +101,17 @@ a.hover{
   -webkit-border-radius: 100%;
   -moz-border-radius: 100%;
   -ms-border-radius: 100%;
-  -o-border-radius: 100%;;
+  -o-border-radius: 100%;
   border-radius: 100%;
   background-color: #304156;
   margin:0 auto;
   border: 2px solid #CCCCCC;
   display: block;
+  }
+  .child{
+    position: absolute;
+    top: 100px;
+    bottom: 50px;
+    background: red;
   }
 </style>

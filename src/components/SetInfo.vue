@@ -1,9 +1,9 @@
 <template>
   <div class="main">
-    <i class="el-icon-close closestyle" @click="close"></i>
+    <i class="el-icon-close closestyle" @click= "close"></i>
     <div class="main-content">
       <div class="main-left">
-      <form class="formstyle">
+      <form class="formstyle" action=" ">
         <div class="form-group">
           <label for="firstname" class="col-sm-3 col-form-label" >姓</label>
           <div class="col-sm-9">
@@ -34,7 +34,7 @@
             <input type="text" required v-model= "newuser.Company" class="form-control" id="company" placeholder="请输入您的单位">
           </div>
         </div>
-        <button type="submit" class="btn btn-primary" @click="changeinfo">save</button>
+        <button type="button" class="btn btn-primary" @click= "changeinfo">save</button>
       </form>
     </div>
     <div class="main-right">
@@ -59,13 +59,7 @@ export default {
   name: 'SetInfo',
   data () {
     return {
-      newuser: {
-        FirstName: JSON.parse(sessionStorage.getItem('store')).login.user.FirstName,
-        LastName: JSON.parse(sessionStorage.getItem('store')).login.user.LastName,
-        NickName: JSON.parse(sessionStorage.getItem('store')).login.user.NickName,
-        Company: JSON.parse(sessionStorage.getItem('store')).login.user.Company,
-        Department: JSON.parse(sessionStorage.getItem('store')).login.user.Department
-      }
+      newuser: JSON.parse(sessionStorage.getItem('user'))
     }
   },
   computed: {
@@ -73,24 +67,14 @@ export default {
       return this.$store.getters.user
     }
   },
-  // watch: {
-  //   user (newval) {
-  //     return newval
-  //   }
-  // },
   methods: {
     changeinfo () {
       this.$axios.post(this.HOST + '/user/account',
-        QS.stringify({LastName: this.newuser.LastName, FirstName: this.newuser.FirstName, NickName: this.newuser.NickName, Company: this.newuser.Company, Department: this.newuser.Department}))
+        QS.stringify({LastName: this.newuser.LastName, FirstName: this.newuser.FirstName, NickName: this.newuser.NickName, Company: this.newuser.Company, Department: this.newuser.Department}), {headers: {'Content-Type': 'application/x-www-form-urlencoded', 'charset': 'utf-8'}})
         .then(
           res => {
             if (res.data.status === 0) {
-              // this.user.FirstName = this.first_name
-              // this.user.LastName = this.last_name
-              // this.user.NickName = this.nick_name
-              // this.user.Company = this.company
-              // this.user.Department = this.department
-              this.$store.dispatch('user_authorize', this.newuser)
+              this.$store.dispatch('user_account', this.newuser)
               alert(res.data.message)
             }
           }
@@ -100,7 +84,7 @@ export default {
         })
     },
     close () {
-      this.$router.push('/')
+      this.$router.go(-1)
     }
   }
 }
@@ -119,17 +103,22 @@ export default {
 }
 .closestyle{
   margin:auto;
+  align-self: end;
   margin-right: 5px;
   padding: 0px;
   font-size: 18px;
 }
 .main-content{
-  flex: 1;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0%;
   display: flex;
   margin-top: 5px;
 }
 .main-left{
-  flex:1;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0%;
   margin-left: 300px;
   margin-right:30px;
   border-radius: 5px;
@@ -138,7 +127,9 @@ export default {
   justify-content: center;
 }
 .formstyle{
-  flex:1;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -156,6 +147,7 @@ export default {
 }
 .col-sm-9{
   margin: auto;
+  align-self: center;
 }
 .btn{
   margin-top:1rem;

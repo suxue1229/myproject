@@ -12,7 +12,6 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'vue-easytable/libs/themes-base/index.css'
 import {VTable, VPagination} from 'vue-easytable'
-import {getCookie} from '@/js/untils/validate.js'
 import '@/assets/iconfont/IconFont.css'
 import 'normalize.css/normalize.css'
 
@@ -30,8 +29,8 @@ Vue.component(VPagination.name, VPagination)
 
 // request拦截器
 axios.interceptors.request.use(config => {
-  if (getCookie('token')) {
-    config.headers['Authorization'] = getCookie('token') // 让每个请求携带自定义token 请根据实际情况自行修改
+  if (sessionStorage.getItem('token')) {
+    config.headers['Authorization'] = sessionStorage.getItem('token') // 让每个请求携带自定义token 请根据实际情况自行修改
   }
   if (config.url.charAt(config.url.length - 1) === '/') {
     config.url = config.url + config.data
