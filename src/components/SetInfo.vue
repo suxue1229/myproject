@@ -59,7 +59,8 @@ export default {
   name: 'SetInfo',
   data () {
     return {
-      newuser: JSON.parse(sessionStorage.getItem('user'))
+      newuser: JSON.parse(sessionStorage.getItem('user')),
+      current_url: this.$route.params.url
     }
   },
   computed: {
@@ -84,7 +85,8 @@ export default {
         })
     },
     close () {
-      this.$router.go(-1)
+      this.$store.commit('SET_Show', false)
+      this.$router.replace(this.current_url)
     }
   }
 }
@@ -158,7 +160,7 @@ export default {
   border-radius: 5px;
   margin-right: 10px;
   width: 300px;
-  background: greenyellow;
+  background: #FFFFFF;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -65,7 +65,7 @@ export const router = new Router(
         }]
       },
       {
-        path: '/setinfo',
+        path: '/setinfo/:url',
         component: Layout,
         children: [{
           path: '',

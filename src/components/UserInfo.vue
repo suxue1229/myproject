@@ -1,6 +1,7 @@
 <template>
-  <div class='usercard'>
-    <b-card
+  <div class='info'>
+    <div class= "usercard" v-show="showsetinfo">
+      <b-card
       align="center"
       style="max-width: 15rem;"
       class="mb-2"
@@ -17,17 +18,23 @@
         <small class="text-muted">已登录 {{start_time}} 分钟</small>
     </template>
     </b-card>
+    </div>
   </div>
 </template>
 
 <script>
+import SetInfo from './SetInfo'
 export default {
   name: 'UserInfo',
   data () {
     return {
+      showsetinfo: true,
       Interval: {},
       start_time: sessionStorage.getItem('start_time')
     }
+  },
+  components: {
+    SetInfo
   },
   created () {
     this.gettime()
@@ -46,8 +53,8 @@ export default {
       location.reload() // 为了重新实例化vue-router对象 避免bug
     },
     set () {
-      this.$emit('userinfoshow', false)
-      this.$router.push({name: 'setinfo'})
+      this.showsetinfo = false
+      this.$router.push({name: 'setinfo', params: {'url': this.$route.path}})
     },
     gettime () {
       clearInterval(this.Interval)
@@ -61,9 +68,16 @@ export default {
 </script>
 
 <style scoped>
+.info{
+  z-index: 9999
+}
 .usercard{
+  position: fixed;
+  top:100px;
+  right: 30px;
   width:200px;
   height:300px;
+  z-index: 999;
 }
 .card{
   background-color: #304156;
@@ -107,11 +121,5 @@ a.hover{
   margin:0 auto;
   border: 2px solid #CCCCCC;
   display: block;
-  }
-  .child{
-    position: absolute;
-    top: 100px;
-    bottom: 50px;
-    background: red;
   }
 </style>

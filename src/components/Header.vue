@@ -14,7 +14,7 @@
           <i class="el-icon-user iconstyle" id="usericon" @click="getuserinfo" ></i>
         </div>
     </div>
-    <userinfo class="infostyle" @userinfoshow="getshow"  v-show="isshowing"></userinfo>
+    <userinfo class="infostyle" @userinfoshow="getshow"  v-if="isshowing"></userinfo>
   </header>
 </template>
 
@@ -24,14 +24,25 @@ export default {
   name: 'Header',
   data () {
     return {
-      isshowing: false
     }
   },
   components: {
     userinfo
   },
-  created () {
-    this.isshowing = false
+  computed: {
+    isshowing () {
+      return this.$store.getters.isshowing
+    }
+  },
+  watch: {
+    isshowing (newval) {
+      let usericon = document.getElementById('usericon')
+      if (newval === true) {
+        usericon.style.color = '#BFCBD9'
+      } else {
+        usericon.style.color = 'rgba(255,255,255,.5)'
+      }
+    }
   },
   methods: {
     // 时间戳转日期格式
@@ -50,16 +61,13 @@ export default {
       return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second
     },
     getshow (el) {
-      this.isshowing = el
+      this.$store.commit('SET_Show', el)
     },
     getuserinfo () {
-      let usericon = document.getElementById('usericon')
       if (!this.isshowing) {
-        usericon.style.color = '#BFCBD9'
-        this.isshowing = true
+        this.$store.commit('SET_Show', true)
       } else {
-        usericon.style.color = 'rgba(255,255,255,.5)'
-        this.isshowing = false
+        this.$store.commit('SET_Show', false)
       }
     }
   }
@@ -76,25 +84,21 @@ export default {
   border-bottom: solid 1px rgba(16,46,86,.8);
   z-index: 999;
 }
-  .header-style{
-    padding: 0px;
-  }
-  .logo{
-    width: 100%;
-    height: 100%;
-  }
-  .narbar-color{
-    color: rgba(255,255,255,.5);
-  }
-  .iconstyle{
+.header-style{
+  padding: 0px;
+}
+.logo{
+  width: 100%;
+  height: 100%;
+}
+.narbar-color{
+  color: rgba(255,255,255,.5);
+}
+.iconstyle{
   font-size: 28px;
   color: rgba(255,255,255,.5);
   margin-left: 30px;
   height:100%;
 }
-.infostyle {
-  position: fixed;
-  top:100px;
-  right: 30px;
-}
+
 </style>
