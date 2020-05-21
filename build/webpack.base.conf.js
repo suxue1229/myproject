@@ -91,6 +91,11 @@ module.exports = {
     child_process: 'empty'
   },
   externals: {
-    "BMap": "BMap"
+    "BMap": "BMap",
+    "myvue": "Vue",
+    "myvuex":"Vuex",
+    "myRouter": "VueRouter",
+    "myelementui": "ElementUI",
+    "myaxios": "axios"
    }
 }

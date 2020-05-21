@@ -76,7 +76,6 @@ export default {
   methods: {
     initdata () {
       clearTimeout(this.timer)
-      // this.$store.commit('ALL_DATA')
       for (let i = 0; i < this.instituteData.length; i++) {
         this.$axios.get(this.HOST + '/data/' + this.instituteData[i].Id)
           .then(res => {

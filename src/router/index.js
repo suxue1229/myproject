@@ -1,10 +1,7 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import Router from 'myRouter'
 import Layout from '@/views/layout'
 
-Vue.use(Router)
 /* Layout */
-
 export const router = new Router(
   {
     /* mode:'history'时build出现空白，要删除或mode:'hash' */
