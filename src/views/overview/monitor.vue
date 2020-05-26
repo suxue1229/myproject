@@ -8,7 +8,7 @@
           <table class="table table-striped">
             <tr v-for="(item,i) in infos[0]" :key="i">
               <td class="col_name">{{item.Name}}</td>
-              <td class="col_value">{{deletesign(item.Status)}}</td>
+              <td class="col_value">{{valuestyle(item.Status)}}</td>
             </tr>
           </table>
           <h4>仪表数据</h4>
@@ -35,6 +35,7 @@
 销毁过程
 父beforeDestroy->子beforeDestroy->子destroyed->父destroyed */
 import drawChart from './chart'
+import {deletesign} from '@/js/common.js'
 export default {
   name: 'monitor',
   data () {
@@ -89,20 +90,11 @@ export default {
         }, 10000)
       }
     },
+    valuestyle (item) {
+      return deletesign(item)
+    },
     sendItem (item) {
       this.sensor = item
-    },
-    deletesign (str) {
-      if (typeof (str) === 'string') {
-        if (str.includes('{red}')) {
-          return str.replace('{red}', '')
-        } else if (str.includes('{green}')) {
-          return str.replace('{green}', '')
-        }
-      } else if (typeof (str) === 'undefined') {
-        return ''
-      }
-      return str
     },
     close () {
       this.$router.push('/overview')

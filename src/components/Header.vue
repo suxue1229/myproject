@@ -10,7 +10,7 @@
           <h1 class="narbar-color">CWT污水处理智慧管理平台</h1>
         </div>
         <div class="navbar ">
-          <h3 class="narbar-color">{{formatDateTime(new Date())}}</h3>
+          <h3 class="narbar-color">{{time}}</h3>
           <i class="el-icon-user iconstyle" id="usericon" @click="getuserinfo" ></i>
         </div>
     </div>
@@ -20,10 +20,12 @@
 
 <script>
 import userinfo from './UserInfo'
+import {formatDateTime} from '@/js/common.js'
 export default {
   name: 'Header',
   data () {
     return {
+      time: formatDateTime(new Date())
     }
   },
   components: {
@@ -45,21 +47,6 @@ export default {
     }
   },
   methods: {
-    // 时间戳转日期格式
-    formatDateTime: function (date) {
-      var y = date.getFullYear()
-      var m = date.getMonth() + 1
-      m = m < 10 ? ('0' + m) : m
-      var d = date.getDate()
-      d = d < 10 ? ('0' + d) : d
-      var h = date.getHours()
-      h = h < 10 ? ('0' + h) : h
-      var minute = date.getMinutes()
-      minute = minute < 10 ? ('0' + minute) : minute
-      var second = date.getSeconds()
-      second = second < 10 ? ('0' + second) : second
-      return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second
-    },
     getshow (el) {
       this.$store.commit('SET_Show', el)
     },

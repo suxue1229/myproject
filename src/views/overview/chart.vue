@@ -96,9 +96,7 @@ export default {
       h = h < 10 ? ('0' + h) : h
       var minute = date.getMinutes()
       minute = minute < 10 ? ('0' + minute) : minute
-      var second = date.getSeconds()
-      second = second < 10 ? ('0' + second) : second
-      return y +  m +  d +  h + minute
+      return y + m + d + h + minute
     },
     drawChart (chartId, chartData) {
       var ctx = document.getElementById(chartId)
@@ -129,6 +127,8 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 .chartpart .toggle{
   height: 80px;
