@@ -73,10 +73,7 @@ export default {
             this.map.enableAutoResize()
             var pt = ''
             for (var i = 0; i < this.datalist.length; i++) {
-              pt = new BMap.Point(
-                this.datalist[i].Longitude,
-                this.datalist[i].Latitude
-              )
+              pt = new BMap.Point(this.datalist[i].Longitude, this.datalist[i].Latitude)
               this.geocodeSearch(pt, i)
               var convertor = new BMap.Convertor()
               var pointArr = []

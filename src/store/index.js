@@ -1,6 +1,5 @@
-// import Vue from 'vue'
 import Vuex from 'myvuex'
-
+import persistedState from 'vuex-persistedstate'
 import getters from './getters'
 import login from './modules/login'
 import institute from './modules/institute'
@@ -10,6 +9,20 @@ const store = new Vuex.Store({
     login,
     institute
   },
+  plugins: [
+    persistedState({
+      key: 'store',
+      storage: window.sessionStorage
+      // reducer (val) {
+      //   return {
+      //   // 只储存state中的user
+      //     login: val.login,
+      //     info_Data: val.institute.info_Data
+
+      //   }
+      // }
+    })
+  ],
   getters
 })
 

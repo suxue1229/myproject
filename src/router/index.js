@@ -76,8 +76,8 @@ export const router = new Router(
         component: resolve => require(['@/views/login'], resolve)
       },
       {
-        path: '/*',
-        redirect: '/login'
+        path: '*',
+        component: resolve => require(['@/views/error'], resolve)
       }
     ]
   })
