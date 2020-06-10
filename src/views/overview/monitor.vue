@@ -70,18 +70,15 @@ export default {
     init () {
       if (this.id) {
         clearTimeout(this.timer)
-        this.$axios.get(this.HOST + '/data/' + this.id)
-          .then(res => {
-            if (res.data.status === 0) {
-              this.$store.dispatch('get_data', res.data.data)
-              this.data = this.$store.getters.info_Data
-              for (var i = 0; i < this.data.Groups.length; i++) {
-                /* 两种表达方式都可以将数据加入到数组中并渲染，但使用push 如何此方法首先不对数组赋值，则以后数据在数组最后一个index后继续添加,表现为数组越变越大;而每次清空 出现闪现，但$set只会在原有数据上更新 */
-                // this.infos.push(this.data.Groups[i].Devices)
-                // this.infos.push(this.data.Groups[i].Sensors)
-                this.$set(this.infos, 0, this.data.Groups[i].Devices)
-                this.$set(this.infos, 1, this.data.Groups[i].Sensors)
-              }
+        this.$store.dispatch('get_data', this.id)
+          .then(() => {
+            this.data = this.$store.getters.info_Data.data
+            for (var i = 0; i < this.data.Groups.length; i++) {
+              /* 两种表达方式都可以将数据加入到数组中并渲染，但使用push 如何此方法首先不对数组赋值，则以后数据在数组最后一个index后继续添加,表现为数组越变越大;而每次清空 出现闪现，但$set只会在原有数据上更新 */
+              // this.infos.push(this.data.Groups[i].Devices)
+              // this.infos.push(this.data.Groups[i].Sensors)
+              this.$set(this.infos, 0, this.data.Groups[i].Devices)
+              this.$set(this.infos, 1, this.data.Groups[i].Sensors)
             }
           })
           .catch(error => { console.log(error) })

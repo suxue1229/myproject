@@ -30,7 +30,7 @@ export default {
     return {
       showsetinfo: true,
       Interval: {},
-      start_time: sessionStorage.getItem('start_time')
+      start_time: sessionStorage.getItem('store') ? JSON.parse(sessionStorage.getItem('store')).login.start_time : new Date().getTime()
     }
   },
   components: {
@@ -41,7 +41,7 @@ export default {
   },
   computed: {
     username () {
-      return this.$store.getters.user.UserName
+      return JSON.parse(sessionStorage.getItem('store')).login.user.UserName
     }
   },
   beforeDestroy () {
@@ -58,7 +58,7 @@ export default {
     },
     gettime () {
       clearInterval(this.Interval)
-      this.start_time = Math.round((new Date().getTime() - sessionStorage.getItem('start_time')) / 60000)
+      this.start_time = Math.round((new Date().getTime() - JSON.parse(sessionStorage.getItem('store')).login.start_time) / 60000)
       this.Interval = setInterval(() => {
         this.gettime()
       }, 10000)

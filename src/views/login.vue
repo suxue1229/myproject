@@ -18,7 +18,7 @@
   </div>
 </template>
 <script>
-import QS from 'qs'
+// import QS from 'qs'
 export default {
   name: 'login',
   data () {
@@ -41,29 +41,19 @@ export default {
       if (this.user.loginForm.username === '' || this.user.loginForm.password === '') {
         alert('账号或密码不能为空')
       } else {
-        this.$axios.post(this.HOST + '/user/authorize', QS.stringify({grant_type: 'password', username: this.user.loginForm.username, password: this.user.loginForm.password}).replace('%40', '@'), {headers: {'Content-Type': 'application/x-www-form-urlencoded', 'charset': 'utf-8'}})
-          .then(res => {
-            this.$store.dispatch('user_authorize', res.data).then(
-              () => {
-                this.getUserInfo()
-                this.$router.push('/')
-              }
-            )
-          })
-          .catch(error => {
+        this.$store.dispatch('user_authorize', this.user)
+          .then(() => {
+            this.getUserInfo()
+            this.$router.push('/')
+          }
+          ).catch(error => {
             alert('账号或密码错误')
             console.log(error)
           })
       }
     },
     getUserInfo () {
-      this.$axios.get(this.HOST + '/user/account')
-        .then(res => {
-          if (res.data.status === 0) {
-            this.$store.dispatch('user_account', res.data.data)
-          }
-        })
-        .catch(error => { console.log(error) })
+      this.$store.dispatch('user_account')
     }
   }
 }

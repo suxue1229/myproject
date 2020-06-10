@@ -54,12 +54,11 @@
 </template>
 
 <script>
-import QS from 'qs'
 export default {
   name: 'SetInfo',
   data () {
     return {
-      newuser: JSON.parse(sessionStorage.getItem('user')),
+      newuser: JSON.parse(sessionStorage.getItem('store')).login.user,
       current_url: this.$route.params.url
     }
   },
@@ -70,16 +69,11 @@ export default {
   },
   methods: {
     changeinfo () {
-      this.$axios.post(this.HOST + '/user/account',
-        QS.stringify({LastName: this.newuser.LastName, FirstName: this.newuser.FirstName, NickName: this.newuser.NickName, Company: this.newuser.Company, Department: this.newuser.Department}), {headers: {'Content-Type': 'application/x-www-form-urlencoded', 'charset': 'utf-8'}})
-        .then(
-          res => {
-            if (res.data.status === 0) {
-              this.$store.dispatch('user_account', this.newuser)
-              alert(res.data.message)
-            }
-          }
-        )
+      alert('new :'+JSON.stringify(this.newuser))
+      this.$store.dispatch('change_account', this.newuser)
+        .then(() => {
+          alert(this.$store.state.login.msg)
+        })
         .catch(error => {
           console.log(error)
         })

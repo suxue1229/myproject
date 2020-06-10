@@ -62,42 +62,39 @@ export default {
   },
   methods: {
     initdata () {
-      this.$axios.get(this.HOST + '/institute')
-        .then(res => {
-          if (res.data.status === 0) {
-            this.$store.dispatch('get_institute', res.data.data)
-            this.map = new BMap.Map('map')
-            var point = new BMap.Point(116.404, 39.915)
-            this.map.centerAndZoom(point, 10)
-            this.map.enableScrollWheelZoom(true)
-            this.map.enableAutoResize()
-            var pt = ''
-            for (var i = 0; i < this.datalist.length; i++) {
-              pt = new BMap.Point(this.datalist[i].Longitude, this.datalist[i].Latitude)
-              this.geocodeSearch(pt, i)
-              var convertor = new BMap.Convertor()
-              var pointArr = []
-              pointArr.push(pt)
-              convertor.translate(pointArr, 1, 5, data => {
-                if (data.status === 0) {
-                  pt = data.points[0]
-                  return pt
-                }
-              })
-              var marker = new BMap.Marker(pt)
-              this.map.addOverlay(marker)
-              var label = new BMap.Label(this.datalist[i].Name, {
-                offset: new BMap.Size(20, -10)
-              })
-              label.setStyle({
-                color: 'rgba(16,46,86)',
-                fontSize: '12px',
-                height: '20px',
-                lineHeight: '20px'
-              })
-              marker.setLabel(label) // 添加label
-              this.map.setCenter(pt)
-            }
+      this.$store.dispatch('get_institute')
+        .then(() => {
+          this.map = new BMap.Map('map')
+          var point = new BMap.Point(116.404, 39.915)
+          this.map.centerAndZoom(point, 10)
+          this.map.enableScrollWheelZoom(true)
+          this.map.enableAutoResize()
+          var pt = ''
+          for (var i = 0; i < this.datalist.length; i++) {
+            pt = new BMap.Point(this.datalist[i].Longitude, this.datalist[i].Latitude)
+            this.geocodeSearch(pt, i)
+            var convertor = new BMap.Convertor()
+            var pointArr = []
+            pointArr.push(pt)
+            convertor.translate(pointArr, 1, 5, data => {
+              if (data.status === 0) {
+                pt = data.points[0]
+                return pt
+              }
+            })
+            var marker = new BMap.Marker(pt)
+            this.map.addOverlay(marker)
+            var label = new BMap.Label(this.datalist[i].Name, {
+              offset: new BMap.Size(20, -10)
+            })
+            label.setStyle({
+              color: 'rgba(16,46,86)',
+              fontSize: '12px',
+              height: '20px',
+              lineHeight: '20px'
+            })
+            marker.setLabel(label) // 添加label
+            this.map.setCenter(pt)
           }
         })
         .catch(error => {

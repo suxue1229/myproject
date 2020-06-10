@@ -43,38 +43,34 @@ export default {
   },
   methods: {
     initchart () {
-      if (this.chartdata) {
-        this.chartdata = {}
-      }
+      this.chartdata = null
       clearTimeout(this.timer)
-      this.$axios.get(this.HOST + '/sensor/' + this.id + '?level=' + this.level + '&time=' + this.time)
-        .then(res => {
-          if (res.data.status === 0) {
-            this.chartdata = res.data.data
-            var label1 = []
-            var data1 = []
-            for (var i = 0; i < this.chartdata.his.length; i++) {
-              this.$set(label1, i, this.chartdata.his[i].time)
-              this.$set(data1, i, this.chartdata.his[i].value)
-            }
-            let data = {
-              labels: label1,
-              datasets: [
-                {
-                  label: this.name,
-                  data: data1,
-                  backgroundColor: [
-                    'rgba(71, 183,132,.5)' // Green
-                  ],
-                  borderColor: [
-                    '#47b784'
-                  ],
-                  borderWidth: 3
-                }
-              ]
-            }
-            this.drawChart('planet-chart', data)
+      this.$store.dispatch('get_Sensorchart', {id: this.id, level: this.level, time: this.time})
+        .then(() => {
+          this.chartdata = this.$store.getters.chart_Data
+          var label1 = []
+          var data1 = []
+          for (var i = 0; i < this.chartdata.his.length; i++) {
+            this.$set(label1, i, this.chartdata.his[i].time)
+            this.$set(data1, i, this.chartdata.his[i].value)
           }
+          let data = {
+            labels: label1,
+            datasets: [
+              {
+                label: this.name,
+                data: data1,
+                backgroundColor: [
+                  'rgba(71, 183,132,.5)' // Green
+                ],
+                borderColor: [
+                  '#47b784'
+                ],
+                borderWidth: 3
+              }
+            ]
+          }
+          this.drawChart('planet-chart', data)
         })
         .catch(error => { console.log(error) })
       this.timer = setTimeout(() => {

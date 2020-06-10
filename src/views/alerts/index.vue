@@ -85,33 +85,26 @@ export default {
       this.$store.commit('ALL_DATA')
       var index = 0
       for (var m = 0; m < this.instituteData.length; m++) {
-        this.$axios.get(this.HOST + '/data/' + this.instituteData[m].Id)
-          .then(res => {
-            if (res.data.status === 0) {
-              this.$nextTick(() => {
-                this.$store.dispatch('get_data', res.data.data)
-                for (let i = 0; i < this.datalist.Groups.length; i++) {
-                  let count = 0
-                  this.datalist.Groups[i].Devices.some(obj => {
-                    if (deletesign(obj.Status) === '故障') {
-                      this.isLoading = false
-                      var tablearray = {'Time': res.data.time, 'Name': this.datalist.Name, 'Status': {}}
-                      this.$set(this.tabledata, index, tablearray) // 最佳方式
-                      // this.tabledata.push(tablearray) 也可以实现结构添加，但this.tabledata[index]=tablearray不可以 原因是vue检测不到这种更新
-                      this.tabledata[index].Status = {'count': count, 'state': {'value': '', 'name': '', 'operation': '报警中'}}
-                      this.tabledata[index].Status.count = count
-                      this.tabledata[index].Status.state.value = deletesign(obj.Status)
-                      this.tabledata[index].Status.state.name = obj.Name
-                      count++
-                      index++
-                      this.isLoading = false
-                    }
-                  })
+        this.$store.dispatch('get_data', this.instituteData[m].Id)
+          .then(() => {
+            for (let i = 0; i < this.datalist.data.Groups.length; i++) {
+              let count = 0
+              this.datalist.data.Groups[i].Devices.some(obj => {
+                if (deletesign(obj.Status) === '故障') {
+                  var tablearray = {'Time': this.datalist.time, 'Name': this.datalist.data.Name, 'Status': {}}
+                  this.$set(this.tabledata, index, tablearray) // 最佳方式
+                  // this.tabledata.push(tablearray) 也可以实现结构添加，但this.tabledata[index]=tablearray不可以 原因是vue检测不到这种更新
+                  this.tabledata[index].Status = {'count': count, 'state': {'value': '', 'name': '', 'operation': '报警中'}}
+                  this.tabledata[index].Status.count = count
+                  this.tabledata[index].Status.state.value = deletesign(obj.Status)
+                  this.tabledata[index].Status.state.name = obj.Name
+                  count++
+                  index++
+                  this.isLoading = false
                 }
               })
             }
           })
-          .catch(error => { console.log(error) })
       }
       this.timer = setTimeout(() => {
         this.initdata()
