@@ -69,7 +69,6 @@ export default {
   },
   methods: {
     changeinfo () {
-      alert('new :'+JSON.stringify(this.newuser))
       this.$store.dispatch('change_account', this.newuser)
         .then(() => {
           alert(this.$store.state.login.msg)

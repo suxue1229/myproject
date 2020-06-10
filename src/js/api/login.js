@@ -19,6 +19,6 @@ export function changeInfo (user) {
   return request({
     url: '/api/user/account',
     method: 'post',
-    data: QS.stringify({LastName: user.LastName, FirstName: user.FirstName, NickName: user.NickName, Company: user.Company, DepartName: user.DepartName})
+    data: QS.stringify({LastName: user.LastName, FirstName: user.FirstName, NickName: user.NickName, Company: user.Company, Department: user.Department})
   })
 }

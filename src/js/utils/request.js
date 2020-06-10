@@ -1,4 +1,5 @@
 import axios from 'myaxios'
+import router from '@/router'
 // request拦截器
 axios.interceptors.request.use(config => {
   if (sessionStorage.getItem('store') !== null) {
@@ -20,19 +21,19 @@ axios.interceptors.response.use(
   },
   error => {
     alert(error)
-    // if (error.response) {
-    //   switch (error.response.status) {
-    //     case 401:
-    //       this.$router.replace({
-    //         path: 'login'
-    //       })
-    //       break
-    //     default:
-    //       this.$router.replace({
-    //         path: 'error'
-    //       })
-    //   }
-    // }
+    if (error.response) {
+      switch (error.response.status) {
+        case 401:
+          router.replace({
+            path: 'login'
+          })
+          break
+        default:
+          router.replace({
+            path: 'error'
+          })
+      }
+    }
     return Promise.reject(error) // 返回接口返回的错误信息
   }
 )

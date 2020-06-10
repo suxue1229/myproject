@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     initchart () {
-      this.chartdata = null
+      this.chartdata = {}
       clearTimeout(this.timer)
       this.$store.dispatch('get_Sensorchart', {id: this.id, level: this.level, time: this.time})
         .then(() => {

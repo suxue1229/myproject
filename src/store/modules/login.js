@@ -50,8 +50,7 @@ const login = {
 
     change_account ({ commit }, newuser) {
       return new Promise((resolve, reject) => {
-        changeInfo().then(res => {
-          alert('res:'+JSON.stringify(res))
+        changeInfo(newuser).then(res => {
           if (res.data.status === 0) {
             commit('SET_User', newuser)
             commit('GET_Msg', res.data.message)
