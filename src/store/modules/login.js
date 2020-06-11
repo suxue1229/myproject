@@ -62,7 +62,7 @@ const login = {
       })
     },
 
-    logout () {
+    logout ({commit}) {
       sessionStorage.clear()
     }
   }

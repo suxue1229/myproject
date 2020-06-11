@@ -43,7 +43,7 @@ export default {
       } else {
         this.$store.dispatch('user_authorize', this.user)
           .then(() => {
-            this.getUserInfo()
+            // this.getUserInfo()
             this.$router.push('/')
           }
           ).catch(error => {

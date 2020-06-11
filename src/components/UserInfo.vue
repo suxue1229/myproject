@@ -50,7 +50,7 @@ export default {
   methods: {
     exit () {
       this.$store.dispatch('logout')
-      location.reload() // 为了重新实例化vue-router对象 避免bug
+      location.replace() // 为了重新实例化vue-router对象 避免bug
     },
     set () {
       this.showsetinfo = false

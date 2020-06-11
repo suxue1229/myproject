@@ -4,6 +4,7 @@
     <router-link to="/institute" tag="a">{{list[1]}}</router-link>
     <router-link to="/tables" tag="a">{{list[2]}}</router-link>
     <router-link to="/alerts" tag="a">{{list[3]}}</router-link>
+    <router-link to="/roles" tag="a" >{{list[4]}}</router-link>
     <a href="javascript:;" id="iconzoom" class="el-icon-full-screen iconstyle" @click="zoom" ></a>
   </nav>
 </template>
@@ -14,7 +15,7 @@ export default {
   data () {
     return {
       iszooming: false,
-      list: ['项目总览', '设备监控', '统计报表', '事件报警']
+      list: ['项目总览', '设备监控', '统计报表', '事件报警', '管理员']
     }
   },
   methods: {

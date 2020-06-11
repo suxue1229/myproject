@@ -60,7 +60,7 @@ export default {
     this.btntimer = setTimeout(() => {
       let btn = document.getElementById('tag_a')
       btn.click()
-    }, 1000)
+    }, 0)
   },
   beforeDestroy () {
     clearTimeout(this.timer)
