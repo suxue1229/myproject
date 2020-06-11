@@ -25,12 +25,12 @@ axios.interceptors.response.use(
       switch (error.response.status) {
         case 401:
           router.replace({
-            path: 'login'
+            path: '/login'
           })
           break
         default:
           router.replace({
-            path: 'error'
+            path: '/error'
           })
       }
     }
