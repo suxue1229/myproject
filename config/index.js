@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api':{
-        target: 'https://www.oriwater.cn',//跨域地址
+        target: 'https://oriwater.cn',//跨域地址
         changeOrigin: true,            //是否跨域
         pathRewrite: {
           '^/api': '/api'

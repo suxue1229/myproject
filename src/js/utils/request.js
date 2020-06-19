@@ -28,6 +28,11 @@ axios.interceptors.response.use(
             path: '/login'
           })
           break
+        case 500:
+          router.replace({
+            path: '/login'
+          })
+          break
         default:
           router.replace({
             path: '/error'

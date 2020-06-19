@@ -3,7 +3,7 @@
     <h2 >CWT工艺站点列表</h2>
     <loading v-if= "isshowing"/>
     <div v-else class="animated bounceInRight easytable" >
-      <v-table
+      <!-- <v-table
         :is-vertical-resize= 'true'
         :width= '1295'
         :height= '460'
@@ -18,10 +18,13 @@
           row-hover-color="#edf7ff"
           @sort-change="sortChange"
           :paging-index="(pageIndex-1)*pageSize" >
-      </v-table>
-      <div class="mt20 mb20 bold">
+      </v-table> -->
+        <ul >
+          <li v-for="(item, index) in tableData" :key="index" >111</li>
+        </ul>
+      <!-- <div class="mt20 mb20 bold">
         <v-pagination  @page-change="pageChange" @page-size-change="pageSizeChange" :total="showdata.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

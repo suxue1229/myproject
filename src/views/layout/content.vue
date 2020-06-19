@@ -1,7 +1,7 @@
 <template>
   <section class="container-fluid container-style">
     <transition name="fade" mode="out-in">
-      <keep-alive :include="['overview','institute','tables','alerts']">
+      <keep-alive >
         <router-view></router-view>
       </keep-alive>
     </transition>

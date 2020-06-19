@@ -49,11 +49,33 @@ export default {
   name: 'overview',
   data () {
     return {
-      map: null
+      map: null,
+      list: []
     }
   },
   created () {
     this.initdata()
+      // .then(() => {
+      //   console.log('@@@@:'+JSON.stringify(this.datalist[0]))
+      //   this.list = JSON.parse(JSON.stringify(this.datalist))
+      // })
+      // .catch(error => {
+      //   console.log(error)
+      // })
+    this.geocodeSearch()
+      .then(() => {
+        this.datalist.map((item, index) => {
+          let pt = new BMap.Point(this.datalist[index].Longitude, this.datalist[index].Latitude)
+          this.geocodeSearch(pt, index).then(() => {
+            console.log('55555555' + JSON.stringify(this.datalist[0]))
+          }).catch(error => {
+            console.log(error)
+          })
+        })
+      })
+      .catch(error => {
+        console.log(error)
+      })
   },
   computed: {
     datalist () {
@@ -61,45 +83,45 @@ export default {
     }
   },
   methods: {
-    initdata () {
-      this.$store.dispatch('get_institute')
-        .then(() => {
-          this.map = new BMap.Map('map')
-          var point = new BMap.Point(116.404, 39.915)
-          this.map.centerAndZoom(point, 10)
-          this.map.enableScrollWheelZoom(true)
-          this.map.enableAutoResize()
-          var pt = ''
-          for (var i = 0; i < this.datalist.length; i++) {
-            pt = new BMap.Point(this.datalist[i].Longitude, this.datalist[i].Latitude)
-            this.geocodeSearch(pt, i)
-            var convertor = new BMap.Convertor()
-            var pointArr = []
-            pointArr.push(pt)
-            convertor.translate(pointArr, 1, 5, data => {
-              if (data.status === 0) {
-                pt = data.points[0]
-                return pt
-              }
-            })
-            var marker = new BMap.Marker(pt)
-            this.map.addOverlay(marker)
-            var label = new BMap.Label(this.datalist[i].Name, {
-              offset: new BMap.Size(20, -10)
-            })
-            label.setStyle({
-              color: 'rgba(16,46,86)',
-              fontSize: '12px',
-              height: '20px',
-              lineHeight: '20px'
-            })
-            marker.setLabel(label) // 添加label
-            this.map.setCenter(pt)
+    async initdata () {
+      await this.$store.dispatch('get_institute')
+      this.map = new BMap.Map('map')
+      var point = new BMap.Point(116.404, 39.915)
+      this.map.centerAndZoom(point, 10)
+      this.map.enableScrollWheelZoom(true)
+      this.map.enableAutoResize()
+      var pt = ''
+      for (var i = 0; i < this.datalist.length; i++) {
+        pt = new BMap.Point(this.datalist[i].Longitude, this.datalist[i].Latitude)
+        // this.geocodeSearch(pt, i).then(() => {
+        //   console.log('55555555' + JSON.stringify(this.datalist[0]))
+        // }).catch(error => {
+        //   console.log(error)
+        // })
+        // console.log('value:'+JSON.stringify(this.datalist[0]))
+        var convertor = new BMap.Convertor()
+        var pointArr = []
+        pointArr.push(pt)
+        convertor.translate(pointArr, 1, 5, data => {
+          if (data.status === 0) {
+            pt = data.points[0]
+            return pt
           }
         })
-        .catch(error => {
-          console.log(error)
+        var marker = new BMap.Marker(pt)
+        this.map.addOverlay(marker)
+        var label = new BMap.Label(this.datalist[i].Name, {
+          offset: new BMap.Size(20, -10)
         })
+        label.setStyle({
+          color: 'rgba(16,46,86)',
+          fontSize: '12px',
+          height: '20px',
+          lineHeight: '20px'
+        })
+        marker.setLabel(label) // 添加label
+        this.map.setCenter(pt)
+      }
     },
     getinfo (item) {
       this.$router.push({ name: 'monitor',
@@ -107,12 +129,13 @@ export default {
           id: item.Id
         }})
     },
-    geocodeSearch (pt, index) {
+    async geocodeSearch (pt, index) {
       let geoc = new BMap.Geocoder()
       let addComp = ''
-      geoc.getLocation(pt, rs => {
+      await geoc.getLocation(pt, rs => {
         addComp = rs.addressComponents
-        this.datalist[index].province = addComp.province
+        console.log('1111111111:')
+        this.$set(this.datalist[index], 'Province', addComp.province)
       })
     }
   }
