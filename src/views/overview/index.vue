@@ -29,13 +29,16 @@
           header-tag="header"
           header-bg-variant="success"
           align="center"
-          style="max-width: 15rem; min-width: 10rem; height:100%;"
+          style="max-width: 15rem; min-width: 10rem;"
           class="mb-2"
         >
           <b-card-text>
-            <ul class="row-right-list">
-              <li v-for="(item, i) in datalist" :key="i" @click="getinfo(item)" >{{item.Name}}</li>
-            </ul>
+            <el-tree
+              :data="data"
+              :props="defaultProps"
+              accordion
+              @node-click="handleNodeClick">
+            </el-tree>
           </b-card-text>
         </b-card>
       </div>
@@ -50,32 +53,26 @@ export default {
   data () {
     return {
       map: null,
-      list: []
+      list: [],
+      data: [],
+      defaultProps: {
+        children: 'children',
+        label: 'label'
+      }
     }
   },
   created () {
     this.initdata()
-      // .then(() => {
-      //   console.log('@@@@:'+JSON.stringify(this.datalist[0]))
-      //   this.list = JSON.parse(JSON.stringify(this.datalist))
-      // })
-      // .catch(error => {
-      //   console.log(error)
-      // })
-    this.geocodeSearch()
       .then(() => {
-        this.datalist.map((item, index) => {
-          let pt = new BMap.Point(this.datalist[index].Longitude, this.datalist[index].Latitude)
-          this.geocodeSearch(pt, index).then(() => {
-            console.log('55555555' + JSON.stringify(this.datalist[0]))
-          }).catch(error => {
-            console.log(error)
-          })
-        })
+        /* 按照省份名称排序 */
+        this.datalist.sort((a, b) => a.Province.localeCompare(b.Province, 'zh'))
       })
       .catch(error => {
         console.log(error)
       })
+  },
+  beforeMount () {
+    this.getdata()
   },
   computed: {
     datalist () {
@@ -93,12 +90,8 @@ export default {
       var pt = ''
       for (var i = 0; i < this.datalist.length; i++) {
         pt = new BMap.Point(this.datalist[i].Longitude, this.datalist[i].Latitude)
-        // this.geocodeSearch(pt, i).then(() => {
-        //   console.log('55555555' + JSON.stringify(this.datalist[0]))
-        // }).catch(error => {
-        //   console.log(error)
-        // })
-        // console.log('value:'+JSON.stringify(this.datalist[0]))
+        let province = await this.geocodeSearch(pt, i)
+        this.$set(this.datalist[i], 'Province', province)
         var convertor = new BMap.Convertor()
         var pointArr = []
         pointArr.push(pt)
@@ -123,19 +116,49 @@ export default {
         this.map.setCenter(pt)
       }
     },
-    getinfo (item) {
+    getdata () {
+      /* 按省份划分数组 */
+      const s = new Set() // 实例化对象
+      this.datalist.forEach(item => s.add(item.Province)) // 添加值（Set可以去掉重复数据）
+      let newData = Array.from({ length: s.size }, () => []) // 创建指定长度数组并添值
+      this.datalist.forEach(item => {
+        let index = [...s].indexOf(item.Province) // 找到指定下标
+        newData[index].push(item) // 添加数据
+      })
+      newData.map((item, index) => {
+        let pro = item[0].Province
+        this.list.push({'Province': pro, 'Data': item})
+      })
+
+      /* 树形结构数据形成 */
+      for (let m = 0; m < this.list.length; m++) {
+        let temp = []
+        for (let n = 0; n < this.list[m].Data.length; n++) {
+          temp.push({'label': this.list[m].Data[n].Name, 'data': this.list[m].Data[n]})
+        }
+        this.data.push({'label': this.list[m].Province, 'children': temp})
+      }
+    },
+    handleNodeClick (data) {
       this.$router.push({ name: 'monitor',
         query: {
-          id: item.Id
+          id: data.data.Id
         }})
     },
-    async geocodeSearch (pt, index) {
+    // getinfo (item) {
+    //   this.$router.push({ name: 'monitor',
+    //     query: {
+    //       id: item.Id
+    //     }})
+    // },
+    geocodeSearch (pt, index) {
       let geoc = new BMap.Geocoder()
       let addComp = ''
-      await geoc.getLocation(pt, rs => {
-        addComp = rs.addressComponents
-        console.log('1111111111:')
-        this.$set(this.datalist[index], 'Province', addComp.province)
+      return new Promise(function (resolve, reject) {
+        geoc.getLocation(pt, rs => {
+          addComp = rs.addressComponents
+          resolve(addComp.province)
+        })
       })
     }
   }
@@ -188,4 +211,5 @@ export default {
 .row-right-list li:hover {
   color: #28A745;
 }
+
 </style>
