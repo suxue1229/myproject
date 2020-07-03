@@ -53,7 +53,6 @@ export default {
   data () {
     return {
       map: null,
-      list: [],
       data: [],
       defaultProps: {
         children: 'children',
@@ -66,17 +65,38 @@ export default {
       .then(() => {
         /* 按照省份名称排序 */
         this.datalist.sort((a, b) => a.Province.localeCompare(b.Province, 'zh'))
+        this.data = this.getdata
       })
       .catch(error => {
         console.log(error)
       })
   },
-  beforeMount () {
-    this.getdata()
-  },
   computed: {
     datalist () {
       return this.$store.getters.institute_Data
+    },
+    addprovince () {
+      /* 按省份划分数组 */
+      const s = new Set() // 实例化对象
+      this.datalist.forEach(item => s.add(item.Province)) // 添加值（Set可以去掉重复数据）
+      let newData = Array.from({ length: s.size }, () => []) // 创建指定长度数组并添值
+      this.datalist.forEach(item => {
+        let index = [...s].indexOf(item.Province) // 找到指定下标
+        newData[index].push(item) // 添加数据
+      })
+      return newData
+    },
+    getdata () {
+      /* 树形结构数据形成 */
+      let data = []
+      for (let m = 0; m < this.addprovince.length; m++) {
+        let temp = []
+        for (let n = 0; n < this.addprovince[m].length; n++) {
+          temp.push({'label': this.addprovince[m][n].Name, 'data': this.addprovince[m][n]})
+        }
+        data.push({'label': this.addprovince[m][0].Province, 'children': temp})
+      }
+      return data
     }
   },
   methods: {
@@ -87,20 +107,20 @@ export default {
       this.map.centerAndZoom(point, 10)
       this.map.enableScrollWheelZoom(true)
       this.map.enableAutoResize()
-      var pt = ''
+      // var pointArr = []
       for (var i = 0; i < this.datalist.length; i++) {
-        pt = new BMap.Point(this.datalist[i].Longitude, this.datalist[i].Latitude)
-        let province = await this.geocodeSearch(pt, i)
+        let pt = new BMap.Point(this.datalist[i].Longitude, this.datalist[i].Latitude)
+        let province = await this.geocodeSearch(pt)
         this.$set(this.datalist[i], 'Province', province)
-        var convertor = new BMap.Convertor()
-        var pointArr = []
-        pointArr.push(pt)
-        convertor.translate(pointArr, 1, 5, data => {
-          if (data.status === 0) {
-            pt = data.points[0]
-            return pt
-          }
-        })
+
+        // var convertor = new BMap.Convertor()
+        // pointArr.push(pt)
+        // convertor.translate(pointArr, 1, 5, data => {
+        //   if (data.status === 0) {
+        //     pt = data.points[0]
+        //     return pt
+        //   }
+        // })
         var marker = new BMap.Marker(pt)
         this.map.addOverlay(marker)
         var label = new BMap.Label(this.datalist[i].Name, {
@@ -116,51 +136,27 @@ export default {
         this.map.setCenter(pt)
       }
     },
-    getdata () {
-      /* 按省份划分数组 */
-      const s = new Set() // 实例化对象
-      this.datalist.forEach(item => s.add(item.Province)) // 添加值（Set可以去掉重复数据）
-      let newData = Array.from({ length: s.size }, () => []) // 创建指定长度数组并添值
-      this.datalist.forEach(item => {
-        let index = [...s].indexOf(item.Province) // 找到指定下标
-        newData[index].push(item) // 添加数据
-      })
-      newData.map((item, index) => {
-        let pro = item[0].Province
-        this.list.push({'Province': pro, 'Data': item})
-      })
-
-      /* 树形结构数据形成 */
-      for (let m = 0; m < this.list.length; m++) {
-        let temp = []
-        for (let n = 0; n < this.list[m].Data.length; n++) {
-          temp.push({'label': this.list[m].Data[n].Name, 'data': this.list[m].Data[n]})
-        }
-        this.data.push({'label': this.list[m].Province, 'children': temp})
+    handleNodeClick (data, node, self) {
+      if (node.level !== 1) {
+        this.$router.push({ name: 'monitor',
+          query: {
+            id: data.data.Id
+          }})
       }
     },
-    handleNodeClick (data) {
-      this.$router.push({ name: 'monitor',
-        query: {
-          id: data.data.Id
-        }})
-    },
-    // getinfo (item) {
-    //   this.$router.push({ name: 'monitor',
-    //     query: {
-    //       id: item.Id
-    //     }})
-    // },
-    geocodeSearch (pt, index) {
+    geocodeSearch (pt) {
       let geoc = new BMap.Geocoder()
       let addComp = ''
       return new Promise(function (resolve, reject) {
         geoc.getLocation(pt, rs => {
-          addComp = rs.addressComponents
-          resolve(addComp.province)
+          addComp = rs.addressComponents.province
+          console.log('000')
+          resolve(addComp)
         })
+        console.log('111')
       })
     }
+
   }
 }
 </script>

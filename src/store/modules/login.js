@@ -9,7 +9,7 @@ const login = {
   },
   mutations: {
     SET_User (state, res) {
-      state.user = res
+      state.user = Object.freeze(res)
     },
     SET_Token (state, res) {
       state.token = res

@@ -50,7 +50,7 @@ export default {
   methods: {
     exit () {
       this.$store.dispatch('logout')
-      location.replace() // 为了重新实例化vue-router对象 避免bug
+      this.$router.replace('/login') // 为了重新实例化vue-router对象 避免bug
     },
     set () {
       this.showsetinfo = false
@@ -112,10 +112,6 @@ a.hover{
   width: 100px;
   height: 100px;
   overflow:hidden;
-  -webkit-border-radius: 100%;
-  -moz-border-radius: 100%;
-  -ms-border-radius: 100%;
-  -o-border-radius: 100%;
   border-radius: 100%;
   background-color: #304156;
   margin:0 auto;

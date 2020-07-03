@@ -108,7 +108,7 @@ export default {
         await this.$store.dispatch('get_data', this.instituteData[i].Id)
         this.infodata = this.$store.getters.info_Data.data
         let arrtemp = this.formatedata(this.infodata)
-        let obj = {
+        let obj = Object.freeze({
           'name': this.infodata.Name,
           'chansb': arrtemp[0],
           'fengj': arrtemp[1],
@@ -117,7 +117,7 @@ export default {
           'chansll': arrtemp[4],
           'mbr': arrtemp[5],
           'leijdl': arrtemp[6],
-          'leijsl': arrtemp[7] }
+          'leijsl': arrtemp[7] })
         this.$set(this.showdata, i, obj)
       }
       this.timer = setTimeout(() => {
