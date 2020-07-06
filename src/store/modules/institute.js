@@ -9,7 +9,7 @@ const institute = {
   },
   mutations: {
     INSTITUTE_DATA (state, res) {
-      state.institute_Data = res
+      state.institute_Data = Object.freeze(res)
     },
 
     INFO_DATA (state, res) {

@@ -150,10 +150,8 @@ export default {
       return new Promise(function (resolve, reject) {
         geoc.getLocation(pt, rs => {
           addComp = rs.addressComponents.province
-          console.log('000')
           resolve(addComp)
         })
-        console.log('111')
       })
     }
 

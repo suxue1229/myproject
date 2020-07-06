@@ -81,24 +81,22 @@ export default {
       for (let i = 0; i < this.instituteData.length; i++) {
         this.$store.dispatch('get_data', this.instituteData[i].Id)
           .then(() => {
-            this.$nextTick(() => {
-              this.infodata = this.$store.getters.info_Data.data
-              let arrtemp = this.formatedata(this.infodata)
-              let obj = {
-                'name': this.infodata.Name,
-                'chansb': arrtemp[0],
-                'fengj': arrtemp[1],
-                'huilb': arrtemp[2],
-                'chulb': arrtemp[3],
-                'chansll': arrtemp[4],
-                'mbr': arrtemp[5],
-                'leijdl': arrtemp[6],
-                'leijsl': arrtemp[7] }
-              this.showdata.push(obj)
-              // this.$set(this.showdata, i, obj) // easytable出现 field 没定义的错误
-              this.getTableData()
-              this.isshowing = false
-            })
+            this.infodata = this.$store.getters.info_Data.data
+            let arrtemp = this.formatedata(this.infodata)
+            let obj = Object.freeze({
+              'name': this.infodata.Name,
+              'chansb': arrtemp[0],
+              'fengj': arrtemp[1],
+              'huilb': arrtemp[2],
+              'chulb': arrtemp[3],
+              'chansll': arrtemp[4],
+              'mbr': arrtemp[5],
+              'leijdl': arrtemp[6],
+              'leijsl': arrtemp[7] })
+            this.showdata.push(obj)
+            // this.$set(this.showdata, i, obj) // easytable出现 field 没定义的错误
+            this.getTableData()
+            this.isshowing = false
           })
           .catch(error => {
             console.log(error)
