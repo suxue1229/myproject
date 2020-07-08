@@ -92,10 +92,10 @@ module.exports = {
   },
   externals: {
     "BMap": "BMap",
-    "myvue": "Vue",
-    "myvuex":"Vuex",
-    "myRouter": "VueRouter",
-    "myelementui": "ElementUI",
-    "myaxios": "axios"
+    // "myvue": "Vue",
+    // "myvuex":"Vuex",
+    // "myRouter": "VueRouter",
+    // "myelementui": "ElementUI",
+    // "myaxios": "axios"
    }
 }

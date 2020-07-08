@@ -1,7 +1,9 @@
-import Router from 'myRouter'
+// import Router from 'myRouter'
+import Router from 'vue-router'
 import Layout from '@/views/layout'
-// import store from '@/store'
+import Vue from 'vue'
 
+Vue.use(Router)
 /* Layout */
 export const router = new Router(
   {

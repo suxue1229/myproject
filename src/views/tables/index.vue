@@ -1,91 +1,52 @@
 <template>
   <div class="main">
-    <h2 >CWT工艺站点列表</h2>
     <loading v-if= "isshowing"/>
-    <div v-else class="animated bounceInRight" >
-       <el-table
-        :data="tableData"
-        stripe
-        style="width: 100%">
-        <el-table-column
-          prop="name"
-          label="厂站名称"
-          width="300">
-        </el-table-column>
-        <el-table-column
-          prop="chansb"
-          label="产水泵"
-          width="100">
-        </el-table-column>
-        <el-table-column
-          prop="fengj"
-          label="风机"
-          width="100">
-        </el-table-column>
-        <el-table-column
-          prop="huilb"
-          label="回流泵"
-          width="100">
-        </el-table-column>
-        <el-table-column
-          prop="chulb"
-          label="除磷泵"
-          width="100">
-        </el-table-column>
-        <el-table-column
-          prop="chansll"
-          label="产水流量(m3/h)"
-          >
-        </el-table-column>
-        <el-table-column
-          prop="mbr"
-          label="MBR压力(kpa)"
-          >
-        </el-table-column>
-        <el-table-column
-          prop="leijdl"
-          label="累计电量(kwh)"
-          >
-        </el-table-column>
-        <el-table-column
-          prop="leijsl"
-          label="累计水量(m3)"
-          >
-        </el-table-column>
-      </el-table>
-      <div class="block">
-        <el-pagination
-          @size-change="pageChange"
-          @current-change="pageSizeChange"
-          :current-page="(pageIndex-1)*pageSize"
-          :page-size="pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="showdata.length">
-        </el-pagination>
+    <div class="list" v-else>
+      <div class="list-title">
+        <div class="num">序号</div>
+        <div class="item_name">厂站名称</div>
+        <div class="col">产水泵</div>
+        <div class="col">风机</div>
+        <div class="col">回流泵</div>
+        <div class="col">除磷泵</div>
+        <div class="col">产水流量(m3/h)</div>
+        <div class="col">MBR压力(kpa)</div>
+        <div class="col">累计电量(kwh)</div>
+        <div class="col">累计水量(m3)</div>
       </div>
+      <virtual-list
+        class="animated bounceInRight list-content"
+        style="height: 500px; overflow-y: auto;"
+        :data-key="'uid'"
+        :data-sources="items"
+        :data-component="itemComponent"
+      />
     </div>
   </div>
 </template>
 <script>
 import {deletesign} from '@/js/common.js'
+
+import Item from './Item'
+import VirtualList from 'vue-virtual-scroll-list'
+
 export default {
   name: 'table',
   data () {
     return {
-      multipleSort: false,
-      pageIndex: 1,
-      pageSize: 10,
       infodata: '',
       isshowing: true,
       showdata: [],
-      tableData: [],
-      timer: { }
+      timer: { },
+
+      itemComponent: Item,
+      items: []
     }
   },
+  components: { 'virtual-list': VirtualList },
   created () {
     this.initdata()
       .then(() => {
-        this.getTableData()
         this.isshowing = false
       })
       .catch(error => {
@@ -102,30 +63,32 @@ export default {
   },
   methods: {
     async initdata () {
-      clearTimeout(this.timer)
+      // clearTimeout(this.timer)
       this.$store.commit('ALL_DATA')
       for (let i = 0; i < this.instituteData.length; i++) {
         await this.$store.dispatch('get_data', this.instituteData[i].Id)
         this.infodata = this.$store.getters.info_Data.data
         let arrtemp = this.formatedata(this.infodata)
-        let obj = Object.freeze({
-          'name': this.infodata.Name,
-          'chansb': arrtemp[0],
-          'fengj': arrtemp[1],
-          'huilb': arrtemp[2],
-          'chulb': arrtemp[3],
-          'chansll': arrtemp[4],
-          'mbr': arrtemp[5],
-          'leijdl': arrtemp[6],
-          'leijsl': arrtemp[7] })
-        this.$set(this.showdata, i, obj)
+        let obj = {
+          uid: 'unique_1',
+          name: this.infodata.Name,
+          chansb: arrtemp[0],
+          fengj: arrtemp[1],
+          huilb: arrtemp[2],
+          chulb: arrtemp[3],
+          chansll: arrtemp[4],
+          mbr: arrtemp[5],
+          leijdl: arrtemp[6],
+          leijsl: arrtemp[7] }
+        this.items.push(obj)
+        // this.$set(this.items, i, obj)
       }
-      this.timer = setTimeout(() => {
-        if (this.showdata) {
-          this.showdata = []
-        }
-        this.initdata()
-      }, 60000)
+      // this.timer = setTimeout(() => {
+      //   if (this.showdata) {
+      //     this.showdata = []
+      //   }
+      //   this.initdata()
+      // }, 60000)
     },
     formatedata (datalist) {
       var Devicelist = []
@@ -158,46 +121,49 @@ export default {
         }
       }
       return Devicelist
-    },
-    getTableData () {
-      this.tableData = this.showdata.slice((this.pageIndex - 1) * this.pageSize, (this.pageIndex) * this.pageSize)
-    },
-    pageChange (pageIndex) {
-      this.pageIndex = pageIndex
-      this.getTableData()
-    },
-    pageSizeChange (pageSize) {
-      this.pageIndex = 1
-      this.pageSize = pageSize
-      this.getTableData()
-    },
-    sortChange (params) {
-      if (params.height.length > 0) {
-        this.tableData.sort(function (a, b) {
-          if (params.height === 'asc') {
-            return a.height - b.height
-          } else if (params.height === 'desc') {
-            return b.height - a.height
-          } else {
-            return 0
-          }
-        })
-      }
     }
+
   }
 }
 </script>
 <style scoped>
 .main{
-  display: flex;
+  width:100%;
+  height:100%;
+  /* display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
+  /* padding:5px; */
 }
-.main h2{
+
+.list {
+  width:100%;
   padding: 10px;
+  display: flex;
+  flex-direction: column;
 }
-.easytable{
-  width: 100%;
+.list-title{
+  width:100%;
+  display: flex;
+  font-weight: bold;
+}
+.list-content{
+  width:100%;
+  border: 2px solid #304156;
+  border-radius: 3px;
+  font-size: 16px;
+}
+.num{
+  flex: 0.5;
+  text-align: center;
+}
+.col {
+  flex: 1;
+  text-align: center;
+}
+.item_name{
+  flex: 2.5;
+  text-align: center;
 }
 </style>

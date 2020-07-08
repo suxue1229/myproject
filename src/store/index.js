@@ -1,9 +1,11 @@
-import Vuex from 'myvuex'
+// import Vuex from 'myvuex'
+import Vue from 'vue'
+import Vuex from 'vuex'
 import persistedState from 'vuex-persistedstate'
 import getters from './getters'
 import login from './modules/login'
 import institute from './modules/institute'
-// Vue.use(Vuex)
+Vue.use(Vuex)
 const store = new Vuex.Store({
   modules: {
     login,

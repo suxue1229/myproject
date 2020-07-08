@@ -1,4 +1,5 @@
-import axios from 'myaxios'
+// import axios from 'myaxios'
+import axios from 'axios'
 import router from '@/router'
 // request拦截器
 axios.interceptors.request.use(config => {
