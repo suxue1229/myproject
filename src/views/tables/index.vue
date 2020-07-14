@@ -9,10 +9,10 @@
         <div class="col">风机</div>
         <div class="col">回流泵</div>
         <div class="col">除磷泵</div>
-        <div class="col">产水流量(m3/h)</div>
-        <div class="col">MBR压力(kpa)</div>
-        <div class="col">累计电量(kwh)</div>
-        <div class="col">累计水量(m3)</div>
+        <div class="col">产水流量<br>(m3/h)</div>
+        <div class="col">MBR压力<br>(kpa)</div>
+        <div class="col">累计电量<br>(kwh)</div>
+        <div class="col">累计水量<br>(m3)</div>
       </div>
       <virtual-list
         class="animated bounceInRight list-content"
@@ -130,11 +130,6 @@ export default {
 .main{
   width:100%;
   height:100%;
-  /* display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center; */
-  /* padding:5px; */
 }
 
 .list {

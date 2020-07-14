@@ -17,10 +17,10 @@
 export default {
   name: 'item-component',
   props: {
-    index: { // col of current item
+    index: {
       type: Number
     },
-    source: { // here is: {uid: 'unique_1', text: 'abc'}
+    source: {
       type: Object,
       default () {
         return {}
